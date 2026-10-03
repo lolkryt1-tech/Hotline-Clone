@@ -1,0 +1,1 @@
+if speed <= 0 && isSplated == false { image_speed = 1 + advancespeed; isSplated = true}

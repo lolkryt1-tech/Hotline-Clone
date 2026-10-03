@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrPlayerDieBlunt",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrPlayerDieBlunt",
+  "parent":{
+    "name":"PlayerDead",
+    "path":"folders/Scripts/PlayerDead.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

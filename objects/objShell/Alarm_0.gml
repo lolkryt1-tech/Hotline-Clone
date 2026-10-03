@@ -1,0 +1,3 @@
+scrDrawBlood();
+
+instance_destroy();

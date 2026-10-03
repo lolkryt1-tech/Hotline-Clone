@@ -1,0 +1,2 @@
+scrSaveGame();
+instance_destroy();

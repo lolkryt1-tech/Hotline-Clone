@@ -1,0 +1,1 @@
+if (global.blood_render_counter < 6000) global.blood_render_counter = 8000;

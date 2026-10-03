@@ -1,0 +1,1 @@
+if (is_GettingUp) { image_index += 0.25; }

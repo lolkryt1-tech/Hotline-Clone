@@ -1,0 +1,1 @@
+if (surface_exists(global.surf_blood))  { scrDrawBlood(); }
