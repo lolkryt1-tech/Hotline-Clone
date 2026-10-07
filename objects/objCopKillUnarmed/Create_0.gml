@@ -7,10 +7,7 @@ triggered_hurt = false;
 
 enemy_image_index = 0;
 
-enemy_faction = 0;
-enemy_class = 0;
-
-enemy_sprite = sprEffector;
-
-
-if enemy_class == CLASS.REGULAR { enemy_sprite = sprColombianDieStomp; }
+enemy_faction	= 0;
+enemy_class		= 0;
+enemy_skin		= 0
+enemy_sprite	= 0;

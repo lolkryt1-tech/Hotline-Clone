@@ -8,6 +8,7 @@ if (speed <= 0)
 	
     _falled_weapon.my_angle    = my_angle;
 	_falled_weapon.weapon	   = weapon;
+	_falled_weapon.ammo		   = ammo;
     
     instance_destroy();
     exit; // Ранний выход
@@ -20,11 +21,14 @@ var _hspd = lengthdir_x(speed, direction);
 var _vspd = lengthdir_y(speed, direction);
 var _is_hit = false;
 
-// 3. Проверка удара по горизонтали (вертикальная стена)
-if (place_meeting(x + _hspd, y, objSolidTall))
+// === ИСПРАВЛЕНО: Массив объектов, от которых оружие должно отскакивать ===
+var _blocks = [objSolidTall, objDoor];
+
+// 3. Проверка удара по горизонтали (вертикальные стены и двери)
+if (place_meeting(x + _hspd, y, _blocks))
 {
     var _failsafe_x = 0;
-    while (!place_meeting(x + sign(_hspd), y, objSolidTall) && sign(_hspd) != 0) {
+    while (!place_meeting(x + sign(_hspd), y, _blocks) && sign(_hspd) != 0) {
         x += sign(_hspd);
         
         _failsafe_x++;
@@ -34,11 +38,11 @@ if (place_meeting(x + _hspd, y, objSolidTall))
     _is_hit = true;
 }
 
-// 4. Проверка удара по вертикали (горизонтальный пол/потолок)
-if (place_meeting(x, y + _vspd, objSolidTall))
+// 4. Проверка удара по вертикали (горизонтальный пол/потолок и двери)
+if (place_meeting(x, y + _vspd, _blocks))
 {
     var _failsafe_y = 0;
-    while (!place_meeting(x, y + sign(_vspd), objSolidTall) && sign(_vspd) != 0) {
+    while (!place_meeting(x, y + sign(_vspd), _blocks) && sign(_vspd) != 0) {
         y += sign(_vspd);
         
         _failsafe_y++;
@@ -61,6 +65,7 @@ if (_is_hit)
 	
 	_falled_weapon.my_angle    = my_angle;
 	_falled_weapon.weapon	   = weapon;
+	_falled_weapon.ammo		   = ammo;
     
     instance_destroy();
 }

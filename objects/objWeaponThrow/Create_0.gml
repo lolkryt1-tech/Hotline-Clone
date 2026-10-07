@@ -7,3 +7,4 @@ depth = global.weapon_render_counter;
 my_angle = 0;
 weapon_type = 0;
 weapon = 0;
+ammo = 0;

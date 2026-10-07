@@ -42,12 +42,6 @@ var _hit_sound = choose(sndBulletHit1, sndBulletHit2, sndBulletHit3);
 var _played_sound = audio_play_sound(_hit_sound, 1, false);
 if (_played_sound != -1) audio_sound_pitch(_played_sound, random_range(0.9, 1.1));
 
-// Если на игроке были наушники (например, can_hear переменная), дропаем их
-if (variable_instance_exists(id, "can_hear") && can_hear == 0) 
-{ 
-	instance_create_layer(x, y, "Instances", objHeadSet); 
-}
-
 // Спавним труп игрока на его координатах
 var _dead_body = instance_create_layer(x, y, "Instances", objPlayerDead);
 
@@ -61,7 +55,6 @@ _dead_body.my_angle     = _bullet_dir;
 // Скармливаем трупу переменные для брызг крови и шейдеров
 _dead_body.hit_type     = HIT_TYPE.BULLET;
 _dead_body.go_splat     = 1;
-_dead_body.class        = variable_instance_exists(id, "class") ? class : 0; 
 
 // Полностью уничтожаем живой инстанс игрока
 instance_destroy();

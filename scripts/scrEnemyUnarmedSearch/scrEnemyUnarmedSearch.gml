@@ -25,20 +25,20 @@ function scrEnemyUnarmedSearch()
 		path_end();
 		
 		// Оружие там - сям
-	    my_sprites = scrEnemyGetSprite(class, my_target.weapon);
+	    my_sprites = scrEnemyGetSprite(skin, my_target.weapon);
 		audio_play_sound(sndPickUpWeapon, 1, false);
 	    weapon = my_target.weapon;
+		ammo   = my_target.ammo;
 		
 	    instance_destroy(my_target); 
 		
 	    my_target = noone; 
 	    state = STATES.STEP;
+		exit;
 	}
 	else
 	{
 		scrEnemyTryGetTarget();
-		
-		scrEnemyChangeMask();
 		
 		if (path_index != -1) path_end();
 	

@@ -19,6 +19,7 @@ if (floor(image_index) == 11 && !triggered_hurt)
 {
 	triggered_hurt = true;
 	hit_count++; // Засчитываем выстрел (1, 2 или 3)
+	ammo--;      // === ДОБАВЛЕНО: Отнимаем патрон ровно в момент выстрела ===
 	
 	// Мгновенный импульс тела в момент выстрела (убираем опоздание)
 	if (hit_count == 1) enemy_image_index = 1; 
@@ -49,7 +50,7 @@ if (floor(image_index) == 11 && !triggered_hurt)
 	// Струя 1 (Прямо — теперь с большим случайным разбросом углов)
 	repeat(2)
 	{
-		var _random_direction = my_angle + irandom_range(-35, 35); // Увеличили разброс для сочности
+		var _random_direction = my_angle + irandom_range(-35, 35); 
 		var _squirt = instance_create_layer(_head_offset_x, _head_offset_y, "Instances", objBloodSquirt);
 		_squirt.image_angle = _random_direction;
 		_squirt.direction = _random_direction;
@@ -59,7 +60,7 @@ if (floor(image_index) == 11 && !triggered_hurt)
 	var _bx = _head_offset_x + irandom_range(-2, 2);
 	var _by = _head_offset_y + irandom_range(-2, 2);
 	var _squirt_left = instance_create_layer(_bx, _by, "Instances", objBloodSquirt);
-	var _dir_left_up = (my_angle - irandom_range(30, 60)); // Рандомный сектор от -30 до -60 градусов
+	var _dir_left_up = (my_angle - irandom_range(30, 60)); 
 	_squirt_left.image_angle = _dir_left_up;
 	_squirt_left.direction = _dir_left_up;
     
@@ -67,7 +68,7 @@ if (floor(image_index) == 11 && !triggered_hurt)
 	var _cx = _head_offset_x + irandom_range(-2, 2);
 	var _cy = _head_offset_y + irandom_range(-2, 2);
 	var _squirt_right = instance_create_layer(_cx, _cy, "Instances", objBloodSquirt);
-	var _r_dir = my_angle + irandom_range(15, 45); // Рандомный сектор от +15 до +45 градусов
+	var _r_dir = my_angle + irandom_range(15, 45); 
 	_squirt_right.image_angle = _r_dir;
 	_squirt_right.direction = _r_dir;
 
@@ -75,7 +76,7 @@ if (floor(image_index) == 11 && !triggered_hurt)
 	repeat (2)
 	{
 		var _smoke_id = instance_create_layer(_head_offset_x, _head_offset_y, "Instances", objBloodSmoke);
-		var _smoke_direction = irandom(360); // ИСПРАВЛЕНО: Теперь облака тумана летят абсолютно куда угодно
+		var _smoke_direction = irandom(360); 
 		_smoke_id.direction = _smoke_direction;
 		_smoke_id.image_angle = _smoke_direction;
 		_smoke_id.speed = random_range(0.5, 1.5);
@@ -83,7 +84,8 @@ if (floor(image_index) == 11 && !triggered_hurt)
 	// =========================================================================
 	
 	// Отдача копа назад
-	if ((keyboard_check(vk_space) || input_buffer) && hit_count < 3)
+	// === ИСПРАВЛЕНО: Пойти на повторный взмах (кадр 8) можно только при наличии патронов (ammo > 0) ===
+	if ((keyboard_check(vk_space) || input_buffer) && hit_count < 3 && ammo > 0)
 	{
 		image_index = 8;			// ЗАДЕРЖКА МЕЖДУ ВЫСТРЕЛАМИ
 		input_buffer = false; 
@@ -120,7 +122,8 @@ else
 // === 5. ТОЧКА ПРОВЕРКИ И ВЫХОДА ИЗ КАЗНИ (Индекс 13 копа) ===
 if (floor(image_index) == 13)
 {
-	if ((keyboard_check(vk_space) || input_buffer) && hit_count < 3)
+	// === ИСПРАВЛЕНО: Пойти на новый цикл стрельбы (кадр 7) можно только при наличии патронов (ammo > 0) ===
+	if ((keyboard_check(vk_space) || input_buffer) && hit_count < 3 && ammo > 0)
 	{
 		image_index = 7; 
 		input_buffer = false; 
@@ -140,13 +143,16 @@ if (floor(image_index) == 13)
 		_body.class        = enemy_class;
 		
 		var _player = instance_create_layer(x, y, "Instances", objPlayer);
-		_player.ammo           = ammo;
+		_player.ammo           = ammo; // Передаем обратно честный остаток (может быть 0)
 		_player.current_weapon = weapon; 
 		
 		_player.my_sprites     = scrPlayerGetWeaponSprite(CHARACTER.COP, weapon); 
 		_player.isRange_weapon = _player.my_sprites.is_ranged;
 		_player.sprite_index   = _player.my_sprites.walk;
 		_player.image_index    = 0;
+		
+		// Обновляем мишени врагов на лету
+		scrEnemyUpdateTargetID(id, _player);
 		
 		instance_destroy();
 		exit;

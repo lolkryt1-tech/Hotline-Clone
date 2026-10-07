@@ -32,9 +32,6 @@ function scrEnemyAttackMelee()
 		move_and_collide(_vel_x, _vel_y, objSolid);
 	}
 	
-	// 3. АНИМАЦИЯ ЗАМАХА
-	image_index += 0.35;
-	
 	// 4. ЧЕСТНОЕ И УНИВЕРСАЛЬНОЕ ПОРАЖЕНИЕ ЦЕЛИ (Наносится строго на кадре удара)
 	var _strike_frame = 2; 
 	
@@ -48,7 +45,7 @@ function scrEnemyAttackMelee()
 		{
 			target_speed = 0;
 		}
-		else if (_obj == objPlayer) 
+		else if (_obj == objPlayer || object_is_ancestor(_obj, objPlayerExecution))
 		{ 
 			scrPlayerDieBlunt(id); 
 			target_speed = 0; 
@@ -58,16 +55,12 @@ function scrEnemyAttackMelee()
 			// Безопасный бэкап, чтобы вложенный scrEnemyGetSprite случайно не затер наше оружие
 			var _my_actual_weapon = weapon;
 
-			// Наносим честный смертельный удар другому врагу/казни
+			// Наносим смертельный удар другому врагу
 			scrEnemyGetHitMelee(my_target, weapon, _strike_dir, id); 
 			
 			// Возвращаем пушку на место
 			weapon = _my_actual_weapon;
 			target_speed = 0; 
-			
-			// === ИСПРАВЛЕНО: БОЛЬШЕ НИКАКИХ МГНОВЕННЫХ СБРОСОВ И EXIT! ===
-			// Мы просто дали урон и позволяем коду идти дальше к пункту №5, 
-			// чтобы анимация замаха проигралась до самого конца.
 		}
 	}
     
@@ -79,6 +72,4 @@ function scrEnemyAttackMelee()
 	image_yscale *= -1; // y_flip для чередования ударов левой/правой рукой
 	image_index  = 0; 
 	state        = STATES.STEP; 
-	
-	scrEnemyChangeMask(); // Меняем маску, если рядом стены
 }

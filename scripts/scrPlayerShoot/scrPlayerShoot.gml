@@ -1,6 +1,6 @@
 function scrPlayerShoot(_character, _weapon)
-{
-    scrAlertEnemySound(x, y, 400);
+{	
+    scrAlertEnemySound(x, y, 300);
     if (my_sprites.bullet_obj == noone) return;
 
     // === 1. СПАВН ПУЛИ / ДРОБИ ===

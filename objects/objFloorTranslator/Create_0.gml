@@ -4,6 +4,7 @@ image_speed = 0;
 image_index = 0; 
 
 target_room = noone;
+target_floor_index = 0;
 
 target_Px = 0;
 target_Py = 0;

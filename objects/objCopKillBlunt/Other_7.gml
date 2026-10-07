@@ -32,24 +32,3 @@ repeat (4)
     my_id.image_angle = my_id.direction;
     my_id.speed = random(2);
 }
-
-// Проверка финала казни
-if (hit_count == 3)
-{
-    var _player = instance_create_layer(x, y, "Instances", objPlayer);
-    _player.character      = CHARACTER.COP; 
-    _player.current_weapon = weapon;
-	
-    _player.my_sprites     = scrPlayerGetWeaponSprite(_player.character, _player.current_weapon);
-	
-    _player.sprite_index   = _player.my_sprites.walk; 
-    _player.image_index    = 0;
-    
-    var _body = instance_create_layer(x, y, "Instances", objDeadBody);
-    _body.sprite_index = enemy_sprite;
-    _body.image_index = _body.image_number - 1;
-    _body.my_angle = my_angle;
-    _body.isExecuted = true;
-    
-    instance_destroy();
-}

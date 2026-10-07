@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrEnemyStun",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrEnemyStun",
+  "parent":{
+    "name":"States",
+    "path":"folders/Scripts/Enemy/States.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

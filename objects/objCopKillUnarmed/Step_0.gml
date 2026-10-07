@@ -1,5 +1,8 @@
+if enemy_skin == SKIN.COLOMBIANREGULAR { enemy_sprite = sprColombianDieStomp; }
+if enemy_skin == SKIN.COLOMBIANVEST	   { enemy_sprite = sprColombianVestDieStomp; }
+
 // 1. Прирост кадров копа
-image_index += 0.25;
+image_index += 0.15;
 
 // 2. ИДЕАЛЬНАЯ СИНХРОНИЗАЦИЯ: Враг начинает анимацию строго ПОСЛЕ hurt_index с шагом 0.25
 if (image_index >= hurt_index) 
@@ -90,8 +93,7 @@ if (image_index >= finish_index)
     _body.image_index  = _body.image_number - 1;
     _body.my_angle     = my_angle;
 	_body.isExecuted   = true;
-	
-	if (variable_instance_exists(id, "hit_type")) _body.hit_type = hit_type;
     
+	scrEnemyUpdateTargetID(id, _player); 
     instance_destroy();
 }

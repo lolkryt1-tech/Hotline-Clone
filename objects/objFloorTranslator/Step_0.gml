@@ -1,11 +1,19 @@
-if (trigger_delay > 0) {  trigger_delay-- image_alpha = 0.5 }
+if (trigger_delay > 0) 
+{  
+    trigger_delay--; 
+    image_alpha = 0.5; 
+}
 wait_timer--;
 
-if (!instance_exists(objEnemyColombian))
+// Дверь больше сама никого не считает! Она просто верит блокноту менеджера
+var _current_idx = global.current_level.current_floor;
+if (global.current_level.floors[_current_idx].is_cleared == true)
 {
     is_unlocked = true; 
-	image_alpha = 1;
-    
-    // Здесь можно воспроизвести сочный звук открытия двери/очистки уровня
-    // audio_play_sound(sndLevelCleared, 1, false);
+    image_alpha = 1;
+}
+else
+{
+    is_unlocked = false;
+    image_alpha = 0; 
 }

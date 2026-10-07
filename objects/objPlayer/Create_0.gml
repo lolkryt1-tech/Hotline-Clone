@@ -1,3 +1,4 @@
+image_angle = 0;
 image_index = 0;
 image_speed = 0;
 depth = -3000;
@@ -15,20 +16,23 @@ my_sprites           = scrPlayerGetWeaponSprite(character, current_weapon);
 sprite_index         = my_sprites.walk
 pickup_radius        = 24;
 standart_y_scale	 = image_yscale;
-ammo				 = 15;
+ammo				 = 0;
 depth				 = -6000;
 faction				 = FACTION.PLAYER;
+MMB_hold_timer		 = 0;
+prep_thrown			 = false;
+knife_just_picked_up = false;
 
 // Здоровье (1 = умрет от первой пули, 2 = перенесет одну пулю и умрет от второй)
 max_energy           = choose(1, 2); 
-energy               = max_energy + 1000;
+energy               = max_energy;
 
 // === ДВИЖЕНИЕ И ФИЗИКА ===
-movement_speed       = 2.5;
+movement_speed       = 3.0;
 hor_velocity         = 0;
 ver_velocity         = 0;
 walking_direction    = 0;
-my_angle             = image_angle;
+my_angle             = point_direction(x, y, mouse_x, mouse_y);
 
 // === УПРАВЛЕНИЕ (ВВОД) ===
 move_input           = 0;
@@ -69,9 +73,14 @@ persistent = true;
 
 //if (instance_exists(objPlayer)) { instance_destroy(); }
 
-global.debug = 1;
 
+// === ДЕБАГ ===
+global.debug = 0;
+debug_melee_timer = 0;
+
+// === ПЕРЕМЕЩЕНИЕ МЕЖДУ ЭТАЖАМИ ===
 global.next_player_x = x;
 global.next_player_y = y;
 global.next_effector_x = x;
 global.next_effector_y = y;
+global.is_cleaning_level = false

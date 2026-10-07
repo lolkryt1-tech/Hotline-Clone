@@ -4,6 +4,8 @@ enemy_image_index += 0.25;
 // === 1. МОМЕНТ НАНЕСЕНИЯ УДАРА СТРОГО НА HURT_INDEX ===
 if (image_index == hurt_index)
 {
+	triggered_hurt = true;
+	
 	// === ВОСПРОИЗВЕДЕНИЕ СЛУЧАЙНОГО ЗВУКА СТРОГО 1 РАЗ ===
 	var _played_sound = audio_play_sound(sndHit3, 1, false);
 	if (_played_sound != -1)
@@ -97,6 +99,6 @@ if (image_index >= finish_index)
 	_body.isExecuted   = true;
 	_body.hit_type     = HIT_TYPE.STOMP;
     
-    // Самоликвидация сцены казни
+	scrEnemyUpdateTargetID(id, _player); 
     instance_destroy();
 }

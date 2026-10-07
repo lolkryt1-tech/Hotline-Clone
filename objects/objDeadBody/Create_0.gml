@@ -17,7 +17,13 @@ isExecuted = false;
 go_splat = 0;
 hit_type = 0;
 
+skin = noone;
 isBleed = true;
+
+// === ИСПРАВЛЕНО: Возвращаем noone, чтобы лужа не улетала за экран ===
+blood_pool_forward_offset = noone; // Положительное — вперед, отрицательное — назад
+blood_pool_side_offset    = 0;     // Положительное — влево, отрицательное — вправо
+blood_pool_scale_override = noone; // Кастомный масштаб лужи (например, 1.5)
 
 // Отрисовка трупов: новые поверх старых
 global.body_render_counter--;

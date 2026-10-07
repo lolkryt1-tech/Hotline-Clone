@@ -3,9 +3,7 @@ image_speed = 0;
 depth       = global.player_render_counter - 1; // На единицу меньше чем у игрока
 direction   = image_angle;
 
-/*
-enum STATES
-{
+enum STATES {
 	IDLE,
 	STEP,
 	CHASE,
@@ -15,37 +13,49 @@ enum STATES
 	ATTACKRANGE,
 	AFTERMATH,
 	UNARMEDSEARCH,
-	DEBUG
+	DEBUG,
+	DODGE,
+	STUN,
+	FATDIE
+}
+enum SKIN {
+	COLOMBIANREGULAR,
+	COLOMBIANDODGER,
+	COLOMBIANVEST,
+	COLOMBIANFAT,
+	
+	GANGREGULAR,
+	GANGDODGER,
+	GANGVEST,
+	GANGFAT
 }
 
-enum MOVETYPE
-{
-	STATIC,
-	RANDOM,
-	PATROL
-}
-
-enum FACTION
-{
-	COLOMBIAN,
-	GANG,
-	PLAYER
-}
-
-enum CLASS
-{
+enum CLASS {
 	REGULAR,
 	DODGER,
 	VEST,
 	FAT
 }
-*/
 
-state_names = ["idle", "step", "chase", "search", "Investigate" , "attackMelee", "attackRange", "aftermath", "unarmedSearch", "debug"];
+enum MOVETYPE {
+	STATIC,
+	RANDOM,
+	PATROL
+}
+
+enum FACTION {
+	COLOMBIAN,
+	GANG,
+	PLAYER
+}
+
+state_names = ["idle", "step", "chase", "search", "Investigate" , "attackMelee", "attackRange", "aftermath", "unarmedSearch", "debug", "dodge", "stun", "fat die"];
+skin_names = ["Colombian Regular", "Colombian Dodger", "Colombian Vest", "Colombian Fat", "Gang Regular", "Gang Dodger", "Gang Vest", "Gang Fat"];
 
 // === ПАРАМЕТРЫ ПЕРСОНАЖА И ОРУЖИЯ ===
 faction              = noone;
 class                = noone;
+skin				 = noone;
 weapon               = noone;
 isRange_weapon       = noone;
 
@@ -53,19 +63,20 @@ isRange_weapon       = noone;
 my_hurtbox = instance_create_layer(x, y, "Instances", objEnemyHurtBox);
 my_hurtbox.owner = id; // Передаем хартбоксу ID этого врага
 
-my_sprites           = scrEnemyGetSprite(class, weapon);
-
 // === СОСТОЯНИЯ И ИИ ===
-state                = STATES.STEP;
+state                = noone;
 state_previous       = state;
-move_type            = MOVETYPE.RANDOM;
+move_type            = noone;
 my_target            = noone;
 reaction_time        = 15;
+backing_off_delay    = 0;
+
 
 // === ДВИЖЕНИЕ И ФИЗИКА ===
-max_speed            = 2.25; // Единственная максимальная скорость для бега и поиска
+max_speed			 = 3.0; // Очевидно максимальная скорость
 target_speed         = 0.0; // Целевая скорость (будет либо max_speed, либо 0)
 current_speed        = 0.0; // Реальная скорость в текущий кадр
+inertia_speed		 = 0.0  // Нужна чтобы враг полностью выглядывал из-за угла
 accel                = 0.08; // Плавность разгона
 fric                 = 0.15; // Плавность торможения
 my_angle             = image_angle;
@@ -81,12 +92,28 @@ headgear_x = x;
 headgear_y = y;
 
 // === БОЕВАЯ СИСТЕМА ===
+ammo				 = 0;
 reload               = 20;
+empty_clicks_count	 = 0;
+empty_clicks_target  = irandom_range(2, 4);
 start_shooting		 = false;	// Когда был сделан первый выстрел поворачиваемся резко, а не плавно
+
+// === БРОНЕЖИЛЕТОНОСЕЦ ===
+stun_current = 0;   // Текущее накопленное оглушение
+stun_max     = 100; // Порог, при котором враг падает (например, 3-4 попадания)
+stun_decay   = 0.1; // Насколько оглушение спадает за кадр, если в него долго не стреляют
+
+// === ПАРАМЕТРЫ ТОЛСТЯКА (CLASS.FAT) ===
+fat_blood_max        = 150; // Максимальный запас крови/здоровья
+fat_blood_current    = fat_blood_max; // Текущий запас
+fat_bleed_rate       = 0.5; // Сколько крови теряет за КАДР при активном кровотечении (~30 в секунду)
+fat_is_bleeding      = false; // Флаг: течет ли кровь прямо сейчас
+fat_bleed_timer      = 0; // Сколько кадров еще будет длиться кровотечение
+fat_balance			 = 100;
 
 // === ЗРЕНИЕ И ПОИСК ЦЕЛИ ===
 vision_radius        = 300; // Радиус обзора
-search_interval      = 10; // Проверка каждые 10 кадров (очень экономит FPS!)
+search_interval      = 15; // Проверка каждые 15 кадров (очень экономит FPS!)
 search_timer         = irandom(search_interval); // Случайный старт, чтобы ИИ не «думали» все одновременно
 targets_list         = ds_list_create(); // Создаем список один раз при создании объекта
 

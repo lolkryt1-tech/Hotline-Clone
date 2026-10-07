@@ -8,8 +8,8 @@ function scrCanGoStraight()
 	var _left_angle  = _dir_to_player + 90;
 
 	// Дистанция смещения (ширина тела врага и игрока)
-	var _enemy_dist  = 8;  // От центра врага до его плеча
-	var _player_dist = 8; // От центра игрока до его бока (настройте под размер квадрата)
+	var _enemy_dist  = 9;  // От центра врага до его плеча
+	var _player_dist = 9; // От центра игрока до его бока (настройте под размер квадрата)
 
 	// 3. Считаем СТАРТОВЫЕ точки (плечи врага)
 	var _start_x_1 = x + lengthdir_x(_enemy_dist, _right_angle);

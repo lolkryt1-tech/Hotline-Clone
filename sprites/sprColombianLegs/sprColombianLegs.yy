@@ -40,8 +40,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"Enemy",
-    "path":"folders/Sprites/Enemy.yy",
+    "name":"Colombian",
+    "path":"folders/Sprites/Enemy/Colombian.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

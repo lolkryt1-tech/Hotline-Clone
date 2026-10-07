@@ -18,15 +18,25 @@ function scrEnemyMovement()
     {
         current_speed = 0;
     }
-
+	
+	
     // Привязка к путям GameMaker (если они используются)
     if (path_index != -1) 
     {
         path_speed = current_speed;
     }
+	
 
-    // 2. Логика поворотов и анимации тела
-    if (state != STATES.ATTACKMELEE || state != STATES.ATTACKRANGE) image_index += current_speed * 0.1;
+    // 2. Логика поворотов и анимации тела (weapon != WEAPONS.UNARMED - заглушка. Потом надо найти лучше решение)
+    if (sprite_index == my_sprites.sprites.attack && weapon != WEAPONS.UNARMED) 
+    { 
+        image_index += 0.35; // Фиксированная скорость анимации удара / стрельбы
+    }
+    else 
+    {
+        image_index += current_speed * 0.1; 
+    }
+	
     my_angle += angle_difference(desired_angle, my_angle) * _rotation_speed;
 
     // 3. Анимация ног (Вызываем наш чистый скрипт дошагивания)

@@ -2,6 +2,7 @@
 if (sprite_index = sprCopAttackPunch)	{ image_yscale *= -1 sprite_index = sprCopWalkUnarmed; }
 if (sprite_index = sprCopAttackPipe)	{ image_yscale *= -1 sprite_index = sprCopWalkPipe; }
 if (sprite_index = sprCopAttackBat)		{ image_yscale *= -1 sprite_index = sprCopWalkBat; }
+if (sprite_index = sprCopAttackKnife)   { image_yscale *= -1 sprite_index = sprCopWalkKnife; }
 
 
 

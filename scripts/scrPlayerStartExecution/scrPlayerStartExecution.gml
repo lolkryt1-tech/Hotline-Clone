@@ -13,12 +13,14 @@ function scrPlayerStartExecution()
     if (_victim == noone) return;
     
     // === ЗАЩИТА: Проверяем, нет ли стены между игроком и жертвой ===
-    // Твой родной проверенный рейкаст видимости стен
     var _wall = collision_line(x, y, _victim.x, _victim.y, objSolidTall, false, true);
     if (_wall != noone) return; // Нельзя казнить сквозь стены и закрытые двери!
     
     // Проверяем, является ли тегированная жертва именно настенной куклой
     var _is_lean_execution = (_victim.object_index == objEnemyKnockedOutLean);
+	
+	// Заводим локальную переменную для сохранения ID созданного объекта казни
+	var _excutand = noone;
 
     // =========================================================================
     // === ВАРИАНТ А: КАЗНЬ У СТЕНЫ (ПРИСЛОНЕННЫЙ ВРАГ С ТЕГОМ) ===
@@ -62,14 +64,15 @@ function scrPlayerStartExecution()
         // 2. Спавним объект казни у стены
         if (character == CHARACTER.COP)
         {
-            var _excutand = instance_create_layer(_victim.x, _victim.y, "Instances", objCopKillLean);
+            _excutand = instance_create_layer(_victim.x, _victim.y, "Instances", objCopKillLean);
             
             _excutand.my_angle = _victim.my_angle - 180;
             _excutand.image_index = 0;
             
-            _excutand.faction = _victim.faction;
-            _excutand.class   = _victim.class;
-            _excutand.weapon  = WEAPONS.UNARMED; 
+			_excutand.enemy_skin	= _victim.skin;
+			_excutand.enemy_class	= _victim.class;
+            _excutand.enemy_faction	= _victim.faction;
+            _excutand.weapon		= WEAPONS.UNARMED; 
             
             // ПЕРЕДАЕМ СОХРАНЕННЫЕ КООРДИНАТЫ ВНУТРЬ ОБЪЕКТА КАЗНИ
             _excutand.return_x = _player_saved_x;
@@ -85,54 +88,106 @@ function scrPlayerStartExecution()
         {
             if (current_weapon == WEAPONS.UNARMED) 
             { 
-                var _excutand = instance_create_layer(_victim.x, _victim.y, "Instances", objCopKillUnarmed);
+                _excutand = instance_create_layer(_victim.x, _victim.y, "Instances", objCopKillUnarmed);
         
                 _excutand.my_angle = _victim.my_angle - 180;
                 _excutand.image_index = 0;
-        
+				
+				_excutand.enemy_skin	= _victim.skin;
+				_excutand.enemy_class	= _victim.class;
                 _excutand.enemy_faction = _victim.faction;
-                _excutand.enemy_class = _victim.class;
+				_excutand.enemy_sprite  = scrGetExecutionSprite(_victim.skin);
+            }
+			
+			if (current_weapon == WEAPONS.KNIFE)
+            { 
+                _excutand = instance_create_layer(_victim.x, _victim.y, "Instances", objCopKillKnife);
+        
+                _excutand.my_angle = _victim.my_angle - 180;
+				_excutand.weapon		= current_weapon;
+                _excutand.image_index = 0;
+				
+				_excutand.enemy_skin	= _victim.skin;
+                _excutand.enemy_class	= _victim.class;
+				_excutand.enemy_faction	= _victim.faction;
+				_excutand.enemy_sprite  = scrGetExecutionSprite(_victim.skin);
             }
             
             if (current_weapon == WEAPONS.BAT || current_weapon == WEAPONS.PIPE)
             { 
-                var _excutand = instance_create_layer(_victim.x, _victim.y, "Instances", objCopKillBlunt);
-        
+                _excutand = instance_create_layer(_victim.x, _victim.y, "Instances", objCopKillBlunt);
+				
                 _excutand.my_angle = _victim.my_angle - 180;
+				_excutand.weapon		= current_weapon;
                 _excutand.image_index = 3;
-        
-                _excutand.faction = _victim.faction;
-                _excutand.class = _victim.class;
-                _excutand.weapon = current_weapon;
+				
+				_excutand.enemy_skin	= _victim.skin;
+                _excutand.enemy_class	= _victim.class;
+				_excutand.enemy_faction	= _victim.faction;
+				_excutand.enemy_sprite  = scrGetExecutionSprite(_victim.skin);
             }
 			
-			if (current_weapon == WEAPONS.PISTOL)
+			if (current_weapon == WEAPONS.PISTOL && ammo != 0)
 			{
-				var _excutand = instance_create_layer(_victim.x, _victim.y, "Instances", objCopKillShot)
+				_excutand = instance_create_layer(_victim.x, _victim.y, "Instances", objCopKillShot); 
 				_excutand.my_angle = _victim.my_angle - 180;
-                _excutand.image_index = 0;
-        
-                _excutand.faction = _victim.faction;
-                _excutand.class = _victim.class;
-                _excutand.weapon = current_weapon;
+				_excutand.weapon = current_weapon;
                 _excutand.ammo = ammo;
+                _excutand.image_index = 0;
+				
+				_excutand.enemy_skin	= _victim.skin;
+				_excutand.enemy_class	= _victim.class;
+                _excutand.enemy_faction = _victim.faction;
+				_excutand.enemy_sprite  = scrGetExecutionSprite(_victim.skin);
 			}
             
             if (current_weapon == WEAPONS.M16 || current_weapon == WEAPONS.SHOTGUN)
             { 
-                var _excutand = instance_create_layer(_victim.x, _victim.y, "Instances", objCopKillWeaponBlunt);
+                _excutand = instance_create_layer(_victim.x, _victim.y, "Instances", objCopKillWeaponBlunt);
         
                 _excutand.my_angle = _victim.my_angle - 180;
-                _excutand.image_index = 0;
-        
-                _excutand.faction = _victim.faction;
-                _excutand.class = _victim.class;
-                _excutand.weapon = current_weapon;
+			    _excutand.weapon = current_weapon;
                 _excutand.ammo = ammo;
+				_excutand.image_index = 0;
+				
+				_excutand.enemy_skin	= _victim.skin;
+				_excutand.enemy_class	= _victim.class;
+                _excutand.enemy_faction = _victim.faction;
+				_excutand.enemy_sprite  = scrGetExecutionSprite(_victim.skin);
             }
+			
+			
+			if (_excutand == noone)
+			{
+				if (current_weapon != WEAPONS.UNARMED)
+		        {
+		            audio_play_sound(sndThrow, 1, false);
+            
+		            var _throw_dir = _victim.my_angle; 
+					var _thrown = instance_create_layer(x, y, "Instances", objWeaponThrow);
+		            _thrown.weapon = current_weapon;
+		            _thrown.my_angle = irandom(360);
+					_thrown.speed = 2;
+					_thrown.image_index = scrWeaponGetImage(current_weapon);
+					current_weapon = WEAPONS.UNARMED;
+				}
+				
+				_excutand = instance_create_layer(_victim.x, _victim.y, "Instances", objCopKillUnarmed);
+        
+				_excutand.my_angle = _victim.my_angle - 180;
+				_excutand.image_index = 0;
+				
+				_excutand.enemy_skin	= _victim.skin;
+				_excutand.enemy_class	= _victim.class;
+				_excutand.enemy_faction = _victim.faction;
+				_excutand.enemy_sprite  = scrGetExecutionSprite(_victim.skin);
+			}
         }
     }
     
+	// === МГНОВЕННЫЙ БЕСШОВНЫЙ ПЕРЕВОД МИШЕНИ ДЛЯ ВСЕХ ВРАГОВ ===
+	scrEnemyUpdateTargetID(id, _excutand); 
+
     // Уничтожаем жертву и сам объект живого игрока
     instance_destroy(_victim);
     instance_destroy();

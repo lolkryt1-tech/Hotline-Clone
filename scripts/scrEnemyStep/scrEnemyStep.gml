@@ -1,9 +1,6 @@
 function scrEnemyStep()
 {
-	// После погони враг может застрять, поэтому в scrEnemySearch мы меняем ему маску
-	// Чтобы вернуть врагу маску испльзуем этот скрипт
-	try_get_mask_timer--;
-	
+	path_end();
 	sprite_index = my_sprites.sprites.walk;
 	
 	if move_type = MOVETYPE.STATIC { target_speed = 0; }

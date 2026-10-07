@@ -1,7 +1,6 @@
 draw_set_font(fntDebug);
 draw_sprite_ext(sprColombianLegs, legs_image_index, x, y, image_xscale, image_yscale, legs_direction, image_blend, image_alpha);
 draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, my_angle, image_blend, image_alpha);
-draw_rectangle(bbox_left,bbox_top,bbox_right,bbox_bottom,true)
 
 
 
@@ -15,15 +14,21 @@ if (can_hear == false) // ИСПРАВЛЕНО: Наушники/очки рис
 	draw_sprite_ext(sprHeadGear, 0, headgear_x, headgear_y, image_xscale, image_yscale, headgear_angle, image_blend, image_alpha);
 }
 
+if (global.debug == 0) return;
+
+draw_rectangle(bbox_left,bbox_top,bbox_right,bbox_bottom,true)
+draw_text(x + 15, y, current_speed);
 
 
 var _w_name = "UNKNOWN";
     
 // Переводим Enum пушки в понятный текст
 if (weapon == WEAPONS.UNARMED) _w_name = "UNARMED";
+if (weapon == WEAPONS.KNIFE) _w_name = "KNIFE";
 if (weapon == WEAPONS.BAT)	   _w_name = "BAT";
 if (weapon == WEAPONS.PIPE)    _w_name = "PIPE";
 if (weapon == WEAPONS.PISTOL)  _w_name = "PISTOL";
+if (weapon == WEAPONS.SHOTGUN)  _w_name = "SHOTGUN";
 if (weapon == WEAPONS.M16)     _w_name = "M16";
     
 // Настраиваем шрифт и цвет текста
@@ -111,7 +116,8 @@ if (global.debug = 1)
 	draw_text(x, y + 75, "Walk_on_trail: " + string(walk_on_trail));
 	draw_text(x, y + 90, "impossible to path : " + string(impossible_to_path));
 	*/
-	if my_target != noone && instance_exists(my_target) draw_text(x + 15, y, "my_target: " + string(my_target.object_index));
+	//if my_target != noone && instance_exists(my_target) draw_text(x + 15, y, "my_target: " + string(my_target.object_index));
+	draw_text(x + 15, y - 15, skin_names[skin]);
 	draw_text(x + 15, y, state_names[state]);
 	draw_text(x + 15, y + 15, "Is range weapon "  + string(isRange_weapon));
 	

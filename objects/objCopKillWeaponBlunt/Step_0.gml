@@ -1,5 +1,8 @@
 if (weapon == WEAPONS.SHOTGUN) { sprite_index = sprCopKillShotgun }
 
+if (enemy_skin == SKIN.COLOMBIANREGULAR)	{ enemy_sprite = sprColombianDieCop; }
+if (enemy_skin == SKIN.COLOMBIANVEST)		{ enemy_sprite = sprColombianVestDieCop; }
+
 // 1. Увеличенная скорость прироста кадров игрока
 image_index += 0.25;
 
@@ -85,6 +88,8 @@ if (image_index >= finish_index)
     _body.image_index = _body.image_number - 1; 
     _body.my_angle = my_angle;
     _body.isExecuted = true;
+	
+	_body.blood_pool_forward_offset = 24; 
     
     var _player = instance_create_layer(x, y, "Instances", objPlayer);
     
@@ -98,5 +103,6 @@ if (image_index >= finish_index)
     _player.sprite_index   = _player.my_sprites.walk;
     _player.image_index    = 0;
     
+	scrEnemyUpdateTargetID(id, _player); 
     instance_destroy();
 }

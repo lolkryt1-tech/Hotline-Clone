@@ -28,7 +28,7 @@ function scrEnemyInvestigate()
 		if (!_path_found) 
 		{
 			// Вызываем вашу функцию перебора с шагом 32 пикселя
-			var _free_point = scrFindNearestFreeTarget(noise_x, noise_y, 32);
+			var _free_point = scrFindNearestFreeTarget(noise_x, noise_y, 8);
 			
 			// If свободная точка рядом найдена — перестраиваем маршрут на нее
 			if (is_array(_free_point)) 
@@ -43,7 +43,6 @@ function scrEnemyInvestigate()
 		// Если путь успешно проложен — стартуем движение по mp_grid
 		if (_path_found) 
 		{ 
-			current_speed = max_speed; 
 			path_start(my_path, current_speed, path_action_stop, false);
 		}
 		else

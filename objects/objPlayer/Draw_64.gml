@@ -19,9 +19,17 @@ draw_set_valign(fa_middle); // Текст центрируется по оси �
 var _x = 40; 
 var _y = display_get_gui_height() - 60; // Единая горизонтальная ось для всего HUD
 
-// 3. ОТРЕСОВКА ИНТЕРФЕЙСА ТОЛЬКО ДЛЯ ДАЛЬНЕГО БОЯ
-if (isRange_weapon == true) 
+// 3. ОТРЕСОВКА ИНТЕРФЕЙСА ДЛЯ ОГНЕСТРЕЛЬНОГО ОРУЖИЯ
+// Проверяем текущее оружие игрока из энума WEAPONS
+if (current_weapon == WEAPONS.PISTOL || current_weapon == WEAPONS.SHOTGUN || current_weapon == WEAPONS.M16) 
 {  
+    // === ОПРЕДЕЛЯЕМ КАДР ИКОНКИ ПАТРОНА (sprAmmo) ===
+    var _ammo_frame = 0; // Дефолтный кадр
+    
+    if (current_weapon == WEAPONS.PISTOL)  _ammo_frame = 0;
+    if (current_weapon == WEAPONS.M16)     _ammo_frame = 1;
+	if (current_weapon == WEAPONS.SHOTGUN) _ammo_frame = 2;
+    
     var _text = string(ammo); // Текст патронов
     
     // === НАСТРОЙКИ МАСШТАБА И ГЕОМЕТРИИ ===
@@ -70,7 +78,8 @@ if (isRange_weapon == true)
     var _icon_x = _x + cos(_icon_speed) * 1.2;
     var _icon_y = (_y - 6) + sin(_icon_speed) * 1.2;
 
-    draw_sprite_ext(sprAmmo, 0, _icon_x, _icon_y, _icon_scale, _icon_scale, _final_icon_angle, c_white, 1.0); 
+    // ИСПРАВЛЕНО: Вместо кадра 0 передаем рассчитанный _ammo_frame
+    draw_sprite_ext(sprAmmo, _ammo_frame, _icon_x, _icon_y, _icon_scale, _icon_scale, _final_icon_angle, c_white, 1.0); 
 
     // === 3В. РИСУЕМ ШРИФТ ПАТРОНОВ С ТЯЖЕЛОЙ ОБВОДКОЙ, ДВИЖЕНИЕМ И ПУЛЬСОМ МАСШТАБА ===
     var _text_wave = sin(current_time * 0.003) * 2.0; 
@@ -87,7 +96,7 @@ if (isRange_weapon == true)
     var _shadow_x = _text_x + (3.0 * _current_scale) + (cos(_rotate_speed) * _amplitude);
     var _shadow_y = _text_y + (3.0 * _current_scale) + (sin(_rotate_speed) * _amplitude);
     
-    // === ТЯЖЁЛАЯ ЧЁРНАЯ ОБВОДКА (С УЧЕТОМ ТЕКУЩЕГО МАСШТАБА) ===
+    // === ТЯЖЁЛАЯ ЧЁРНАЯ ОБВОДКА ===
     draw_set_color(c_black);
     var _b_dist = 2 * _current_scale; 
     for (var _ox = -_b_dist; _ox <= _b_dist; _ox += _current_scale) {

@@ -1,9 +1,5 @@
 // Проверка безопасности
-if (owner == noone || !instance_exists(owner)) 
-{
-    instance_destroy();
-    exit;
-}
+if (owner == noone || !instance_exists(owner)) exit;
 
 x = owner.x;
 y = owner.y;

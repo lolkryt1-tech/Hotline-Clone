@@ -38,7 +38,7 @@
   "origin":9,
   "parent":{
     "name":"Attack",
-    "path":"folders/Sprites/Enemy/Attack.yy",
+    "path":"folders/Sprites/Enemy/Colombian/Attack.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

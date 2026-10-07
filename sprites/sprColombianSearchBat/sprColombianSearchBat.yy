@@ -35,7 +35,7 @@
   "origin":4,
   "parent":{
     "name":"Search",
-    "path":"folders/Sprites/Enemy/Search.yy",
+    "path":"folders/Sprites/Enemy/Colombian/Search.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

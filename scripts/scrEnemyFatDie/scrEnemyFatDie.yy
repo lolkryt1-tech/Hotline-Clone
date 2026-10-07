@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrEnemyFatDie",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrEnemyFatDie",
+  "parent":{
+    "name":"States",
+    "path":"folders/Scripts/Enemy/States.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

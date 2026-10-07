@@ -27,7 +27,7 @@
   "origin":9,
   "parent":{
     "name":"Dead",
-    "path":"folders/Sprites/Enemy/Dead.yy",
+    "path":"folders/Sprites/Enemy/Colombian/Dead.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

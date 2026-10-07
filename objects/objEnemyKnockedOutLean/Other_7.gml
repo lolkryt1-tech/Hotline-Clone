@@ -6,6 +6,9 @@ switch (class)
     case CLASS.REGULAR:
         _object_to_spawn = objEnemyColombian;
         break;
+	case CLASS.VEST:
+        _object_to_spawn = objEnemyColombianVest;
+        break;
         
     // Сюда пишем другие логические классы (например, CLASS.FAT, CLASS.DOG)
 }
@@ -25,7 +28,8 @@ var _spawn_y = y + lengthdir_y(_offset_dist, _look_dir);
 // 2. Спавним живого врага БЕЗОПАСНО, чуть дальше от стены
 var _revived = instance_create_layer(_spawn_x, _spawn_y, "Instances", _object_to_spawn);
 
-// 3. Передаем ему ВСЕ параметры обратно (Класс + Фракция спасены!)
+// 3. Передаем ему ВСЕ параметры обратно
+_revived.skin		    = skin;
 _revived.class          = class;
 _revived.faction        = faction; // Враг встает и помнит свою фракцию!
 _revived.weapon         = WEAPONS.UNARMED; // Встает без оружия
@@ -36,7 +40,7 @@ _revived.state          = STATES.UNARMEDSEARCH;
 
 // 4. НАСТРОЙКА СПРАЙТОВ:
 // Функция сама выберет правильные спрайты на основе переданного класса
-_revived.my_sprites     = scrEnemyGetSprite(_revived.class, _revived.weapon);
+_revived.my_sprites     = scrEnemyGetSprite(_revived.skin, _revived.weapon);
 _revived.sprite_index   = _revived.my_sprites.sprites.walk; 
 
 // 5. Уничтожаем прислонившуюся куклу

@@ -1,7 +1,7 @@
 function scrAlertEnemySound(_source_x, _source_y, _radius)
 {
 	// Проверяем всех врагов
-	with (objEnemyColombian)
+	with (objEnemy)
 	{
 		// Игнорируем тех, не патрулирует и не может слышать
 		if (state != STATES.STEP || can_hear == false) continue

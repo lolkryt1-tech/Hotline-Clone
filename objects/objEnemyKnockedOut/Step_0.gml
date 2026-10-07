@@ -9,6 +9,17 @@ var _vspd = lengthdir_y(speed, direction);
 // Проверяем: если на следующем шаге мы врежемся в стену
 if (place_meeting(x + _hspd, y + _vspd, objSolid))
 {
+    // ОРИГИНАЛЬНЫЙ ФИКС: Перед расчетом креста дожимаем объект ровно ДО стены,
+    // а если маска уже частично ушла внутрь — выталкиваем ее наружу
+    if (!place_free(x, y)) 
+    {
+        move_outside_solid(direction - 180, 8);
+    }
+    else 
+    {
+        move_contact_solid(direction, 8);
+    }
+
     // 1. Скан крестом на 3 пикселя во все стороны от текущей маски
     var _wall_right = place_meeting(x + 3, y, objSolid); // Стена справа
     var _wall_left  = place_meeting(x - 3, y, objSolid); // Стена слева
@@ -53,17 +64,25 @@ if (place_meeting(x + _hspd, y + _vspd, objSolid))
 
     // 2. Спавним настенную куклу (если все проверки пройдены)
     var _lean = instance_create_layer(x, y, "Instances", objEnemyKnockedOutLean);
-    _lean.class       = class;
-    _lean.faction     = faction; 
+    _lean.skin					= skin;
+    _lean.class					= class;
+    _lean.faction				= faction;
+    _lean.sprDeadLeanMelee      = sprDeadLeanMelee;
+    _lean.sprDeadLeanShotgun    = sprDeadLeanShotgun;
+    _lean.sprDeadLeanMachinegun = sprDeadLeanMachinegun;
     
     // Передаем строго ровные углы: 0, 90, 180 или 270
     _lean.my_angle    = _final_angle;
     _lean.direction   = _final_angle;
     _lean.image_index = 1;
-    
-    var _temp_data = scrEnemyGetSprite(class, WEAPONS.UNARMED);
-    _lean.sprite_index = _temp_data.sprites.knockedLean;
+    _lean.sprite_index = sprKnockedLean;
     
     // 3. Мгновенно уничтожаем себя в полете, уступая место настенной позе
     instance_destroy();
+    exit;
 }
+
+
+// Обычное движение по координатам, если впереди нет стен
+x += _hspd;
+y += _vspd;

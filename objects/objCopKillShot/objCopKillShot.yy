@@ -38,6 +38,9 @@
     "name":"sprCopKill9mm",
     "path":"sprites/sprCopKill9mm/sprCopKill9mm.yy",
   },
-  "spriteMaskId":null,
+  "spriteMaskId":{
+    "name":"sprPlayerMask",
+    "path":"sprites/sprPlayerMask/sprPlayerMask.yy",
+  },
   "visible":true,
 }

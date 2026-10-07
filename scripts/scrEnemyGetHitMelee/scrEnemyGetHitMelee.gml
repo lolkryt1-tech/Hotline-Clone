@@ -1,98 +1,147 @@
 /// @param {Id} _enemy_id Кого бьем (инстанс врага или объекта казни)
-/// @param {Real} _hit_type_enum Тип урона из энума (HIT_TYPE.UNARMED, HIT_TYPE.BLUNT и т.д.)
+/// @param {Real} _weapon_enum Оружие, КОТОРЫМ бьют (из энума WEAPONS)
 /// @param {Real} _push_dir Направление полета/удара
 /// @param {Id} _source_id Кто ударил (id игрока или другого врага)
-function scrEnemyGetHitMelee(_enemy_id, _hit_type_enum, _push_dir, _source_id)
+function scrEnemyGetHitMelee(_enemy_id, _weapon_enum, _push_dir, _source_id)
 {
-	// Железная защита: если цель уже удалена из памяти — мгновенно выходим
 	if (!instance_exists(_enemy_id)) exit;
 
-	// Создаем локальные переменные для безопасного сбора данных из контекста жертвы
-	var _ex       = _enemy_id.x;
-	var _ey       = _enemy_id.y;
-	var _is_lean  = (_enemy_id.object_index == objEnemyKnockedOutLean);
-	var _class    = 0;
-	var _faction  = 0;
-	var _can_hear = 1;
-	var _sprites  = noone;
+	// ЗАЩИТА: Если цель не живое существо (например, пушка на полу objWeapon) — выходим
+	if (!variable_instance_exists(_enemy_id, "class")) exit;
 
-	// === ИСПРАВЛЕНО: ЖЕСТКОЕ ПЕРЕКЛЮЧЕНИЕ КОНТЕКСТА НА ЖЕРТВУ ===
-	// Теперь все манипуляции и вызовы функций внутри этого блока относятся СТРОГО к жертве,
-	// и атакующий враг больше никогда не потеряет свое оружие!
-with (_enemy_id)
+	// === АБСОЛЮТНЫЙ ИГНОР: Если бьем кулаками по Доджеру, моментально выходим ===
+	if (_enemy_id.class == CLASS.DODGER && _weapon_enum == WEAPONS.UNARMED)
 	{
-		_class    = variable_instance_exists(id, "class")   ? class   : 0;
-		_faction  = variable_instance_exists(id, "faction") ? faction : 0;
-		_can_hear = variable_instance_exists(id, "can_hear") ? can_hear : 1;
+		exit;
+	}
+
+	// Определяем тип объекта жертвы ДО входа в блок with
+	var _is_lean = (_enemy_id.object_index == objEnemyKnockedOutLean);
+	var _ex      = _enemy_id.x;
+	var _ey      = _enemy_id.y;
+
+	// === 1. АВТОМАТИЧЕСКАЯ КОНВЕРТАЦИЯ ОРУЖИЯ В ТИП УРОНА ===
+	var _calculated_hit_type = HIT_TYPE.UNARMED; // По умолчанию кулаки
+	
+	if (_weapon_enum == WEAPONS.BAT || _weapon_enum == WEAPONS.PIPE || _weapon_enum == WEAPONS.FISTS) { _calculated_hit_type = HIT_TYPE.BLUNT; } // Дробящее оружие
+	if (_weapon_enum == WEAPONS.KNIFE)								 { _calculated_hit_type = HIT_TYPE.CUT; }  // Режущее (Нож)
+
+	// === 2. ВСЯ ЛОГИКА ВНУТРИ ЖЕРТВЫ ===
+	with (_enemy_id)
+	{
+		// Проверяем, является ли объект куклой нокаута (летящей или прислоненной)
+		var _is_knocked_object = (object_index == objEnemyKnockedOut || object_index == objEnemyKnockedOutLean);
 		
-		// 1. Сначала честно выбиваем оружие, пока scrEnemyGetSprite его не обнулил!
-		if (variable_instance_exists(id, "weapon") && weapon != WEAPONS.UNARMED)
+		// Блок выполняется СТРОГО для живых врагов. Из кукол нокаута ничего повторно не вылетает!
+		if (!_is_knocked_object)
 		{
-			var _dropped = instance_create_layer(x, y, "Instances", objWeapon);
-			_dropped.weapon    = weapon;
-			_dropped.my_angle  = irandom(360);
-			_dropped.direction = irandom(360);
-			_dropped.speed     = 5;
+			// Выбиваем оружие жертвы на пол
+			if (weapon != WEAPONS.UNARMED)
+			{
+				var _dropped = instance_create_layer(x, y, "Instances", objWeapon);
+				_dropped.weapon    = weapon;
+				_dropped.my_angle  = irandom(360);
+				_dropped.direction = irandom(360);
+				_dropped.speed     = 5;
+				_dropped.ammo      = ammo; 
+			}
+
+			// Дроп наушников
+			if (can_hear == 0) 
+			{ 
+				instance_create_layer(x, y, "Instances", objHeadSet); 
+			}
 		}
 
-		// 2. И только теперь безопасно достаем спрайты нокаута
-		var _enemy_data = scrEnemyGetSprite(_class, WEAPONS.UNARMED);
-		_sprites        = _enemy_data.sprites;
+		// Обработка рассчитанного типа урона
+		switch(_calculated_hit_type)
+		{
+			case HIT_TYPE.UNARMED: // Нокаут кулаками
+				var _knocked = instance_create_layer(x, y, "Instances", objEnemyKnockedOut);
+				_knocked.skin		    = skin;      
+				_knocked.class          = class;
+				_knocked.faction        = faction;
+				_knocked.direction      = _push_dir;
+				_knocked.speed          = 3;
+				_knocked.my_angle       = _push_dir - 180;
+				_knocked.image_index    = 1;
+				_knocked.sprite_index   = sprKnocked;
+				_knocked.sprKnockedLean = sprKnockedLean;
+				_knocked.sprDeadLeanMelee = sprDeadLeanMelee;
+				_knocked.sprDeadLeanShotgun = sprDeadLeanShotgun;
+				_knocked.sprDeadLeanMachinegun = sprDeadLeanMachinegun;
+	            
+				objEffector.shake = 1.5;
+				break;
+	           
+			case HIT_TYPE.BLUNT: // Смертельное дробящее (Труба/Бита)
+				var _played_sound = audio_play_sound(sndHit3, 1, false);
+				if (_played_sound != -1) audio_sound_pitch(_played_sound, random_range(0.9, 1.1));
+	                
+				var _corpse = instance_create_layer(x, y, "Instances", objDeadBody);
+				_corpse.hit_type = HIT_TYPE.BLUNT;
+				_corpse.go_splat = 1;
+				_corpse.class    = class;
+				_corpse.skin     = skin;
+	            
+				if (_is_lean) // Смерть у стены
+				{
+					_corpse.sprite_index = sprDeadLeanMelee; 
+					_corpse.speed        = 0.5;
+					_corpse.direction    = direction;
+					_corpse.image_index  = random_range(1, 3);
+					_corpse.my_angle     = my_angle; 
+					_corpse.isExecuted   = true; 
+				}
+				else // Смерть на открытом полу
+				{
+					var _random_direction = random_range(-15, 15);
+					_corpse.sprite_index = sprDeadBlunt; 
+					_corpse.direction    = _push_dir + _random_direction;
+					_corpse.speed        = 2.5; 
+					_corpse.my_angle     = _push_dir + _random_direction;
+				}
+	            
+				objEffector.shake = 1.5;
+				break;
+				
+			case HIT_TYPE.CUT: 
+				_played_sound = audio_play_sound(choose(sndCut1, sndCut2), 1, false); 
+				if (_played_sound != -1) audio_sound_pitch(_played_sound, random_range(0.9, 1.1));
+				
+				_corpse = instance_create_layer(x, y, "Instances", objDeadBody);
+				_corpse.hit_type = HIT_TYPE.CUT;
+				_corpse.go_splat = 1;
+				_corpse.class    = class;
+				_corpse.skin     = skin;
+				
+				if (_is_lean)
+				{
+					_corpse.sprite_index = sprDeadLeanMelee;
+					_corpse.speed        = 0.5;
+					_corpse.direction    = direction;
+					_corpse.image_index  = random_range(1, 3);
+					_corpse.my_angle     = my_angle;
+					_corpse.isExecuted   = true;
+				}
+				else
+				{
+					var _random_direction = random_range(-10, 10);
+					_corpse.sprite_index =  sprDeadCut;
+					_corpse.direction    = _push_dir + _random_direction;
+					_corpse.speed        = 3.0; // От ножа труп летит чуть быстрее/резче
+					_corpse.my_angle     = _push_dir + _random_direction;
+				}
+				
+				objEffector.shake = 0.5;
+				break;
+		}
+		
+		// Добавляем убийство в комбо
+		if (_calculated_hit_type != HIT_TYPE.UNARMED) scrAddKillStats(100, _is_lean);
+		
+		
+		// Самоуничтожаемся прямо изнутри контекста
+		instance_destroy();
 	}
-
-	// === 2. ДРОП НАУШНИКОВ ===
-	if (_can_hear == 0) 
-	{ 
-		instance_create_layer(_ex, _ey, "Instances", objHeadSet); 
-	}
-
-	// === 3. ОБРАБОТКА ТИПОВ УРОНА ЧЕРЕЗ ENUM HIT_TYPE ===
-	switch(_hit_type_enum)
-	{
-		case HIT_TYPE.UNARMED: // Нокаут кулаками
-			var _knocked = instance_create_layer(_ex, _ey, "Instances", objEnemyKnockedOut);
-			_knocked.class         = _class;
-			_knocked.faction       = _faction;
-			_knocked.direction     = _push_dir;
-			_knocked.speed         = 4;
-			_knocked.my_angle      = _push_dir - 180;
-			_knocked.image_index   = 1;
-			_knocked.sprite_index  = _sprites.knocked;
-            
-			objEffector.shake = 1.5;
-			break;
-           
-		case HIT_TYPE.BLUNT: // Смертельное дробящее (Труба/Бита)
-			var _played_sound = audio_play_sound(sndHit3, 1, false);
-			if (_played_sound != -1) audio_sound_pitch(_played_sound, random_range(0.9, 1.1));
-                
-			var _corpse = instance_create_layer(_ex, _ey, "Instances", objDeadBody);
-			_corpse.hit_type = HIT_TYPE.BLUNT;
-			_corpse.go_splat = 1;
-			_corpse.class    = _class;
-            
-			if (_is_lean) // Смерть у стены
-			{
-				_corpse.sprite_index = _sprites.deadLeanMelee;
-				_corpse.speed        = 0.5;
-				_corpse.direction    = _enemy_id.direction;
-				_corpse.image_index  = random_range(1, 3);
-				_corpse.my_angle     = _enemy_id.my_angle; 
-				_corpse.isExecuted   = true; 
-			}
-			else // Смерть на открытом полу
-			{
-				var _random_direction = random_range(-15, 15);
-				_corpse.sprite_index = _sprites.deadBlunt;
-				_corpse.direction    = _push_dir + _random_direction;
-				_corpse.speed        = 2.5; 
-				_corpse.my_angle     = _push_dir + _random_direction;
-			}
-            
-			objEffector.shake = 2.5;
-			break;
-	}
-
-	// Уничтожаем старый инстанс врага (живого или сидячего)
-	instance_destroy(_enemy_id);
 }

@@ -10,65 +10,87 @@ if (array_length(_collisions) > 0)
     speed = 0;
 }
 
-// === 3. СОЗДАНИЕ ЛУЖИ КРОВИ ПРИ ОСТАНОВКЕ (РАБОТАЕТ ВСЕГДА) ===
+// === 3. СОЗДАНИЕ ЛУЖИ КРОВИ ПРИ ОСТАНОВКЕ ===
 if (speed == 0 && create_blood_pool == 0)
 {
 	create_blood_pool = 1;
 	
-	// Базовое смещение для стандартных ударов по умолчанию
-	var _head_offset = 15; 
-	var _pool_min_scale = 0.8;
-	var _pool_max_scale = 1.2;
+	// Переменные для итоговых координат спавна
+	var _spawn_x = x;
+	var _spawn_y = y;
+	var _pool_scale = 1.0;
 	
-	// ДИНАМИЧЕСКИЙ РАСЧЕТ СМЕЩЕНИЯ И МАСШТАБА ОТ ТИПА УДАРA
-	switch (hit_type)
+	// ПРОВЕРЯЕМ: Если извне передано относительное смещение
+	if (blood_pool_forward_offset != noone)
 	{
-		case HIT_TYPE.STOMP: // Растаптывание у стены
-			_head_offset    = 0;
-			_pool_min_scale = 0.5;
-			_pool_max_scale = 0.8;
-			break;
-			
-		case HIT_TYPE.BULLET: // Пулевое ранение в туловище
-			_head_offset    = 0;
-			_pool_min_scale = 1.2;
-			_pool_max_scale = 1.5;
-			break;
-			
-		case HIT_TYPE.CUT: // Порез шеи
-			_head_offset    = 7;
-			_pool_min_scale = 0.9;
-			_pool_max_scale = 1.3;
-			break;
-			
-		case HIT_TYPE.BLUNT: // Обычный удар битой
-			_head_offset    = 15;
-			_pool_min_scale = 0.8;
-			_pool_max_scale = 1.2;
-			break;
+		// Шаг 1: Смещение ВПЕРЕД / НАЗАД вдоль направления тела
+		_spawn_x += lengthdir_x(blood_pool_forward_offset, my_angle);
+		_spawn_y += lengthdir_y(blood_pool_forward_offset, my_angle);
+		
+		// Шаг 2: Смещение ВЛЕВО / ВПРАВО (используем перпендикулярный угол +90 градусов)
+		_spawn_x += lengthdir_x(blood_pool_side_offset, my_angle + 90);
+		_spawn_y += lengthdir_y(blood_pool_side_offset, my_angle + 90);
+		
+		// Настраиваем масштаб (если передан, берем его, иначе дефолт 1.0)
+		_pool_scale = (blood_pool_scale_override != noone) ? blood_pool_scale_override : 1.0;
+	}
+	else
+	{
+		// СТАНДАРТНАЯ ЛОГИКА РАСЧЕТА ПО УМОЛЧАНИЮ (если извне ничего не передавали)
+		var _head_offset = 15; 
+		var _pool_min_scale = 0.8;
+		var _pool_max_scale = 1.2;
+		
+		switch (hit_type)
+		{
+			case HIT_TYPE.STOMP: // Растаптывание у стены
+				_head_offset    = 0;
+				_pool_min_scale = 0.5;
+				_pool_max_scale = 0.8;
+				break;
+				
+			case HIT_TYPE.BULLET: // Пулевое ранение в туловище
+				_head_offset    = 0;
+				_pool_min_scale = 1.2;
+				_pool_max_scale = 1.5;
+				break;
+				
+			case HIT_TYPE.CUT: // Порез шеи
+				_head_offset    = 7;
+				_pool_min_scale = 0.9;
+				_pool_max_scale = 1.3;
+				break;
+				
+			case HIT_TYPE.BLUNT: // Обычный удар битой
+				_head_offset    = 15;
+				_pool_min_scale = 0.8;
+				_pool_max_scale = 1.2;
+				break;
+		}
+		
+		if (isExecuted == true) _head_offset = 0;
+		
+		// Считаем стандартные координаты от головы трупа
+		_spawn_x = x + lengthdir_x(_head_offset, my_angle);
+		_spawn_y = y + lengthdir_y(_head_offset, my_angle);
+		_pool_scale = random_range(_pool_min_scale, _pool_max_scale);
 	}
 	
-	// ПОДСТРАХОВКА: Если это настенная казнь или сидячий труп — лужа строго в центре x, y
-	if (isExecuted == true) _head_offset = 0;
-	
-	// Рассчитываем итоговую позицию
-	var _spawn_x = x + lengthdir_x(_head_offset, my_angle);
-	var _spawn_y = y + lengthdir_y(_head_offset, my_angle);
-	
+	// Спавним лужу крови в утвержденных координатах
 	var _pool = instance_create_layer(_spawn_x, _spawn_y, "Instances", objBloodPool);
 	
 	if (instance_exists(_pool))
 	{
 		_pool.image_angle  = random(360);
-		_pool.image_xscale = random_range(_pool_min_scale, _pool_max_scale);
-		_pool.image_yscale = _pool.image_xscale;
+		_pool.image_xscale = _pool_scale;
+		_pool.image_yscale = _pool_scale;
 	}
 }
 
 // =========================================================================
 // === 4. ЭФФЕКТЫ КРОВИ ПРИ УДАРЕ БУТАФОРИЕЙ (HIT_TYPE.BLUNT) ===
 // =========================================================================
-if (hit_type == HIT_TYPE.BLUNT && go_splat == 1)
+if ((hit_type == HIT_TYPE.BLUNT || hit_type == HIT_TYPE.CUT) && go_splat == 1)
 {
 	go_splat = 0;
 	
@@ -76,7 +98,6 @@ if (hit_type == HIT_TYPE.BLUNT && go_splat == 1)
 	var _spawn_count_splats = irandom_range(7, 9);
 	var _spawn_count_smudge = irandom_range(3, 5);
     
-	// 1. Дым летит веером назад от вектора удара (на игрока)
 	repeat(_spawn_count_trails)
 	{
 		var _blood_smoke = instance_create_layer(x, y, "Instances", objBloodSmoke);
@@ -86,7 +107,6 @@ if (hit_type == HIT_TYPE.BLUNT && go_splat == 1)
 		_blood_smoke.speed       = random(2);
 	}
 	
-	// 2. Кровавый дым на 360 градусов (рандом во все стороны)
 	repeat(4)
 	{
 		var _rand_smoke = instance_create_layer(x, y, "Instances", objBloodSmoke);
@@ -96,7 +116,6 @@ if (hit_type == HIT_TYPE.BLUNT && go_splat == 1)
 		_rand_smoke.speed       = random_range(0.5, 2);
 	}
 	
-	// Большие пятна крови
 	repeat(_spawn_count_splats)
 	{
 		var _random_x = random_range(-15, 15);
@@ -111,7 +130,6 @@ if (hit_type == HIT_TYPE.BLUNT && go_splat == 1)
 		_blood.sprite_index = choose(sprBigBlood1, sprBigBlood2);
 	}
 	
-	// Мазки/размазанная кровь
 	repeat(_spawn_count_smudge)
 	{
 		var _blood = instance_create_layer(x, y, "Instances", objBloodSmudge);
@@ -175,6 +193,9 @@ if (hit_type == HIT_TYPE.BULLET && go_splat == 1)
 	}
 }
 
+// =========================================================================
+// === 6. ЭФФЕКТЫ КРОВИ ПРИ ДРОБОВИКЕ (HIT_TYPE.PELLET) ===
+// =========================================================================
 if (hit_type == HIT_TYPE.PELLET && go_splat == 1)
 {
 	go_splat = 0;
@@ -225,6 +246,4 @@ if (hit_type == HIT_TYPE.PELLET && go_splat == 1)
 	}
 }
 
-// === КРИТИЧЕСКИЙ ФИКС: Переносим проверку блокировки в самый конец! ===
-// Теперь код успеет и лужу пустить, и веерные брызги go_splat отработать на первом кадре.
 if (isExecuted == true) return;

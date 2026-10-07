@@ -39,8 +39,7 @@ function scrEnemyTryGetWeapon(target_weapon)
 		if (_path_found) 
 		{ 
 			target_speed = max_speed;
-			current_speed = max_speed; 
-			try_get_weapon_timer = 20;
+			try_get_weapon_timer = 1000;
 			path_start(my_path, current_speed, path_action_stop, false);
 		}
 	} // <- КОНЕЦ блока инициализации пути

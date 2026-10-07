@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrEnemyDodge",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrEnemyDodge",
+  "parent":{
+    "name":"States",
+    "path":"folders/Scripts/Enemy/States.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

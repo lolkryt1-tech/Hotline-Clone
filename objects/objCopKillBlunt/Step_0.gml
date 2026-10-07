@@ -1,10 +1,22 @@
 if (weapon == WEAPONS.BAT) { sprite_index = sprCopKillBat }
 
+if (enemy_skin == SKIN.COLOMBIANREGULAR) 
+{ 
+	if (weapon == WEAPONS.PIPE) enemy_sprite = sprColombianDieStomp;
+}
+
+if (enemy_skin == SKIN.COLOMBIANVEST) 
+{ 
+	if (weapon == WEAPONS.PIPE) enemy_sprite = sprColombianVestDieStomp;
+}
+
 
 
 // 1. Воспроизводим звук просто при совпадении кадра
 if (image_index == 6)
 {
+	triggered_hurt = true;
+	
     var _played_sound = audio_play_sound(sndHit3, 1, false);
     if (_played_sound != -1)
     {
@@ -49,4 +61,26 @@ if (isSwinging == true)
             isSwinging = false;    
         }
     }
+}
+
+if (hit_count == 3 && image_index == 3)
+{
+    var _player = instance_create_layer(x, y, "Instances", objPlayer);
+    _player.character      = CHARACTER.COP; 
+    _player.current_weapon = weapon;
+	
+    _player.my_sprites     = scrPlayerGetWeaponSprite(_player.character, _player.current_weapon);
+	
+    _player.sprite_index   = _player.my_sprites.walk; 
+    _player.image_index    = 0;
+    
+    var _body = instance_create_layer(x, y, "Instances", objDeadBody);
+    _body.sprite_index = enemy_sprite;
+    _body.image_index = _body.image_number - 1;
+    _body.my_angle = my_angle;
+    _body.isExecuted = true;
+    
+	
+	scrEnemyUpdateTargetID(id, _player); 
+    instance_destroy();
 }
