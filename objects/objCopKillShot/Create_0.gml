@@ -20,8 +20,6 @@ enemy_sprite	= 0;
 
 is_execution = true;
 
-if (enemy_skin == SKIN.COLOMBIANREGULAR)  { enemy_sprite = sprColombianDieShot; }
-
 // === ПЕРЕМЕННЫЕ БУФЕРИЗАЦИИ ВВОДА ===
 input_buffer = false;      
 input_buffer_time = 0;     

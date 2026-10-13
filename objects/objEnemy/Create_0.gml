@@ -1,6 +1,6 @@
 image_index = 0;
 image_speed = 0;
-depth       = global.player_render_counter - 1; // На единицу меньше чем у игрока
+depth       = global.player_render_counter + 1; // На единицу больше чем у игрока
 direction   = image_angle;
 
 enum STATES {
@@ -16,7 +16,9 @@ enum STATES {
 	DEBUG,
 	DODGE,
 	STUN,
-	FATDIE
+	FATDIE,
+	HIDERDUCK,
+	HIDERSHOOT
 }
 enum SKIN {
 	COLOMBIANREGULAR,
@@ -49,8 +51,11 @@ enum FACTION {
 	PLAYER
 }
 
-state_names = ["idle", "step", "chase", "search", "Investigate" , "attackMelee", "attackRange", "aftermath", "unarmedSearch", "debug", "dodge", "stun", "fat die"];
+state_names = ["idle", "step", "chase", "search", "Investigate" , "attackMelee", "attackRange", "aftermath", "unarmedSearch", "debug", "dodge", "stun", "fat die", "Hider duck", "Hider shoot"];
 skin_names = ["Colombian Regular", "Colombian Dodger", "Colombian Vest", "Colombian Fat", "Gang Regular", "Gang Dodger", "Gang Vest", "Gang Fat"];
+
+// Уникальный айди для триггера
+enemy_uid = 0;
 
 // === ПАРАМЕТРЫ ПЕРСОНАЖА И ОРУЖИЯ ===
 faction              = noone;
@@ -99,9 +104,11 @@ empty_clicks_target  = irandom_range(2, 4);
 start_shooting		 = false;	// Когда был сделан первый выстрел поворачиваемся резко, а не плавно
 
 // === БРОНЕЖИЛЕТОНОСЕЦ ===
-stun_current = 0;   // Текущее накопленное оглушение
-stun_max     = 100; // Порог, при котором враг падает (например, 3-4 попадания)
-stun_decay   = 0.1; // Насколько оглушение спадает за кадр, если в него долго не стреляют
+stun_current = 0;		// Текущее накопленное оглушение
+stun_max     = 100;		// Порог, при котором враг падает (например, 3-4 попадания)
+stun_decay   = 0.1;		// Насколько оглушение спадает за кадр, если в него долго не стреляют
+should_spark = false	// Искры при попадании пули
+spark_flash	 = 0;		// Вспышка при попадании пули
 
 // === ПАРАМЕТРЫ ТОЛСТЯКА (CLASS.FAT) ===
 fat_blood_max        = 150; // Максимальный запас крови/здоровья

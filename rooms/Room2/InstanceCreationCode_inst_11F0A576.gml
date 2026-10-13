@@ -1,0 +1,2 @@
+light_intensity = 2.0;
+light_scale = 3.5;

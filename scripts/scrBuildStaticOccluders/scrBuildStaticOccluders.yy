@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrBuildStaticOccluders",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrBuildStaticOccluders",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

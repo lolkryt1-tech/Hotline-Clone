@@ -1,29 +1,40 @@
-// В событии Room Start объекта objSaveManager (или вашего контроллера)
+// В событии Room Start объекта objSaveManager
 
-var _file_name = room_get_name(room) + ".dat";
+// 1. Принудительно определяем этаж по имени комнаты (не зависим от objGameManager)
+var _current_room_name = room_get_name(room);
+for (var i = 0; i < global.current_level.total_floors; i++)
+{
+    if (global.current_level.floors[i].room_name == _current_room_name)
+    {
+        global.current_level.current_floor = i;
+        break;
+    }
+}
 
-// 1. Если файл этой комнаты УЖЕ существует (мы вернулись сюда назад через дверь из старших этажей)
+var _file_name = scrGetSaveFileName();
+
+// 2. Если файл этой комнаты УЖЕ существует (мы вернулись сюда назад через дверь)
 if (file_exists(_file_name))
 {
-    scrLoadGame(true); // Загружаем этаж из буфера (со всеми убитыми врагами)
+    scrLoadGame(true);
     
+    objPlayer.x = global.next_player_x;
+    objPlayer.y = global.next_player_y;
 	
-    // Переносим игрока к двери, через которую он вернулся назад
-    objPlayer.x              = global.next_player_x;
-    objPlayer.y              = global.next_player_y;
-	
-	
-	scrSaveGame();
+	objEffector.x = global.next_effector_x;
+	objEffector.y = global.next_effector_y;
+    
+    scrSaveGame();
 }
-// 2. Если мы зашли на этот этаж ВПЕРВЫЕ (файла .dat еще нет)
+// 3. Если мы зашли на этот этаж ВПЕРВЫЕ (файла .dat еще нет)
 else
 {
-    objPlayer.x              = global.next_player_x;
-    objPlayer.y              = global.next_player_y;
-	
+    objPlayer.x = global.next_player_x;
+    objPlayer.y = global.next_player_y;
+    
     scrSaveGame(); 
 }
 
-// Намертво очищаем данные переходов, чтобы кнопка R о них не знала
+// 4. Намертво очищаем данные переходов, чтобы кнопка R о них не знала
 global.next_player_x = undefined;
 global.next_player_y = undefined;

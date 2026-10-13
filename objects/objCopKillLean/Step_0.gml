@@ -1,3 +1,6 @@
+if enemy_skin == SKIN.COLOMBIANREGULAR	{ enemy_sprite = sprColombianDieLean; }
+if enemy_skin == SKIN.COLOMBIANVEST		{ enemy_sprite = sprColombianVestDieLean; }
+
 image_index += 0.25;
 enemy_image_index += 0.25;
 

@@ -19,7 +19,7 @@ function scrPlayerAttackMelee()
     var _melee_targets = tag_get_asset_ids("Meleeable", asset_object);
     var _block_los_objects = tag_get_asset_ids("Block_LOS", asset_object); // Стены и двери
     
-    // Собираем ВСЕХ врагов в максимальном радиусе поражения (_reach)
+    // Собираем ВСЕХ врагов и интерактивные объекты в максимальном радиусе поражения (_reach)
     var _count = collision_circle_list(x, y, _reach, _melee_targets, false, true, _hit_list, false);
     
     // Активируем таймер визуализации (для отладки)
@@ -28,52 +28,51 @@ function scrPlayerAttackMelee()
     // === 2. ФИЛЬТРАЦИЯ И ДЕТЕКЦИЯ ПОПАДАНИЙ ===
     for (var i = 0; i < _count; i++)
     {
-        var _enemy = _hit_list[| i];
+        var _target = _hit_list[| i]; // ИССПРАВЛЕНО: Переименовали в нейтральную цель
         
-        // Вычисляем дистанцию и угол до конкретного врага
-        var _dist_to_enemy = point_distance(x, y, _enemy.x, _enemy.y);
-        var _enemy_dir     = point_direction(x, y, _enemy.x, _enemy.y);
+        // Вычисляем дистанцию и угол до конкретной цели
+        var _dist_to_target = point_distance(x, y, _target.x, _target.y);
+        var _target_dir     = point_direction(x, y, _target.x, _target.y);
         
         var _is_hit = false;
         
         // --- ЗОНА А: ВНУТРЕННИЙ КРУГ В УПОР ---
-        if (_dist_to_enemy <= _close_radius)
+        if (_dist_to_target <= _close_radius)
         {
             // Этот круг проверяет ТОЛЬКО монолитные стены objSolidTall
-            var _wall_tall = collision_line(x, y, _enemy.x, _enemy.y, objSolidTall, false, true);
+            var _wall_tall = collision_line(x, y, _target.x, _target.y, objSolidTall, false, true);
             if (_wall_tall == noone)
             {
-                _is_hit = true; // Стены нет — врага в упор зацепило (двери игнорируются!)
+                _is_hit = true; // Стены нет — цель в упор зацепило
             }
         }
         
         // --- ЗОНА Б: ОСНОВНОЙ КОНУС АТАКИ ---
-        if (!_is_hit) // Если враг не попал под внутренний круг, проверяем конус
+        if (!_is_hit) // Если цель не попала под внутренний круг, проверяем конус
         {
-            // 1. Проверяем, попадает ли враг в угол обзора
-            if (abs(angle_difference(_mouse_dir, _enemy_dir)) <= _attack_half_angle) 
+            // 1. Проверяем, попадает ли цель в угол обзора
+            if (abs(angle_difference(_mouse_dir, _target_dir)) <= _attack_half_angle) 
             {
                 // 2. Конус блокируется объектами с тегом "Block_LOS" (двери, стены и т.д.)
-                var _los_wall = collision_line(x, y, _enemy.x, _enemy.y, _block_los_objects, false, true);
+                var _los_wall = collision_line(x, y, _target.x, _target.y, _block_los_objects, false, true);
                 if (_los_wall == noone)
                 {
-                    _is_hit = true; // Преград нет — конус попал по врагу!
+                    _is_hit = true; // Преград нет — конус попал по цели!
                 }
             }
         }
         
-        // --- 3. ПРИМЕНЕНИЕ УРОНА, ЕСЛИ ЦЕЛЬ ЗАЦЕПЛЕНА ---
+        // === 3. ПРИМЕНЕНИЕ УРОНА (ЧИСТАЯ АРХИТЕКТУРА) ===
         if (_is_hit)
         {
+            var _push_dir = point_direction(x, y, _target.x, _target.y);
+            
             // Жесткий игнор: кулаками (HIT_TYPE.UNARMED) по сидячим у стены не бьем
-            var _is_already_lean = (_enemy.object_index == objEnemyKnockedOutLean);
+            var _is_already_lean = (_target.object_index == objEnemyKnockedOutLean);
             if (_hit_type == HIT_TYPE.UNARMED && _is_already_lean) continue;
             
-            // Вектор отлета трупа/нокаута
-            var _push_dir = point_direction(x, y, _enemy.x, _enemy.y);
-            
-            // Передаем хит во врага
-            scrEnemyGetHitMelee(_enemy, current_weapon, _push_dir, id);
+            // Стандартный вражеский код без изменений
+            scrEnemyGetHitMelee(_target, current_weapon, _push_dir, id);
         }
     }
     

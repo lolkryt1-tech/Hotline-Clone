@@ -1,3 +1,6 @@
+if (enemy_skin == SKIN.COLOMBIANREGULAR)  { enemy_sprite = sprColombianDieShot; }
+if (enemy_skin == SKIN.COLOMBIANVEST)  { enemy_sprite = sprColombianVestDieShot; }
+
 // === 1. ОБРАБОТКА БУФЕРА ВВОДА (ПРОБЕЛ) ===
 if (keyboard_check_pressed(vk_space))
 {
@@ -141,6 +144,9 @@ if (floor(image_index) == 13)
 		_body.hit_type     = HIT_TYPE.BULLET; 
 		_body.go_splat     = false;
 		_body.class        = enemy_class;
+		
+		_body.blood_pool_forward_offset = 24; 
+		
 		
 		var _player = instance_create_layer(x, y, "Instances", objPlayer);
 		_player.ammo           = ammo; // Передаем обратно честный остаток (может быть 0)

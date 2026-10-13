@@ -10,7 +10,7 @@ function scrEnemyGetSprite(_skin, _weapon)
     // Параметры снарядов и гильз
     var _bullet_obj          = noone;
     var _bullet_speed        = 15;
-    var _bullet_calibre      = CALIBRE.PISTOL; // НОВОЕ: Калибр пули врага по умолчанию
+    var _bullet_calibre      = CALIBRE.SMALL; // НОВОЕ: Калибр пули врага по умолчанию
     var _shell_obj           = noone;
     var _shell_img           = 0; 
     var _shell_x             = 0; 
@@ -21,8 +21,8 @@ function scrEnemyGetSprite(_skin, _weapon)
 	if (_weapon == WEAPONS.KNIFE)	{ _attack_range = 10;  _is_range_weapon = false; _cooldown = 8;  _anim_speed = 0.35; _sounds = [sndSwing1, sndSwing2]; }
     if (_weapon == WEAPONS.BAT)     { _attack_range = 16;  _is_range_weapon = false; _cooldown = 24; _anim_speed = 0.35; _sounds = [sndSwing1, sndSwing2]; }
     if (_weapon == WEAPONS.PIPE)    { _attack_range = 16;  _is_range_weapon = false; _cooldown = 18; _anim_speed = 0.35; _sounds = [sndSwing1, sndSwing2]; }
-    if (_weapon == WEAPONS.PISTOL)  { _attack_range = 128; _is_range_weapon = true;  _cooldown = 14; _anim_speed = 1;  _bullet_obj = objBullet; _bullet_calibre = CALIBRE.PISTOL;  _bullet_speed = 13; _shell_obj = objShell; _shell_img = 0; _sounds = [snd9mmShot]; _shell_x = 24; _shell_y = 4; }
-    if (_weapon == WEAPONS.M16)     { _attack_range = 256; _is_range_weapon = true;  _cooldown = 7;  _anim_speed = 1;  _bullet_obj = objBullet; _bullet_calibre = CALIBRE.PISTOL;  _bullet_speed = 13; _shell_obj = objShell; _shell_img = 1; _sounds = [sndM16Shot]; _shell_x = 12; _shell_y = 4; }
+    if (_weapon == WEAPONS.PISTOL)  { _attack_range = 128; _is_range_weapon = true;  _cooldown = 14; _anim_speed = 1;  _bullet_obj = objBullet; _bullet_calibre = CALIBRE.SMALL;  _bullet_speed = 13; _shell_obj = objShell; _shell_img = 0; _sounds = [snd9mmShot]; _shell_x = 24; _shell_y = 4; }
+    if (_weapon == WEAPONS.M16)     { _attack_range = 256; _is_range_weapon = true;  _cooldown = 6;  _anim_speed = 1;  _bullet_obj = objBullet; _bullet_calibre = CALIBRE.MID;  _bullet_speed = 13; _shell_obj = objShell; _shell_img = 1; _sounds = [sndM16Shot]; _shell_x = 12; _shell_y = 4; }
     if (_weapon == WEAPONS.SHOTGUN) { _attack_range = 128; _is_range_weapon = true;  _cooldown = 75; _anim_speed = 0.5; _bullet_obj = objBullet; _bullet_calibre = CALIBRE.SHOTGUN; _bullet_speed = 13; _shell_obj = objShell; _shell_img = 2; _sounds = [sndShotgunShot]; _shell_x = 8;  _shell_y = 8; }
 
     // === 2. ДЕФОЛТНАЯ ЗАГОТОВКА ПОД СТРУКТУРУ СПРАЙТОВ ===
@@ -52,8 +52,9 @@ function scrEnemyGetSprite(_skin, _weapon)
 	
 	if (_skin == SKIN.COLOMBIANDODGER)
 	{
-		if (_weapon == WEAPONS.KNIFE)	{ _sprites.idle = sprColombianDWalkKnife;  _sprites.walk = sprColombianDWalkKnife;	_sprites.search = sprColombianDSearchKnife;	 _sprites.attack = sprColombianDAttackKnife; }
-		if (_weapon == WEAPONS.PISTOL)	{_sprites.idle	= noone;				   _sprites.walk = sprColombianDWalk9mm;	_sprites.search = sprColombianDSearch9mm;	 _sprites.attack = sprColombianDAttack9mm; }
+		if (_weapon == WEAPONS.KNIFE)	{ _sprites.idle = sprColombianDWalkKnife;   _sprites.walk = sprColombianDWalkKnife;	  _sprites.search = sprColombianDSearchKnife;	_sprites.attack = sprColombianDAttackKnife; }
+		if (_weapon == WEAPONS.PISTOL)	{ _sprites.idle	= noone;				    _sprites.walk = sprColombianDWalk9mm;	  _sprites.search = sprColombianDSearch9mm;		_sprites.attack = sprColombianDAttack9mm; }
+		if (_weapon == WEAPONS.SHOTGUN) { _sprites.idle = sprColombianDWalkShotgun; _sprites.walk = sprColombianDWalkShotgun; _sprites.search = sprColombianDSearchShotgun; _sprites.attack = sprColombianDAttackShotgun; }
 	}
 	
 	if (_skin == SKIN.COLOMBIANVEST)
@@ -76,6 +77,7 @@ function scrEnemyGetSprite(_skin, _weapon)
     return {
         sprites:            _sprites, 
         attack_range:       _attack_range,
+		is_ranged:			_is_range_weapon,
         cooldown:           _cooldown,
         anim_speed:         _anim_speed,
         bullet_obj:         _bullet_obj,

@@ -1,0 +1,1 @@
+if (sprite_index == my_sprites.sprites.attack) { sprite_index = my_sprites.sprites.walk; }

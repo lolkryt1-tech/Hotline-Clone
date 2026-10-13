@@ -10,6 +10,12 @@ if (!instance_exists(owner))
 if (other.faction == owner.faction) exit;
 if (collision_line(other.x, other.y, owner.x, owner.y, objSolidTall, false, true)) exit; 
 
+// Если обычный враг сейчас сидит на корточках в укрытии (HIDERDUCK) — пули пролетают мимо
+if (owner.class == CLASS.REGULAR && owner.state == STATES.HIDERDUCK)
+{
+    exit; 
+}
+
 var _bullet_dir = other.direction;
 var _bullet_calibre = other.calibre; 
 var _bullet_faction = other.faction; 
@@ -29,14 +35,12 @@ switch (owner.class)
         owner.state = STATES.DODGE;
         owner.sprite_index = sprColombianDDodge;
         owner.image_index = 4;
-        
-        exit; // Пуля НЕ уничтожается, урон НЕ наносится, она летит дальше!
+        exit; 
 
     // -----------------------------------------------------------------
     // ТОЛСТЯК (CLASS.FAT) — Впитывает урон, спавнит сочную кровь
     // -----------------------------------------------------------------
     case CLASS.FAT:
-        // Сначала обрабатываем калибры и уничтожаем пулю
         if (_bullet_calibre == CALIBRE.SHOTGUN)
         {
             owner.pellets_hit += 1;
@@ -61,7 +65,7 @@ switch (owner.class)
         {
             owner.pellets_hit += 1; 
             owner.last_hit_dir = _bullet_dir;
-            if (_bullet_calibre == CALIBRE.MAGNUM) owner.kill_instantly = true; 
+            if (_bullet_calibre == CALIBRE.BIG) owner.kill_instantly = true; 
             instance_destroy(other); 
         }
 
@@ -71,36 +75,36 @@ switch (owner.class)
         var _played_sound = audio_play_sound(_hit_sound, 1, false);
         audio_sound_pitch(_played_sound, random_range(0.8, 0.95)); 
 
+        // ИСПРАВЛЕННЫЙ БЛОК: Теперь скорость применяется к созданному объекту крови!
         var _smoke_count = irandom_range(1, 4);
         repeat(_smoke_count)
         {
             var _blood_smoke = instance_create_layer(x, y, "Instances", objBloodSmoke);
-            _blood_smoke.speed = random_range(1.0, 2.2);
+            _blood_smoke.speed = random_range(1.0, 2.2); // <--- ЖЕСТКИЙ ФИКС ТУТ
             var _random_dir = (_bullet_dir - 180) + random_range(-35, 35);
             _blood_smoke.direction = _random_dir;
             _blood_smoke.my_angle  = _random_dir; 
         }
 
-        // Просчёт урона/равновесия
+        // Просчёт урона/равновесия толстяка
         if (owner.state == STATES.FATDIE)
         {
-            owner.fat_balance -= (_bullet_calibre == CALIBRE.SHOTGUN) ? (33 * owner.pellets_hit) : ((_bullet_calibre == CALIBRE.MAGNUM) ? 50 : 33);
+            owner.fat_balance -= (_bullet_calibre == CALIBRE.SHOTGUN) ? (33 * owner.pellets_hit) : ((_bullet_calibre == CALIBRE.BIG) ? 50 : 33);
             owner.knocked_by_bullet = true;
             owner.last_hit_dir = _bullet_dir;
         }
         else
         {
-            owner.fat_blood_current -= (_bullet_calibre == CALIBRE.SHOTGUN) ? (33 * owner.pellets_hit) : ((_bullet_calibre == CALIBRE.MAGNUM) ? 50 : 25);
+            owner.fat_blood_current -= (_bullet_calibre == CALIBRE.SHOTGUN) ? (33 * owner.pellets_hit) : ((_bullet_calibre == CALIBRE.BIG) ? 50 : 25);
             owner.knocked_by_bullet = false;
         }
 
         owner.pellets_hit = 0;
         owner.kill_instantly = false;
-        
-        exit; // Выходим из события для толстяка
+        exit; 
 
     // -----------------------------------------------------------------
-    // ОСТАЛЬНЫЕ КЛАССЫ (VEST, REGULAR) — Сбор калибров пули перед Фазой 2
+    // ОСТАЛЬНЫЕ КЛАССЫ (VEST, REGULAR)
     // -----------------------------------------------------------------
     default:
         if (_bullet_calibre == CALIBRE.SHOTGUN)
@@ -127,7 +131,7 @@ switch (owner.class)
         {
             owner.pellets_hit += 1; 
             owner.last_hit_dir = _bullet_dir;
-            if (_bullet_calibre == CALIBRE.MAGNUM) owner.kill_instantly = true; 
+            if (_bullet_calibre == CALIBRE.BIG) owner.kill_instantly = true; 
             instance_destroy(other); 
         }
         break;
@@ -151,6 +155,7 @@ if (owner.pellets_hit > 0)
         owner.sprite_index = sprColombianVestStun;
         owner.image_index  = 0;
         owner.stun_current += (25 * owner.pellets_hit);
+		owner.should_spark = true;
     }
 
     // ОБЫЧНЫЙ ВРАГ (CLASS.REGULAR)
@@ -189,7 +194,6 @@ if (owner.pellets_hit > 0)
         exit;
     }
     
-    // Сброс триггеров кадра для выжившего Жилета
     owner.pellets_hit = 0;
     owner.kill_instantly = false;
 }

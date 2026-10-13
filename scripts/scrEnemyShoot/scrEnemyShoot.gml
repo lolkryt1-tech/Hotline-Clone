@@ -16,7 +16,7 @@ function scrEnemyShoot()
 		repeat(6) 
 		{
 			var _pellet = instance_create_layer(_bullet_x, _bullet_y, "Instances", my_sprites.bullet_obj);
-			_pellet.direction   = my_angle + random_range(-5, 5);
+			_pellet.direction   = my_angle + random_range(-6, 6);
 			_pellet.image_angle = _pellet.direction;
 			_pellet.speed       = my_sprites.bullet_speed + random_range(-1, 1);
 			_pellet.faction     = faction;

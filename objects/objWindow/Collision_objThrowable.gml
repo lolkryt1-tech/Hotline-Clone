@@ -1,0 +1,1 @@
+scrWindowBreak(id, other.direction, other.speed);

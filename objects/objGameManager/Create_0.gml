@@ -1,18 +1,12 @@
-// Текущее состояние прохождения здания (инициализируется при старте миссии)
-global.current_level = {
-    name: "Part 1: Prelude",
-    total_floors: 3,
-    current_floor: 0, // На каком этаже игрок прямо сейчас (0, 1, 2...)
-    
-    
-    trigger_go_to_car: false, 
-    
-    // Массив этажей здания
-    floors: [
-        { file_prefix: "story_lvl1_f0", is_cleared: false }, // 1-й этаж
-        { file_prefix: "story_lvl1_f1", is_cleared: false }, // 2-й этаж
-        { file_prefix: "story_lvl1_f2", is_cleared: false }  // 3-й этаж
-    ]
-};
+// === ИНИЦИАЛИЗАЦИЯ ТЕКУЩЕЙ МИССИИ ===
+// global.current_mission — индекс текущей миссии (0, 1, 2...)
+global.current_mission = 0;
+
+// Загружаем данные миссии из скрипта
+global.current_level = scrGetLevelData(global.current_mission);
+
+// Добавляем runtime-переменные, которых нет в scrGetLevelData
+global.current_level.current_floor = 0;
+global.current_level.trigger_go_to_car = false;
 
 go_to_car_alpha = 0.0;

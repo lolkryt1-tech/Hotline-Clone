@@ -1,26 +1,84 @@
-// Проверяем калибр пули через правильное двойное равенство (==)
-if (other.calibre == CALIBRE.SHOTGUN)
+// === 1. ЭФФЕКТЫ ПОПАДАНИЯ ДЛЯ ВСЕХ СОСТОЯНИЙ ДВЕРИ (ЗВУК, ДЫМ, БЕЛЫЕ ОСКОЛКИ) ===
+
+// Воспроизводим случайный звук удара по дереву
+audio_play_sound(choose(sndBulletWallImpact, sndBulletWallImpact1, sndBulletWallImpact2, sndBulletWallImpact3, sndBulletWallImpact4), 10, false);
+
+// Спавним дым в точке удара пули (отлетает назад с небольшим разбросом)
+var _smoke = instance_create_layer(other.x, other.y, "Instances", objSmokeHit);
+_smoke.image_angle = other.direction;
+var _random_deviation = random_range(-15, 15);
+_smoke.direction = (other.direction - 180) + _random_deviation;
+_smoke.speed = random(1);
+
+var _amount = random(0.5);
+_smoke.color1 = merge_color(c_gray, c_dkgray, _amount);
+_smoke.color2 = merge_color(c_dkgray, c_black, _amount);
+
+// Спавним 4 белых осколка
+repeat (4)
 {
-    // Задаем, что дверь толкнул внешний фактор (для триггера нокаута врагов)
-    swinger = 1; 
-
-    // Вычисляем угол между направлением полета пули и текущим углом двери
-    // other.direction — это встроенное направление движения пули
-    var _bullet_dir = other.direction;
-    var _angle_diff = angle_difference(_bullet_dir, image_angle);
-
-    // Толкаем дверь с огромной скоростью по направлению пули
-    // Если пуля летит с одной стороны линии двери — крутим в плюс, если с другой — в минус
-    if (_angle_diff > 0) 
-    {
-        swingspeed = 24; // Очень сильный толчок (в 2-3 раза сильнее обычного)
-    } 
-    else 
-    {
-        swingspeed = -24; 
-    }
+    var _debris = instance_create_layer(other.x, other.y, "Instances", objWallDebris);
+    _debris.direction = other.direction - 140 - random(80);
+    _debris.speed     = random(4);
+	_debris.is_white_wall = false;
     
-    // 3. Уничтожаем саму пулю дробовика, чтобы она не летела дальше сквозь дверь
-    instance_destroy(other.id);
+    // Окрашивание осколков в коричневые оттенки
+    var _col_brown_light = make_color_rgb(139, 69, 19);  
+    var _col_brown_dark  = make_color_rgb(92, 51, 23);   
+    _debris.image_blend  = merge_color(_col_brown_light, _col_brown_dark, random(1));
 }
-else { instance_destroy(other); }
+
+// === 2. ПРОВЕРКА НА ЗАПЕРТУЮ ДВЕРЬ ===
+// Если дверь закрыта на замок — эффекты выше сработали, пуля ломается, дверь не двигается
+if (closed) 
+{ 
+    instance_destroy(other); 
+    return; 
+}
+
+// === 3. РАСЧЕТ ИМПУЛЬСА ДЛЯ ОТКРЫТИЯ ===
+// Проверяем, находится ли дверь в своём изначальном закрытом положении в проёме
+var _is_at_start_position = (image_angle == start_angle);
+
+// Вычисляем, с какой стороны прилетела пуля, чтобы знать, куда крутить дверь
+var _angle_diff = angle_difference(other.direction, image_angle);
+var _push_direction = (_angle_diff > 0) ? 1 : -1;
+
+// Фиксируем, что дверь получила импульс (1 - от игрока/его оружия)
+swinger = 1; 
+
+// === 4. ЛОГИКА КАЛИБРОВ ===
+switch (other.calibre)
+{
+    case CALIBRE.SMALL:
+        // --- МАЛЕНЬКИЙ КАЛИБР ---
+        if (_is_at_start_position) 
+        {
+            instance_destroy(other);
+        }
+        else 
+        {
+            swingspeed = 2 * _push_direction;
+            instance_destroy(other);
+        }
+        break;
+        
+    case CALIBRE.MID:
+        // --- СРЕДНИЙ КАЛИБР ---
+        swingspeed = 4 * _push_direction;
+        instance_destroy(other);
+        break;
+        
+    case CALIBRE.BIG:
+        // --- БОЛЬШОЙ КАЛИБР ---
+        // Мощно толкает дверь и прошибает её насквозь (пуля летит дальше)
+        swingspeed = 16 * _push_direction;
+        audio_play_sound(sndBulletWallImpact, 10, false); 
+        break;
+        
+    case CALIBRE.SHOTGUN:
+        // --- ДРОБОВИК ---
+        swingspeed = 24 * _push_direction;
+        instance_destroy(other);
+        break;
+}

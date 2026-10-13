@@ -1,2 +1,1 @@
-// Чтобы экран не ездил через пол комнаты перемещаем курсор вместе с персонажем
-if (instance_exists(objPlayer)) { x = objPlayer.x; y = objPlayer.y }
+camera_set_view_pos(_cam, global.next_effector_x, global.next_effector_y);

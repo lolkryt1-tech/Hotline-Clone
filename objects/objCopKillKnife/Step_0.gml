@@ -54,8 +54,8 @@ if (image_index >= hurt_index && !triggered_hurt)
 	// Интенсивность тряски экрана
 	objEffector.shake = 1; 
 
-	// Точка шеи/головы лежачего врага
-	var _dist = 12; 
+	// Точка шеи лежачего врага
+	var _dist = 24; 
 	var _blood_x = x + lengthdir_x(_dist, my_angle);
 	var _blood_y = y + lengthdir_y(_dist, my_angle); 
 
@@ -107,6 +107,8 @@ if (image_index >= finish_index)
     _body.image_index  = 7; // Последний кадр смерти врага (индекс 7 при 8 кадрах)
     _body.my_angle     = my_angle;
 	_body.isExecuted   = true;
+	
+	_body.blood_pool_forward_offset = 24; 
     
 	scrEnemyUpdateTargetID(id, _player); 
     instance_destroy();

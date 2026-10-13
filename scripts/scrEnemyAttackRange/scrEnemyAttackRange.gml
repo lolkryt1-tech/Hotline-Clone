@@ -129,43 +129,54 @@ function scrEnemyAttackRange()
 	// === ПРОВЕРКА ПУСТОГО МАГАЗИНА У ВРАГА ===
 	if (ammo <= 0)
 	{
-		audio_play_sound(sndDryClick, 10, false); 
-		empty_clicks_count++;
-		reload = 25;
-		
-		if (empty_clicks_count >= empty_clicks_target)
-		{
-			var _dropped = instance_create_layer(x, y, "Instances", objWeaponUnreachable);
-			_dropped.image_index = scrWeaponGetImage(weapon);
-			_dropped.weapon    = weapon;
-			_dropped.ammo	   = 0;
-			_dropped.my_angle  = irandom(360);
-			_dropped.direction = irandom(360); 
-			_dropped.speed     = 5;
-			
-			weapon             = WEAPONS.UNARMED;
-			isRange_weapon     = false;
-			start_shooting     = false;
-			empty_clicks_count = 0;
-			
-			if (class == CLASS.DODGER)
-			{
-				weapon		 = WEAPONS.KNIFE;
-				my_sprites   = scrEnemyGetSprite(skin, weapon);
-				sprite_index = my_sprites.sprites.walk; 
-				audio_play_sound(sndDrawKnife, 1, false);
-				state        = STATES.CHASE;
-			}
-			else
-			{
-				state        = STATES.UNARMEDSEARCH;
-				my_sprites   = scrEnemyGetSprite(skin, weapon);
-				sprite_index = my_sprites.sprites.walk;
-			}
-			
-			exit;
-		}
-		return; 
+	    audio_play_sound(sndDryClick, 10, false); 
+	    empty_clicks_count++;
+	    reload = 25;
+    
+	    if (empty_clicks_count >= empty_clicks_target)
+	    {
+	        // Выбрасываем пустое оружие
+	        var _dropped = instance_create_layer(x, y, "Instances", objWeaponUnreachable);
+	        _dropped.image_index = scrWeaponGetImage(weapon);
+	        _dropped.weapon    = weapon;
+	        _dropped.ammo      = 0;
+	        _dropped.my_angle  = irandom(360);
+	        _dropped.direction = irandom(360); 
+	        _dropped.speed     = 5;
+        
+	        // Сбрасываем огнестрельные параметры
+	        weapon             = WEAPONS.UNARMED;
+	        isRange_weapon     = false;
+	        start_shooting     = false;
+	        empty_clicks_count = 0;
+        
+	        // ИСПРАВЛЕННАЯ СВЯЗКА УСЛОВИЙ (Используем else if)
+	        if (class == CLASS.DODGER)
+	        {
+	            weapon       = WEAPONS.KNIFE; // Ловкач берёт нож
+	            my_sprites   = scrEnemyGetSprite(skin, weapon);
+	            sprite_index = my_sprites.sprites.walk; 
+	            audio_play_sound(sndDrawKnife, 1, false);
+	            state        = STATES.CHASE;  // Бежит атаковать в ближнем бою
+	        }
+	        else if (class == CLASS.FAT)
+	        {
+	            weapon       = WEAPONS.FISTS; // Толстяк бьёт кулаками
+	            my_sprites   = scrEnemyGetSprite(skin, weapon);
+	            sprite_index = my_sprites.sprites.walk; 
+	            state        = STATES.CHASE;
+	        }
+	        else
+	        {
+	            // Все остальные обычные враги (REGULAR, VEST) бегут искать новое оружие
+	            state        = STATES.UNARMEDSEARCH;
+	            my_sprites   = scrEnemyGetSprite(skin, weapon);
+	            sprite_index = my_sprites.sprites.walk;
+	        }
+        
+	        exit;
+	    }
+	    return; 
 	}
 	
 	// =========================================================================

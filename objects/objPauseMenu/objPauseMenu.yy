@@ -10,8 +10,8 @@
   "name":"objPauseMenu",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objects",
-    "path":"folders/Objects.yy",
+    "name":"ZManagers",
+    "path":"folders/Objects/ZManagers.yy",
   },
   "parentObjectId":null,
   "persistent":true,

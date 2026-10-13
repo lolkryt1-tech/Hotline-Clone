@@ -1,0 +1,1 @@
+renderer.SetCamera(view_camera[0]);

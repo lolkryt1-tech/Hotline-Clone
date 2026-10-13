@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrEnemyHiderDuck",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrEnemyHiderDuck",
+  "parent":{
+    "name":"States",
+    "path":"folders/Scripts/Enemy/States.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -31,7 +31,6 @@ if (image_index >= hurt_index && !triggered_hurt)
     
     objEffector.shake = 5;
     
-    // ИСПРАВЛЕНО: Сдвинули сквирт поближе к голове (с 30 до 20)
     var _dist = 20; 
     var _head_offset_x = x + lengthdir_x(_dist, my_angle);
     var _head_offset_y = y + lengthdir_y(_dist, my_angle);
@@ -69,7 +68,7 @@ if (image_index >= hurt_index && !triggered_hurt)
         _squirt.direction = my_angle + 30;
     }
 
-    // === ДОБАВЛЕНО: Спавним 4 облака дыма крови ===
+    // === Спавним 4 облака дыма крови ===
     repeat (4)
     {
         var _smoke_id = instance_create_layer(_head_offset_x, _head_offset_y, "Instances", objBloodSmoke);
@@ -102,6 +101,7 @@ if (image_index >= finish_index)
     _player.isRange_weapon = _player.my_sprites.is_ranged;
     _player.sprite_index   = _player.my_sprites.walk;
     _player.image_index    = 0;
+	
     
 	scrEnemyUpdateTargetID(id, _player); 
     instance_destroy();

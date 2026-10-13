@@ -73,7 +73,6 @@ persistent = true;
 
 //if (instance_exists(objPlayer)) { instance_destroy(); }
 
-
 // === ДЕБАГ ===
 global.debug = 0;
 debug_melee_timer = 0;

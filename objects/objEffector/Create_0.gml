@@ -1,3 +1,4 @@
+depth = -16000;
 shake = 0;
 shake_timer = 0;
 

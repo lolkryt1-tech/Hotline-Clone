@@ -9,4 +9,12 @@ if (room != Start)
     
     // 3. Сканируем и добавляем стены на карту проходимости (замените objSolid на вашу реальную стену, если надо)
     mp_grid_add_instances(global.mp_grid, objSolid, false);
+	
+	 with (objDoor)
+    {
+        if (closed)
+        {
+            mp_grid_add_instances(global.mp_grid, id, false);
+        }
+	}
 }

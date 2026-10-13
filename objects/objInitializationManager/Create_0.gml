@@ -1,11 +1,14 @@
 // 1. Создаем базу на слое "Instances"
 if (!instance_exists(objGameManager))		{ instance_create_layer(x, y, "Instances", objGameManager); }
+//if (!instance_exists(objLightController))	{ instance_create_layer(x, y, "Instances", objLightController); }
 if (!instance_exists(objPlayer))			{ instance_create_layer(x, y, "Instances", objPlayer); }
 if (!instance_exists(objEffector))			{ instance_create_layer(x, y, "Instances", objEffector); }
 if (!instance_exists(objLevelStatistic))	{ instance_create_layer(x, y, "Instances", objLevelStatistic);}
 if (!instance_exists(objDepthManager))		{ instance_create_layer(0, 0, "Instances", objDepthManager); }
 if (!instance_exists(objPathManager))		{ instance_create_layer(0, 0, "Instances", objPathManager); }
 if (!instance_exists(objSaveManager))		{ instance_create_layer(0, 0, "Instances", objSaveManager); }
+if (!instance_exists(objPauseMenu))			{ instance_create_layer(0, 0, "Instances", objPauseMenu); }
+if (!instance_exists(objPauseManager))		{ instance_create_layer(0, 0, "Instances", objPauseManager); }
 
 // 2. ИСПРАВЛЕНО: Автоматическое создание слоя для крови, если его нет в текущей комнате
 var _blood_layer = layer_get_id("Blood_layer");

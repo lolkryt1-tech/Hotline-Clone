@@ -3,7 +3,7 @@ draw_text(10, 10, "FPS: " + string(fps));
 // Отрисовка реального FPS (показывает чистую производительность ПК)
 draw_text(10, 30, "FPS Real: " + string(floor(fps_real)));
 
-// 1. СОХРАНЯЕМ ТЕКУЩИЕ НАСТРОЙКИ (чтобы не сломать дебаг)
+// 1. СОХРАНЯЕМ ТЕКУЩИЕ НАСТРОЕК (чтобы не сломать дебаг)
 var _old_font   = draw_get_font();
 var _old_color  = draw_get_color();
 var _old_alpha  = draw_get_alpha();
@@ -30,7 +30,8 @@ if (current_weapon == WEAPONS.PISTOL || current_weapon == WEAPONS.SHOTGUN || cur
     if (current_weapon == WEAPONS.M16)     _ammo_frame = 1;
 	if (current_weapon == WEAPONS.SHOTGUN) _ammo_frame = 2;
     
-    var _text = string(ammo); // Текст патронов
+    // === ИСПРАВЛЕНИЕ: ПРОВЕРКА НА ПУСТОЙ МАГАЗИН (ТОЛЬКО ТЕКСТ) ===
+    var _text = (ammo == 0) ? "EMPTY" : string(ammo);
     
     // === НАСТРОЙКИ МАСШТАБА И ГЕОМЕТРИИ ===
     var _icon_scale = 3.5;              // Масштаб иконки патрона
@@ -78,7 +79,7 @@ if (current_weapon == WEAPONS.PISTOL || current_weapon == WEAPONS.SHOTGUN || cur
     var _icon_x = _x + cos(_icon_speed) * 1.2;
     var _icon_y = (_y - 6) + sin(_icon_speed) * 1.2;
 
-    // ИСПРАВЛЕНО: Вместо кадра 0 передаем рассчитанный _ammo_frame
+    // Отрисовка иконки патрона (возвращен чистый белый бленд)
     draw_sprite_ext(sprAmmo, _ammo_frame, _icon_x, _icon_y, _icon_scale, _icon_scale, _final_icon_angle, c_white, 1.0); 
 
     // === 3В. РИСУЕМ ШРИФТ ПАТРОНОВ С ТЯЖЕЛОЙ ОБВОДКОЙ, ДВИЖЕНИЕМ И ПУЛЬСОМ МАСШТАБА ===
@@ -125,7 +126,7 @@ if (current_weapon == WEAPONS.PISTOL || current_weapon == WEAPONS.SHOTGUN || cur
     draw_text_transformed(_text_x, _text_y, _text, _current_scale, _current_scale, 0);
 }
 
-// 4. ВОЗВРАЩАЕМ ВСЕ СТАРЫЕ НАСТРОЙКИ НАЗАД
+// 4. ВОЗВРАЩАЕМ ВСЕ СТАРЫЕ НАСТРОЕК НАЗАД
 draw_set_font(_old_font);
 draw_set_color(_old_color);
 draw_set_alpha(_old_alpha);

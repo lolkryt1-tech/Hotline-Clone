@@ -5,17 +5,24 @@ if (!instance_exists(owner)) exit;
 weapon = other.weapon;
 var _weapon_flight_dir = other.direction; 
 
+if (owner.class == CLASS.REGULAR && owner.state == STATES.HIDERDUCK)
+{
+    exit; // Пуля НЕ уничтожается, урон НЕ наносится, она летит дальше!
+}
+
 // === СЮДА ДОБАВЛЯЮТСЯ КЛАССЫ ВРАГОВ ===
 switch (owner.class)
 {
     case CLASS.REGULAR:
 		scrAddKillStats(500, false);
 		audio_play_sound(sndCut1, 1, false);
+		
+		if (owner.can_hear == 0) { instance_create_layer(owner.x, owner.y, "Instances", objHeadSet); }
 	
-        // 1. Выбрасываем оружие, которое было у игрока (если нужно) или сам летящий предмет
-        var _dropped_player_weapon = instance_create_layer(owner.x, owner.y, "Instances", objWeapon);
-        _dropped_player_weapon.weapon = owner.weapon;
-        _dropped_player_weapon.ammo   = owner.ammo;
+        // 1. Выбрасываем оружие, которое было у врага
+        var _dropped_weapon = instance_create_layer(owner.x, owner.y, "Instances", objWeapon);
+        _dropped_weapon.weapon = owner.weapon;
+        _dropped_weapon.ammo   = owner.ammo;
 		
         // 3. Спавним анимированный труп вместо стандартного knockeddown
         var _dead_body = instance_create_layer(owner.x, owner.y, "Instances", objAnimatedDeadBody);

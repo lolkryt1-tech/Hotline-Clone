@@ -16,7 +16,7 @@ function scrPlayerGetWeaponSprite(_character, _weapon)
     // Параметры для вылета пули и гильз у игрока
     var _bullet_obj     = noone;
     var _bullet_speed   = 15;
-    var _bullet_calibre = CALIBRE.PISTOL; 
+    var _bullet_calibre = CALIBRE.SMALL; 
     var _shell_obj      = noone;
     var _shell_img      = 0; 
     var _shell_x        = 0; 
@@ -27,9 +27,9 @@ function scrPlayerGetWeaponSprite(_character, _weapon)
 	if (_weapon == WEAPONS.KNIFE)   { _cooldown = 0;  _anim_speed = 0.75; _is_ranged = false; _frame_start = 0; _melee_type = HIT_TYPE.CUT;		_shake = 0.2; _sounds = [sndSwing1, sndSwing2]; }
     if (_weapon == WEAPONS.BAT)     { _cooldown = 32; _anim_speed = 0.35; _is_ranged = false; _frame_start = 1; _melee_type = HIT_TYPE.BLUNT;   _shake = 0.5; _sounds = [sndSwing1, sndSwing2]; }
     if (_weapon == WEAPONS.PIPE)    { _cooldown = 18; _anim_speed = 0.35; _is_ranged = false; _frame_start = 1; _melee_type = HIT_TYPE.BLUNT;   _shake = 0.5; _sounds = [sndSwing1, sndSwing2]; }
-    if (_weapon == WEAPONS.PISTOL)  { _cooldown = 14; _anim_speed = 1.0;  _is_ranged = true;  _frame_start = 0; _shake = 1;   _bullet_obj = objBullet; _bullet_calibre = CALIBRE.PISTOL;  _bullet_speed = 13; _shell_obj = objShell; _shell_img = 0; _sounds = [snd9mmShot]; _shell_x = 24; _shell_y = 4; }
+    if (_weapon == WEAPONS.PISTOL)  { _cooldown = 14; _anim_speed = 1.0;  _is_ranged = true;  _frame_start = 0; _shake = 1;   _bullet_obj = objBullet; _bullet_calibre = CALIBRE.SMALL;  _bullet_speed = 13; _shell_obj = objShell; _shell_img = 0; _sounds = [snd9mmShot]; _shell_x = 24; _shell_y = 4; }
     if (_weapon == WEAPONS.SHOTGUN) { _cooldown = 30; _anim_speed = 0.5;  _is_ranged = true;  _frame_start = 0; _shake = 2;   _bullet_obj = objBullet; _bullet_calibre = CALIBRE.SHOTGUN; _bullet_speed = 13; _shell_obj = objShell; _shell_img = 2; _sounds = [sndShotgunShot];  _shell_x = 8;  _shell_y = 8; }
-    if (_weapon == WEAPONS.M16)     { _cooldown = 7;  _anim_speed = 1.0;  _is_ranged = true;  _frame_start = 0; _shake = 0.5; _bullet_obj = objBullet; _bullet_calibre = CALIBRE.PISTOL;  _bullet_speed = 13; _shell_obj = objShell; _shell_img = 1; _sounds = [sndM16Shot];  _shell_x = 12; _shell_y = 4; }
+    if (_weapon == WEAPONS.M16)     { _cooldown = 6;  _anim_speed = 1.0;  _is_ranged = true;  _frame_start = 0; _shake = 0.5; _bullet_obj = objBullet; _bullet_calibre = CALIBRE.MID;  _bullet_speed = 13; _shell_obj = objShell; _shell_img = 1; _sounds = [sndM16Shot];  _shell_x = 12; _shell_y = 4; }
 
     // === 2. СТРУКТУРА СПРАЙТОВ ===
     var _sprites = { 

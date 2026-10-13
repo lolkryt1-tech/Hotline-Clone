@@ -62,7 +62,7 @@ function scrEnemyGetHitMelee(_enemy_id, _weapon_enum, _push_dir, _source_id)
 				_knocked.class          = class;
 				_knocked.faction        = faction;
 				_knocked.direction      = _push_dir;
-				_knocked.speed          = 3;
+				_knocked.speed          = 2;
 				_knocked.my_angle       = _push_dir - 180;
 				_knocked.image_index    = 1;
 				_knocked.sprite_index   = sprKnocked;

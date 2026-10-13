@@ -6,8 +6,8 @@
   "name":"objSolidTall",
   "overriddenProperties":[],
   "parent":{
-    "name":"Furniture",
-    "path":"folders/Objects/Furniture.yy",
+    "name":"Walls",
+    "path":"folders/Objects/Furniture/Walls.yy",
   },
   "parentObjectId":{
     "name":"objSolid",
@@ -30,7 +30,10 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":null,
+  "spriteId":{
+    "name":"sprWall",
+    "path":"sprites/sprWall/sprWall.yy",
+  },
   "spriteMaskId":null,
   "tags":[
     "Block_LOS",

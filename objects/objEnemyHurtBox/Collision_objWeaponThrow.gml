@@ -5,6 +5,11 @@ if (!instance_exists(owner)) exit;
 weapon = other.weapon;
 var _weapon_flight_dir = other.direction; 
 
+if (owner.class == CLASS.REGULAR && owner.state == STATES.HIDERDUCK)
+{
+    exit; // Пуля НЕ уничтожается, урон НЕ наносится, она летит дальше!
+}
+
 // === СЮДА ДОБАВЛЯЮТСЯ КЛАССЫ ВРАГОВ ===
 switch (owner.class)
 {

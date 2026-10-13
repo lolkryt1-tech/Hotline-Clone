@@ -19,13 +19,9 @@ function scrSaveGame()
 		buffer_write(_buf, buffer_bool, isRange_weapon);
 		buffer_write(_buf, buffer_u16,  sprite_index); 
 		buffer_write(_buf, buffer_u8,   ammo);
-		buffer_write(_buf, buffer_u8,   max_energy);
-		buffer_write(_buf, buffer_u8,   energy);
 		buffer_write(_buf, buffer_f16,  hor_velocity);
 		buffer_write(_buf, buffer_f16,  ver_velocity);
 		
-		// CОХРАНЕНИЕ СТАТИСТИКИ УРОВНЯ И КОМБО
-		//buffer_write(_buf, buffer_u32,  global.level_time);
 		buffer_write(_buf, buffer_u32,  global.total_score);
 		buffer_write(_buf, buffer_u16,  global.enemies_killed);
 		buffer_write(_buf, buffer_u16,  global.executions_count);
@@ -41,7 +37,7 @@ function scrSaveGame()
 	
 	with (objEnemy) 
 	{
-		// Позиция, графика, базовые свойства
+		buffer_write(_buf, buffer_u32,  enemy_uid);
 		buffer_write(_buf, buffer_f16,  x);
 		buffer_write(_buf, buffer_f16,  y);
 		buffer_write(_buf, buffer_u16,  object_index);
@@ -52,29 +48,24 @@ function scrSaveGame()
 		buffer_write(_buf, buffer_u8,   weapon);
 		buffer_write(_buf, buffer_bool, isRange_weapon);
 		
-		// Состояния и ИИ таймеры
 		buffer_write(_buf, buffer_u8,   state);
 		buffer_write(_buf, buffer_u8,   move_type);
 		buffer_write(_buf, buffer_u8,   reaction_time);
 		buffer_write(_buf, buffer_u8,   backing_off_delay);
 		
-		// Движение, физика и углы
 		buffer_write(_buf, buffer_f16,  target_speed);
 		buffer_write(_buf, buffer_f16,  current_speed);
 		buffer_write(_buf, buffer_f16,  my_angle);
 		buffer_write(_buf, buffer_f16,  desired_angle);
 		buffer_write(_buf, buffer_f16,  direction);
 		
-		// Анимация ног
 		buffer_write(_buf, buffer_f16,  legs_direction);
 		buffer_write(_buf, buffer_f16,  legs_image_index);
 		
-		// Боевая система
 		buffer_write(_buf, buffer_u8,	ammo);
 		buffer_write(_buf, buffer_u8,   reload);
 		buffer_write(_buf, buffer_bool, start_shooting);
 		
-		// Зрение и фазы поиска (SEARCH STATE)
 		buffer_write(_buf, buffer_u16,  search_timer);
 		buffer_write(_buf, buffer_u8,   search_phase);
 		buffer_write(_buf, buffer_f16,  last_seen_x);
@@ -82,30 +73,25 @@ function scrSaveGame()
 		buffer_write(_buf, buffer_f16,  safe_x);
 		buffer_write(_buf, buffer_f16,  safe_y);
 		
-		// Поиск оружия (UNARMED SEARCH)
 		buffer_write(_buf, buffer_u16,  weapon_search_timer);
 		buffer_write(_buf, buffer_bool, can_see_weapon);
 		buffer_write(_buf, buffer_u16,  try_get_weapon_timer);
 		buffer_write(_buf, buffer_bool, hasTriedToGetWeapon);
 		
-		// Слух и шум (INVESTIGATE STATE)
 		buffer_write(_buf, buffer_u8,   can_hear);
 		buffer_write(_buf, buffer_f16,  noise_x);
 		buffer_write(_buf, buffer_f16,  noise_y);
 		
-		// Свободные типы перемещений (RANDOM / PATROL)
 		buffer_write(_buf, buffer_u16,  random_move_timer);
 		buffer_write(_buf, buffer_f16,  random_dir);
 		buffer_write(_buf, buffer_f16,  patrol_dir);
 		
-		// Стрейф, застревания и обход коллизий
 		buffer_write(_buf, buffer_f16,  old_x);
 		buffer_write(_buf, buffer_f16,  old_y);
 		buffer_write(_buf, buffer_u16,  stuck_timer);
 		buffer_write(_buf, buffer_s8,   strafe_dir); 
 		buffer_write(_buf, buffer_u16,  strafe_change_timer);
 		
-		// Pathfinding (Встроенные переменные путей)
 		buffer_write(_buf, buffer_f16,  path_position); 
 		buffer_write(_buf, buffer_f16,  path_speed);
 		buffer_write(_buf, buffer_u16,  searching_path_delay_timer);
@@ -113,10 +99,8 @@ function scrSaveGame()
 		buffer_write(_buf, buffer_u8,   walk_on_trail);
 		buffer_write(_buf, buffer_u8,   start_searching);
 		
-		// Боевые эффекты
 		buffer_write(_buf, buffer_s16,  shell_ready_to_spawn); 
 		
-		// Определение индекса мишени
 		var _target_type = 0;
 		var _target_index = 0;
 		
@@ -165,7 +149,7 @@ function scrSaveGame()
 		buffer_write(_buf, buffer_s32,  depth);
 	}
 	
-	// === 4. СОХРАНЕНИЕ ОРУЖИЯ НА ПОЛУ СТРОГО ПО ТЕГУ "Weapon" ===
+	// === 4. СОХРАНЕНИЕ ОРУЖИЯ НА ПОЛУ ===
 	var _tagged_objects = tag_get_asset_ids("Weapon", asset_object);
 	var _total_weapons_count = 0;
 	
@@ -194,8 +178,8 @@ function scrSaveGame()
 		}
 	}
 	
-	// === 5. СКОРОСТНОЕ СОХРАНЕНИЕ ПОВЕРХНОСТИ КРОВИ БЕЗ СЖАТИЯ ===
-	var _blood_file_name = room_get_name(room) + "_blood.dat";
+	// === 5. СОХРАНЕНИЕ ПОВЕРХНОСТИ КРОВИ ===
+	var _blood_file_name = scrGetBloodFileName();
 
 	if (instance_exists(objBloodSurfaceManager) && surface_exists(global.surf_blood))
 	{
@@ -212,27 +196,103 @@ function scrSaveGame()
 		if (file_exists(_blood_file_name)) { file_delete(_blood_file_name); }
 	}
 	
-	// === 6. ДОБАВЛЕНО: СОХРАНЕНИЕ ИНТЕРАКТИВНЫХ ДВЕРЕЙ ===
-	// Замени objWoodenDoor на имя твоего универсального объекта двери, если оно отличается
-	var _door_count = instance_number(objWoodenDoor);
+	// === 6. СОХРАНЕНИЕ ДВЕРЕЙ ===
+	var _door_count = instance_number(objDoor);
 	buffer_write(_buf, buffer_u16, _door_count);
 	
-	with (objWoodenDoor)
+	with (objDoor)
 	{
+		buffer_write(_buf, buffer_u16, object_index);
+		buffer_write(_buf, buffer_u32, uid);
 		buffer_write(_buf, buffer_f16, xstart);      
 		buffer_write(_buf, buffer_f16, ystart);      
 		buffer_write(_buf, buffer_f16, image_angle); 
 		buffer_write(_buf, buffer_f16, swingspeed);  
 		buffer_write(_buf, buffer_u8,  swinger); 
-		buffer_write(_buf, buffer_f16, start_angle); // ИСПРАВЛЕНО: строго f16!
+		buffer_write(_buf, buffer_f16, start_angle);
+		buffer_write(_buf, buffer_bool, closed);
 	}
 	
-	// Сохраняем всё на диск
-	var _file_name = room_get_name(room) + ".dat";
+	// === 7. СОХРАНЕНИЕ ТЬМЫ (objDarkness) ===
+	var _darkness_count = instance_number(objDarkness);
+	buffer_write(_buf, buffer_u16, _darkness_count);
+	
+	with (objDarkness)
+	{
+		buffer_write(_buf, buffer_u16, object_index);
+		buffer_write(_buf, buffer_u32, uid);
+		buffer_write(_buf, buffer_f16, x);
+		buffer_write(_buf, buffer_f16, y);
+		buffer_write(_buf, buffer_f16, image_alpha);
+		buffer_write(_buf, buffer_f16, image_angle);
+		buffer_write(_buf, buffer_f16, image_xscale);
+		buffer_write(_buf, buffer_f16, image_yscale);
+		buffer_write(_buf, buffer_bool, fade_out);
+		buffer_write(_buf, buffer_bool, fade_in);
+	}
+	
+	// === 8. СОХРАНЕНИЕ ОКОН (objWindow) ===
+	var _window_count = instance_number(objWindow);
+	buffer_write(_buf, buffer_u16, _window_count);
+	
+	with (objWindow)
+	{
+		buffer_write(_buf, buffer_u16, object_index);
+		buffer_write(_buf, buffer_f16, x);
+		buffer_write(_buf, buffer_f16, y);
+		buffer_write(_buf, buffer_u8,  image_index);
+	}
+	
+	// === 9. СОХРАНЕНИЕ ТЕЛЕВИЗОРОВ (objTV) ===
+	var _tv_count = instance_number(objTV);
+	buffer_write(_buf, buffer_u16, _tv_count);
+	
+	with (objTV)
+	{
+		buffer_write(_buf, buffer_f16, x);
+		buffer_write(_buf, buffer_f16, y);
+		buffer_write(_buf, buffer_u16, sprite_index);
+		buffer_write(_buf, buffer_f16, image_speed);
+		buffer_write(_buf, buffer_u8,  energie);
+		buffer_write(_buf, buffer_u8,  life);
+	}
+	
+	// === 10. СОХРАНЕНИЕ ТРИГГЕРОВ ВХОДА (objTriggerEnter) ===
+	var _trigger_enter_count = instance_number(objTriggerEnter);
+	buffer_write(_buf, buffer_u16, _trigger_enter_count);
+	
+	with (objTriggerEnter)
+	{
+		buffer_write(_buf, buffer_u32,  trigger_id);
+		buffer_write(_buf, buffer_bool, is_triggered);
+		
+		buffer_write(_buf, buffer_u16,  spawn_object);
+		buffer_write(_buf, buffer_u8,   spawn_skin);
+		buffer_write(_buf, buffer_u8,   spawn_class);
+		buffer_write(_buf, buffer_u8,   spawn_weapon);
+		buffer_write(_buf, buffer_u8,   spawn_ammo);
+		buffer_write(_buf, buffer_u8,   spawn_state);
+		
+		buffer_write(_buf, buffer_f16,  spawn_x);
+		buffer_write(_buf, buffer_f16,  spawn_y);
+		buffer_write(_buf, buffer_f16,  target_x);
+		buffer_write(_buf, buffer_f16,  target_y);
+	}
+	
+	// === 11. СОХРАНЕНИЕ ТРИГГЕРОВ СОБЫТИЙ (objTriggerAction) ===
+	var _trigger_action_count = instance_number(objTriggerAction);
+	buffer_write(_buf, buffer_u16, _trigger_action_count);
+	
+	with (objTriggerAction)
+	{
+		buffer_write(_buf, buffer_u32,  trigger_id);
+		buffer_write(_buf, buffer_bool, is_triggered);
+	}
+	
+	var _file_name = scrGetSaveFileName();
 	buffer_save(_buf, _file_name);
 	buffer_delete(_buf);
 }
-
 
 
 // ==========================================
@@ -240,24 +300,26 @@ function scrSaveGame()
 // ==========================================
 function scrLoadGame(_is_room_transition)
 {
-	var _file_name = room_get_name(room) + ".dat";
+	var _file_name = scrGetSaveFileName();
 	if (!file_exists(_file_name)) { return; }
 	
-	// Очищаем абсолютно все старые объекты уровня перед накатыванием сохранения
-	global.is_cleaning_level = true; // Чтобы объект казни не спавнил поваленных
+	global.is_cleaning_level = true;
 	
 	with (objPlayerStart)			{ instance_destroy(); }
 	with (objEnemy)					{ instance_destroy(); }
 	with (objEnemyKnockedOut)		{ instance_destroy(); }
 	with (objEnemyKnockedOutLean)	{ instance_destroy(); }
+	with (objEnemyHurtBox)			{ instance_destroy(); }
 	with (objDeadBody)				{ instance_destroy(); } 
 	with (objBloodPool)				{ instance_destroy(); } 
 	with (objPlayerExecution)		{ instance_destroy(); }
 	with (objBullet)				{ instance_destroy(); }
 	with (objHeadSet)				{ instance_destroy(); }
-	with (objWoodenDoor)			{ instance_destroy(); }
+	with (objDoor)					{ instance_destroy(); }
+	with (objDarkness)				{ instance_destroy(); }
+	with (objDecals)				{ instance_destroy(); }
+	with (objEffect)				{ instance_destroy(); }
 	
-	// === ОБНОВЛЕНО: Чистим все пушки по их тегу "Weapon" ===
 	var _tagged_objects = tag_get_asset_ids("Weapon", asset_object);
 	for (var i = 0; i < array_length(_tagged_objects); i++) 
 	{
@@ -277,8 +339,6 @@ function scrLoadGame(_is_room_transition)
 	var _p_is_range = buffer_read(_buf, buffer_bool);
 	var _p_sprite   = buffer_read(_buf, buffer_u16);
 	var _p_ammo     = buffer_read(_buf, buffer_u8);
-	var _p_max_en   = buffer_read(_buf, buffer_u8);
-	var _p_energy   = buffer_read(_buf, buffer_u8);
 	var _p_hor_vel  = buffer_read(_buf, buffer_f16);
 	var _p_ver_vel  = buffer_read(_buf, buffer_f16);
 	
@@ -302,15 +362,14 @@ function scrLoadGame(_is_room_transition)
 		my_angle          = _p_angle;
 		walking_direction = _p_walk_dir;
 		character         = _p_char;
-		max_energy        = _p_max_en;
-		energy            = _p_energy;
 		
-		// На основе загруженного оружия пересоздаем структуру my_sprites
+		max_energy = choose(1, 2);
+		energy     = max_energy;
+		
 		my_sprites         = scrPlayerGetWeaponSprite(character, current_weapon);
 	}
 	
-	// ЧТЕНИЕ СТАТИСТИКИ УРОВНЯ И КОМБО
-	//var _s_level_time   = buffer_read(_buf, buffer_u32);
+	// === ЧТЕНИЕ СТАТИСТИКИ ===
 	var _s_total_score  = buffer_read(_buf, buffer_u32);
 	var _s_enemies      = buffer_read(_buf, buffer_u16);
 	var _s_executions   = buffer_read(_buf, buffer_u16);
@@ -319,10 +378,8 @@ function scrLoadGame(_is_room_transition)
 	var _s_combo_max    = buffer_read(_buf, buffer_u16);
 	var _s_combo_timer  = buffer_read(_buf, buffer_f16);
 	
-	// Применяем сохраненную статистику ТОЛЬКО если это жесткий рестарт/загрузка
 	if (!_is_room_transition)
 	{
-		//global.level_time       = _s_level_time;
 		global.total_score      = _s_total_score;
 		global.enemies_killed   = _s_enemies;
 		global.executions_count = _s_executions;
@@ -332,27 +389,25 @@ function scrLoadGame(_is_room_transition)
 		global.combo_timer      = _s_combo_timer;
 	}
 	
-	
-	
 	// === ЧТЕНИЕ ВРАГОВ ===
 	var _enemy_count = buffer_read(_buf, buffer_u16);
 	
-	// Сначала очищаем старых живых врагов, чтобы избежать дубликатов
 	with (objEnemy) { instance_destroy(); }
 	
 	for (var i = 0; i < _enemy_count; i++) 
 	{
-		// ИСПРАВЛЕНО: Минимальный остаток байт увеличен до 88, чтобы буфер не вылетал на расширенных переменных
 		var _bytes_left = buffer_get_size(_buf) - buffer_tell(_buf);
-		if (_bytes_left < 88) { break; }
+		if (_bytes_left < 92) { break; }
 
+		var _uid = buffer_read(_buf, buffer_u32);
+		
 		var _x  = buffer_read(_buf, buffer_f16);
 		var _y  = buffer_read(_buf, buffer_f16);
 		var _obj_index   = buffer_read(_buf, buffer_u16);
 		
 		var _en = instance_create_layer(_x, _y, "Instances", _obj_index);
+		_en.enemy_uid = _uid;
 		
-		// Позиция, графика, базовые свойства
 		_en.sprite_index      = buffer_read(_buf, buffer_u16);
 		_en.faction           = buffer_read(_buf, buffer_u8);
 		_en.class             = buffer_read(_buf, buffer_u8);
@@ -360,30 +415,24 @@ function scrLoadGame(_is_room_transition)
 		_en.weapon            = buffer_read(_buf, buffer_u8);
 		_en.isRange_weapon    = buffer_read(_buf, buffer_bool);
 		
-		// Состояния и ИИ таймеры
 		_en.state             = buffer_read(_buf, buffer_u8);
 		_en.move_type         = buffer_read(_buf, buffer_u8);
 		_en.reaction_time     = buffer_read(_buf, buffer_u8);
-		_en.backing_off_delay = buffer_read(_buf, buffer_u8); // Наш новый таймер размышлений
+		_en.backing_off_delay = buffer_read(_buf, buffer_u8);
 		
-		// Движение, физика и углы
 		_en.target_speed      = buffer_read(_buf, buffer_f16);
 		_en.current_speed     = buffer_read(_buf, buffer_f16);
 		_en.my_angle          = buffer_read(_buf, buffer_f16);
 		_en.desired_angle     = buffer_read(_buf, buffer_f16);
 		_en.direction         = buffer_read(_buf, buffer_f16);
-		//_en.image_angle       = _en.my_angle; // Синхронизируем встроенный угол отрисовки
 		
-		// Анимация ног
 		_en.legs_direction    = buffer_read(_buf, buffer_f16);
 		_en.legs_image_index  = buffer_read(_buf, buffer_f16);
 		
-		// Боевая система
 		_en.ammo			  = buffer_read(_buf, buffer_u8);
 		_en.reload            = buffer_read(_buf, buffer_u8);
 		_en.start_shooting    = buffer_read(_buf, buffer_bool);
 		
-		// Зрение и фазы поиска (SEARCH STATE)
 		_en.search_timer      = buffer_read(_buf, buffer_u16);
 		_en.search_phase      = buffer_read(_buf, buffer_u8);
 		_en.last_seen_x       = buffer_read(_buf, buffer_f16);
@@ -391,30 +440,25 @@ function scrLoadGame(_is_room_transition)
 		_en.safe_x            = buffer_read(_buf, buffer_f16);
 		_en.safe_y            = buffer_read(_buf, buffer_f16);
 		
-		// Поиск оружия (UNARMED SEARCH)
 		_en.weapon_search_timer  = buffer_read(_buf, buffer_u16);
 		_en.can_see_weapon       = buffer_read(_buf, buffer_bool);
 		_en.try_get_weapon_timer = buffer_read(_buf, buffer_u16);
 		_en.hasTriedToGetWeapon  = buffer_read(_buf, buffer_bool);
 		
-		// Слух и шум (INVESTIGATE STATE)
 		_en.can_hear          = buffer_read(_buf, buffer_u8);
 		_en.noise_x           = buffer_read(_buf, buffer_f16);
 		_en.noise_y           = buffer_read(_buf, buffer_f16);
 		
-		// Свободные типы перемещений (RANDOM / PATROL)
 		_en.random_move_timer = buffer_read(_buf, buffer_u16);
 		_en.random_dir        = buffer_read(_buf, buffer_f16);
 		_en.patrol_dir        = buffer_read(_buf, buffer_f16);
 		
-		// Стрейф, застревания и обход коллизий
 		_en.old_x             = buffer_read(_buf, buffer_f16);
 		_en.old_y             = buffer_read(_buf, buffer_f16);
 		_en.stuck_timer       = buffer_read(_buf, buffer_u16);
 		_en.strafe_dir        = buffer_read(_buf, buffer_s8);
 		_en.strafe_change_timer = buffer_read(_buf, buffer_u16);
 		
-		// Pathfinding (Временные переменные путей)
 		_en._saved_path_pos            = buffer_read(_buf, buffer_f16);
 		_en._saved_path_spd            = buffer_read(_buf, buffer_f16);
 		_en.searching_path_delay_timer = buffer_read(_buf, buffer_u16);
@@ -422,35 +466,27 @@ function scrLoadGame(_is_room_transition)
 		_en.walk_on_trail              = buffer_read(_buf, buffer_u8);
 		_en.start_searching            = buffer_read(_buf, buffer_u8);
 		
-		// Боевые эффекты
 		_en.shell_ready_to_spawn       = buffer_read(_buf, buffer_s16);
 		
-		// Определение индекса мишени
 		_en._saved_target_type  = buffer_read(_buf, buffer_u8);
 		_en._saved_target_index = buffer_read(_buf, buffer_u16);
 		
-		// На ходу подтягиваем корректные структуры спрайтов из базы данных
 		_en.my_sprites     = scrEnemyGetSprite(_en.skin, _en.weapon);
 	}
 	
-	// =========================================================================
-	// === УМНОЕ ВОССТАНОВЛЕНИЕ СВЯЗЕЙ И ЗАЩИТА ОТ САМОУБИЙСТВА ===
-	// =========================================================================
+	// === ВОССТАНОВЛЕНИЕ СВЯЗЕЙ ВРАГОВ ===
 	with (objEnemy)
 	{
 		if (!variable_instance_exists(id, "_saved_target_type")) continue;
 
-		// 1. Если целью был Игрок — привязываем его честно (он один, индекс не перепутается)
 		if (_saved_target_type == 1)      
 		{
 			my_target = instance_find(objPlayer, 0);
 		}
-		// 2. Если целью был другой враг — сбрасываем цель в noone, чтобы исключить суициды и стрельбу в стены
 		else if (_saved_target_type == 2) 
 		{
 			my_target = noone;
 			
-			// Если враг сохранился прямо посреди удара или стрельбы по союзнику — гасим атаку
 			if (state == STATES.ATTACKMELEE || state == STATES.ATTACKRANGE || state == STATES.CHASE || state == STATES.AFTERMATH)
 			{
 				state        = STATES.STEP;
@@ -465,7 +501,6 @@ function scrLoadGame(_is_room_transition)
 			my_target = noone;
 		}
 		
-		// 3. Восстановление путей (срабатывает только если цель жива и валидна)
 		if (_saved_path_spd > 0 && my_target != noone) 
 		{
 			if (variable_global_exists("mp_grid") && mp_grid_path(global.mp_grid, my_path, x, y, last_seen_x, last_seen_y, true))
@@ -480,7 +515,6 @@ function scrLoadGame(_is_room_transition)
 			}
 		}
 	}
-	
 	
 	// === ЧТЕНИЕ ТРУПОВ ===
 	if (buffer_tell(_buf) < buffer_get_size(_buf))
@@ -518,7 +552,7 @@ function scrLoadGame(_is_room_transition)
 		}
 	}
 	
-	// === ОБНОВЛЕНО: ЧТЕНИЕ ОРУЖИЯ ПО НОВОЙ СИСТЕМЕ ТЕГОВ ===
+	// === ЧТЕНИЕ ОРУЖИЯ ===
 	if (buffer_tell(_buf) < buffer_get_size(_buf))
 	{
 		var _weapon_count = buffer_read(_buf, buffer_u16);
@@ -529,23 +563,21 @@ function scrLoadGame(_is_room_transition)
 			var _w_y    = buffer_read(_buf, buffer_f16);
 			var _w_img  = buffer_read(_buf, buffer_u8);
 			var _w_ang  = buffer_read(_buf, buffer_f16);
-			var _w_weap = buffer_read(_buf, buffer_u8); // Читаем в _w_weap
+			var _w_weap = buffer_read(_buf, buffer_u8);
 			var _w_type = buffer_read(_buf, buffer_u8);
 			var _w_dpth = buffer_read(_buf, buffer_s32); 
 			var _w_object_index = buffer_read(_buf, buffer_u16);
 			var _w_ammo = buffer_read(_buf, buffer_u8);
 			
-			// Спавним нужный объект
 			var _weap = instance_create_layer(_w_x, _w_y, "Instances", _w_object_index);
 			
 			_weap.image_index = _w_img;
 			_weap.my_angle    = _w_ang;
-			_weap.weapon      = _w_weap; // ИСПРАВЛЕНО: теперь _w_weap с подчёркиванием
+			_weap.weapon      = _w_weap;
 			_weap.weapon_type = _w_type;
 			_weap.depth       = _w_dpth; 
 			_weap.ammo		  =	_w_ammo;
 			
-			// Сбрасываем физику
 			_weap.speed       = 0;
 			_weap.image_speed = 0;
 			
@@ -555,8 +587,6 @@ function scrLoadGame(_is_room_transition)
 			}
 		}
 		
-		// === СИНХРОНИЗАЦИЯ СЧЕТЧИКА НАЛОЖЕНИЯ ОРУЖИЯ ===
-		// Проверяем все объекты, имеющие тег Weapon, чтобы найти минимальную глубину
 		var _min_weap_depth = 0;
 		for (var i = 0; i < array_length(_tagged_objects); i++) 
 		{
@@ -568,39 +598,186 @@ function scrLoadGame(_is_room_transition)
 		global.weapon_render_counter = _min_weap_depth;
 	}
 	
-	// === ЧТЕНИЕ И ВОССТАНОВЛЕНИЕ ДВЕРЕЙ ===
+	// === ЧТЕНИЕ ДВЕРЕЙ ===
 	if (buffer_tell(_buf) < buffer_get_size(_buf))
 	{
 		var _door_count = buffer_read(_buf, buffer_u16);
 		
 		for (var d = 0; d < _door_count; d++)
 		{
-			var _d_xstart  = buffer_read(_buf, buffer_f16);
-			var _d_ystart  = buffer_read(_buf, buffer_f16);
-			var _d_angle   = buffer_read(_buf, buffer_f16);
-			var _d_speed   = buffer_read(_buf, buffer_f16);
-			var _d_swinger = buffer_read(_buf, buffer_u8);
-			var _d_start   = buffer_read(_buf, buffer_f16); // ИСПРАВЛЕНО: строго f16, байты теперь совпадают!
+			var _d_obj      = buffer_read(_buf, buffer_u16);
+			var _d_uid      = buffer_read(_buf, buffer_u32);
+			var _d_xstart   = buffer_read(_buf, buffer_f16);
+			var _d_ystart   = buffer_read(_buf, buffer_f16);
+			var _d_angle    = buffer_read(_buf, buffer_f16);
+			var _d_speed    = buffer_read(_buf, buffer_f16);
+			var _d_swinger  = buffer_read(_buf, buffer_u8);
+			var _d_start    = buffer_read(_buf, buffer_f16);
+			var _d_closed   = buffer_read(_buf, buffer_bool);
 			
-			// Создаем абсолютно чистую дверь на ее законном месте
-			var _new_door = instance_create_layer(_d_xstart, _d_ystart, "Instances", objWoodenDoor);
+			var _new_door = instance_create_layer(_d_xstart, _d_ystart, "Instances", _d_obj);
 			
-			// Накатываем параметры физики
+			_new_door.uid         = _d_uid;
 			_new_door.image_angle = _d_angle;
 			_new_door.swingspeed  = _d_speed;
 			_new_door.swinger     = _d_swinger;
-			_new_door.start_angle = _d_start; // Теперь сюда со стопроцентной гарантией прилетит 270!
+			_new_door.start_angle = _d_start;
+			_new_door.closed      = _d_closed;
 			
-			// Фиксируем xstart/ystart
 			_new_door.xstart = _d_xstart;
 			_new_door.ystart = _d_ystart;
+		}
+	}
+	
+	// === ЧТЕНИЕ ТЬМЫ (objDarkness) ===
+	if (buffer_tell(_buf) < buffer_get_size(_buf))
+	{
+		var _darkness_count = buffer_read(_buf, buffer_u16);
+		
+		for (var dk = 0; dk < _darkness_count; dk++)
+		{
+			var _dk_obj     = buffer_read(_buf, buffer_u16);
+			var _dk_uid     = buffer_read(_buf, buffer_u32);
+			var _dk_x       = buffer_read(_buf, buffer_f16);
+			var _dk_y       = buffer_read(_buf, buffer_f16);
+			var _dk_alpha   = buffer_read(_buf, buffer_f16);
+			var _dk_angle   = buffer_read(_buf, buffer_f16);
+			var _dk_xscale  = buffer_read(_buf, buffer_f16);
+			var _dk_yscale  = buffer_read(_buf, buffer_f16);
+			var _dk_fadeout = buffer_read(_buf, buffer_bool);
+			var _dk_fadein  = buffer_read(_buf, buffer_bool);
+			
+			var _new_dark = instance_create_layer(_dk_x, _dk_y, "Instances", _dk_obj);
+			
+			_new_dark.uid          = _dk_uid;
+			_new_dark.image_alpha  = _dk_alpha;
+			_new_dark.image_angle  = _dk_angle;
+			_new_dark.image_xscale = _dk_xscale;
+			_new_dark.image_yscale = _dk_yscale;
+			_new_dark.fade_out     = _dk_fadeout;
+			_new_dark.fade_in      = _dk_fadein;
+		}
+	}
+	
+	// === ЧТЕНИЕ ОКОН (objWindow) ===
+	if (buffer_tell(_buf) < buffer_get_size(_buf))
+	{
+		var _window_count = buffer_read(_buf, buffer_u16);
+		
+		for (var wn = 0; wn < _window_count; wn++)
+		{
+			var _wn_obj     = buffer_read(_buf, buffer_u16);
+			var _wn_x       = buffer_read(_buf, buffer_f16);
+			var _wn_y       = buffer_read(_buf, buffer_f16);
+			var _wn_img     = buffer_read(_buf, buffer_u8);
+			
+			var _found = instance_position(_wn_x, _wn_y, _wn_obj);
+			if (_found != noone)
+			{
+				_found.image_index = _wn_img;
+			}
+		}
+	}
+	
+	// === ЧТЕНИЕ ТЕЛЕВИЗОРОВ (objTV) ===
+	if (buffer_tell(_buf) < buffer_get_size(_buf))
+	{
+		var _tv_count = buffer_read(_buf, buffer_u16);
+		
+		for (var tv = 0; tv < _tv_count; tv++)
+		{
+			var _tv_x       = buffer_read(_buf, buffer_f16);
+			var _tv_y       = buffer_read(_buf, buffer_f16);
+			var _tv_sprite  = buffer_read(_buf, buffer_u16);
+			var _tv_speed   = buffer_read(_buf, buffer_f16);
+			var _tv_energie = buffer_read(_buf, buffer_u8);
+			var _tv_life    = buffer_read(_buf, buffer_u8);
+			
+			var _found_tv = instance_position(_tv_x, _tv_y, objTV);
+			if (_found_tv != noone)
+			{
+				_found_tv.sprite_index = _tv_sprite;
+				_found_tv.image_speed  = _tv_speed;
+				_found_tv.energie      = _tv_energie;
+				_found_tv.life         = _tv_life;
+			}
+		}
+	}
+	
+	// === ЧТЕНИЕ ТРИГГЕРОВ ВХОДА (objTriggerEnter) ===
+	if (buffer_tell(_buf) < buffer_get_size(_buf))
+	{
+		var _trigger_enter_count = buffer_read(_buf, buffer_u16);
+		
+		for (var t = 0; t < _trigger_enter_count; t++)
+		{
+			var _t_id        = buffer_read(_buf, buffer_u32);
+			var _t_triggered = buffer_read(_buf, buffer_bool);
+			
+			var _t_spawn_obj    = buffer_read(_buf, buffer_u16);
+			var _t_spawn_skin   = buffer_read(_buf, buffer_u8);
+			var _t_spawn_class  = buffer_read(_buf, buffer_u8);
+			var _t_spawn_weap   = buffer_read(_buf, buffer_u8);
+			var _t_spawn_ammo   = buffer_read(_buf, buffer_u8);
+			var _t_spawn_state  = buffer_read(_buf, buffer_u8);
+			
+			var _t_spawn_x      = buffer_read(_buf, buffer_f16);
+			var _t_spawn_y      = buffer_read(_buf, buffer_f16);
+			var _t_target_x     = buffer_read(_buf, buffer_f16);
+			var _t_target_y     = buffer_read(_buf, buffer_f16);
+			
+			with (objTriggerEnter)
+			{
+				if (trigger_id == _t_id)
+				{
+					is_triggered = _t_triggered;
+					
+					if (!is_triggered)
+					{
+						spawn_object = _t_spawn_obj;
+						spawn_skin   = _t_spawn_skin;
+						spawn_class  = _t_spawn_class;
+						spawn_weapon = _t_spawn_weap;
+						spawn_ammo   = _t_spawn_ammo;
+						spawn_state  = _t_spawn_state;
+						
+						spawn_x  = _t_spawn_x;
+						spawn_y  = _t_spawn_y;
+						target_x = _t_target_x;
+						target_y = _t_target_y;
+					}
+					
+					break;
+				}
+			}
+		}
+	}
+	
+	// === ЧТЕНИЕ ТРИГГЕРОВ СОБЫТИЙ (objTriggerAction) ===
+	if (buffer_tell(_buf) < buffer_get_size(_buf))
+	{
+		var _trigger_action_count = buffer_read(_buf, buffer_u16);
+		
+		for (var t = 0; t < _trigger_action_count; t++)
+		{
+			var _t_id        = buffer_read(_buf, buffer_u32);
+			var _t_triggered = buffer_read(_buf, buffer_bool);
+			
+			with (objTriggerAction)
+			{
+				if (trigger_id == _t_id)
+				{
+					is_triggered = _t_triggered;
+					break;
+				}
+			}
 		}
 	}
 	
 	buffer_delete(_buf); 
 	
 	// === ЗАГРУЗКА ПОВЕРХНОСТИ КРОВИ ===
-	var _blood_file_name = room_get_name(room) + "_blood.dat";
+	var _blood_file_name = scrGetBloodFileName();
 	
 	if (file_exists(_blood_file_name))
 	{

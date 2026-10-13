@@ -79,6 +79,8 @@ if (hit_count == 3 && image_index == 3)
     _body.image_index = _body.image_number - 1;
     _body.my_angle = my_angle;
     _body.isExecuted = true;
+	
+	_body.blood_pool_forward_offset = 24; 
     
 	
 	scrEnemyUpdateTargetID(id, _player); 

@@ -14,7 +14,3 @@ enemy_faction = 0;
 enemy_class = 0;
 enemy_skin  = 0;
 enemy_sprite = 0;
-
-
-if enemy_skin == SKIN.COLOMBIANREGULAR { enemy_sprite = sprColombianDieLean; }
-//if enemy_skin == SKIN.COLOMBIANVEST { enemy_sprite = sprColombianVestDieLean; }

@@ -37,5 +37,8 @@
     "path":"sprites/sprGoArrow/sprGoArrow.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "Pausable",
+  ],
   "visible":true,
 }

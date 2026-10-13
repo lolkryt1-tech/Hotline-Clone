@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrEnemyHiderShoot",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrEnemyHiderShoot",
+  "parent":{
+    "name":"States",
+    "path":"folders/Scripts/Enemy/States.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

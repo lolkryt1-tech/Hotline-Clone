@@ -38,5 +38,8 @@
     "path":"sprites/sprSaveManager/sprSaveManager.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "Pausable",
+  ],
   "visible":true,
 }

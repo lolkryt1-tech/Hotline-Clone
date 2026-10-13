@@ -9,5 +9,5 @@ z_speed    = random_range(0.8, 1.5); // Слабый подскок вверх
 gravity_z  = 0.25;                 // Гравитация
 
 // Вращение и масштаб
-rot_speed   = random_range(4, 9) * choose(-1, 1); // УМЕНЬШЕНО: Теперь крутятся медленно и плавно
+rot_speed   = random_range(4, 9) * choose(-1, 1);
 base_scale  = 1; // Базовый масштаб спрайта

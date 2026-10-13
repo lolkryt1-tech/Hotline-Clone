@@ -13,7 +13,10 @@
     "name":"Blood",
     "path":"folders/Objects/Blood.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"objDecals",
+    "path":"objects/objDecals/objDecals.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,

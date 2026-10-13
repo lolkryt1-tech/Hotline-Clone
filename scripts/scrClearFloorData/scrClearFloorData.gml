@@ -2,24 +2,22 @@ function scrClearFloorData()
 {
     var _r = 0;
     
-    // Перебираем вообще все комнаты, которые существуют в твоём проекте
     while (room_exists(_r))
     {
         var _room_name = room_get_name(_r);
         
-        var _file_name       = _room_name + ".dat";
-        var _blood_file_name = _room_name + "_blood.dat"; // ДОБАВЛЕНО: имя файла крови
-        
-        // 1. Если старый файл сохранения этажа лежит на диске — удаляем его
-        if (file_exists(_file_name))
+        // Ищем этаж, к которому относится эта комната
+        for (var i = 0; i < global.current_level.total_floors; i++)
         {
-            file_delete(_file_name);
-        }
-        
-        // 2. ДОБАВЛЕНО: Если файл крови этого этажа существует — удаляем и его
-        if (file_exists(_blood_file_name))
-        {
-            file_delete(_blood_file_name);
+            var _floor = global.current_level.floors[i];
+            if (_floor.room_name == _room_name || _floor.file_prefix == _room_name)
+            {
+                var _file_name       = scrGetSaveFileName(i);
+                var _blood_file_name = scrGetBloodFileName(i);
+                
+                if (file_exists(_file_name))       file_delete(_file_name);
+                if (file_exists(_blood_file_name)) file_delete(_blood_file_name);
+            }
         }
         
         _r++;

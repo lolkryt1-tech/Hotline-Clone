@@ -1,2 +1,3 @@
 move_type = MOVETYPE.STATIC;
-ammo = 1000;
+
+enemy_uid = 5;

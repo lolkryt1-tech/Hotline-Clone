@@ -1,5 +1,30 @@
 draw_set_font(fntDebug);
 draw_sprite_ext(sprColombianLegs, legs_image_index, x, y, image_xscale, image_yscale, legs_direction, image_blend, image_alpha);
+
+// --- ОТРИСОВКА НЕЖНОГО МЯГКОГО СВЕЧЕНИЯ ПРИ УДАРЕ ---
+if (spark_flash > 0)
+{
+    // Увеличенный радиус: на старте 32 пикселя, затем быстро сужается (32 -> 21 -> 10)
+    var _glow_radius = 10 + (spark_flash * 11);
+    
+    var _glow_alpha = (spark_flash / 3) * 0.25;
+    draw_set_alpha(_glow_alpha);
+    
+    // Включаем сочный аддитивный режим смешивания
+    gpu_set_blendmode_ext(bm_src_alpha, bm_one);
+    
+    // Рисуем мягкий белый круг-градиент
+    draw_circle_color(x, y, _glow_radius, c_white, c_black, false);
+    
+    // Возвращаем нормальный режим рисования
+    gpu_set_blendmode(bm_normal);
+    draw_set_alpha(1.0);
+    
+    // Уменьшаем таймер
+    spark_flash -= 1;
+}
+
+
 draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, my_angle, image_blend, image_alpha);
 
 
