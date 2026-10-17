@@ -4,7 +4,7 @@ event_inherited();
 faction              = FACTION.COLOMBIAN;
 class                = CLASS.DODGER;
 skin				 = SKIN.COLOMBIANDODGER;
-weapon               = WEAPONS.PISTOL;
+weapon               = WEAPONS.KNIFE;
 isRange_weapon       = false;
 
 //if (sprite_index == sprColombianWalkUnarmed)	{ isRange_weapon = false; weapon = WEAPONS.UNARMED; }

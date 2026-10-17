@@ -8,16 +8,17 @@ enum TRIGGER_CONDITION {
 }
 
 enum TRIGGER_ACTION {
-    SPAWN,              // спавн одного врага
-    SPAWN_GROUP,        // спавн группы врагов
-    OPEN_DOOR,          // открыть дверь
-    CLOSE_DOOR,         // закрыть дверь
-    FADE_OUT_DARKNESS,  // тьма исчезает
-    FADE_IN_DARKNESS,   // тьма появляется
-	CHANGE_ENEMY_STATE,	// Изменить состояние врага
-    DIALOG,             // задел
-    TRANSITION,         // задел
-    SCRIPT              // задел
+    SPAWN,						// спавн одного врага
+    SPAWN_GROUP,				// спавн группы врагов
+    OPEN_DOOR,					// открыть дверь
+    CLOSE_DOOR,					// закрыть дверь
+    FADE_OUT_DARKNESS,			// тьма исчезает
+    FADE_IN_DARKNESS,			// тьма появляется
+	CHANGE_ENEMY_STATE,			// Изменить состояние врага
+	UNLOCK_FLOOR_TRANSITION,	// Открыть переход на этаж
+    DIALOG,						// задел
+    TRANSITION,					// задел
+    SCRIPT						// задел
 }
 
 /// === ОСНОВНЫЕ ПЕРЕМЕННЫЕ ===

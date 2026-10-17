@@ -39,7 +39,25 @@ switch (owner.class)
         break;
 
     case CLASS.FAT:
-        // === МЕСТО ДЛЯ ТОЛСТЯКА ===
+         // Спавн звуков и крови
+        owner.fat_is_bleeding = true;
+		owner.fat_blood_current -= 50;
+        var _hit_sound = choose(sndBulletHit1, sndBulletHit2, sndBulletHit3);
+        var _played_sound = audio_play_sound(_hit_sound, 1, false);
+        audio_sound_pitch(_played_sound, random_range(0.8, 0.95)); 
+
+        // ИСПРАВЛЕННЫЙ БЛОК: Теперь скорость применяется к созданному объекту крови!
+        var _smoke_count = irandom_range(1, 4);
+        repeat(_smoke_count)
+        {
+            var _blood_smoke = instance_create_layer(x, y, "Instances", objBloodSmoke);
+            _blood_smoke.speed = random_range(1.0, 2.2);
+            var _random_dir = (owner.direction - 180) + random_range(-35, 35);
+            _blood_smoke.direction = _random_dir;
+            _blood_smoke.my_angle  = _random_dir; 
+        }
+		
+		instance_destroy(other); 
         break;
         
     case CLASS.VEST:

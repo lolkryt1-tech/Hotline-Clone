@@ -38,8 +38,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"Techniquic",
-    "path":"folders/Sprites/Furniture/Techniquic.yy",
+    "name":"Hight objects",
+    "path":"folders/Sprites/Furniture/Hight objects.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

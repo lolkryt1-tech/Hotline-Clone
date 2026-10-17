@@ -3,6 +3,7 @@ image_xscale = 3;
 image_yscale = 3;
 global.my_id = id;
 var _bullets_hit = 0;
+instance_destroy(my_light);
 
 // 2. Проверяем пули, попавшие в зону, наносим урон и уничтожаем их
 with (objBullet)

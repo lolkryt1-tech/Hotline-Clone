@@ -32,5 +32,5 @@ switch (state)
 	case STATES.FATDIE: scrEnemyFatDie() break;
 }
 
-scrEnemyMovement();
+if (state != STATES.FATDIE) { scrEnemyMovement(); }
 scrProcessShellSpawn();

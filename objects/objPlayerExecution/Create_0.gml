@@ -9,13 +9,16 @@ enum EXECUTION_TYPE
 
 depth = -3000;
 
+faction = FACTION.PLAYER;
+character = CHARACTER.COP;
+
+max_energy           = choose(1, 2); 
+energy               = max_energy;
+
+/*
 execution_type = 0;
 
 my_angle = 0;
-
-faction = 0;
-character = 0;
-
 enemy_sprite = 0;
 character_sprite = 0;
 

@@ -6,8 +6,8 @@
   "name":"objChair",
   "overriddenProperties":[],
   "parent":{
-    "name":"Furniture",
-    "path":"folders/Objects/Furniture.yy",
+    "name":"Sits",
+    "path":"folders/Objects/Furniture/Sits.yy",
   },
   "parentObjectId":{
     "name":"objSolid",

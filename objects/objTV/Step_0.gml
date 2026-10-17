@@ -1,3 +1,10 @@
+if ((sprite_index != sprTVBig) && (instance_exists(my_light))) 
+{ 
+    instance_destroy(my_light); 
+    my_light = noone; 
+}
+
+
 // === ПРОВЕРКА УДАРА ИГРОКА ===
 // Проверяем существование игрока и то, что телевизор еще НЕ полностью разбит
 if (instance_exists(objPlayer) && (sprite_index == sprTVBig || sprite_index == sprTVBigBreak))
@@ -7,32 +14,39 @@ if (instance_exists(objPlayer) && (sprite_index == sprTVBig || sprite_index == s
     // Если игрок атакует в ближнем бою
     if (_p.sprite_index == _p.my_sprites.attack && _p.isRange_weapon == false)
     {
-        var _reach             = 24;
-        var _attack_half_angle = 45;
+        var _reach = 18;
         
-        var _mouse_dir  = point_direction(_p.x, _p.y, mouse_x, mouse_y);
-        var _target_dir = point_direction(_p.x, _p.y, x, y);
-        var _dist       = point_distance(_p.x, _p.y, x, y);
+        // Направление удара от игрока на мышь
+        var _attack_dir = point_direction(_p.x, _p.y, mouse_x, mouse_y);
+        
+        // Считаем конечную точку луча удара
+        var _strike_end_x = _p.x + lengthdir_x(_reach, _attack_dir);
+        var _strike_end_y = _p.y + lengthdir_y(_reach, _attack_dir);
         
         var _is_hit = false;
         
-        // --- ЗОНА Б: КОНУС АТАКИ ---
-        if (_dist <= _reach)
+        // --- ПРОВЕРКА ПЕРЕСЕЧЕНИЯ ЛУЧА С ХИТБОКСОМ (id телевизора) ---
+        if (collision_line(_p.x, _p.y, _strike_end_x, _strike_end_y, id, false, false))
         {
-            if (abs(angle_difference(_mouse_dir, _target_dir)) <= _attack_half_angle)
+            // Находим точную точку столкновения на хитбоксе для линии видимости
+            var _closest_x = clamp(_p.x, bbox_left, bbox_right);
+            var _closest_y = clamp(_p.y, bbox_top, bbox_bottom);
+            
+            // Проверка линии видимости (чтобы не разбить телек сквозь  стену)
+            var _block_los = tag_get_asset_ids("Block_LOS", asset_object);
+            var _los_wall = collision_line(_p.x, _p.y, _closest_x, _closest_y, _block_los, false, true);
+            
+            if (_los_wall == noone) 
             {
-                var _block_los = tag_get_asset_ids("Block_LOS", asset_object);
-                var _los_wall = collision_line(_p.x, _p.y, x, y, _block_los, false, true);
-                if (_los_wall == noone) 
-                {
-                    _is_hit = true;
-                }
+                _is_hit = true;
             }
         }
         
         // --- ПОПАДАНИЕ (ВЗРЫВ ТЕЛЕВИЗОРА) ---
         if (_is_hit)
         {   
+			instance_destroy(my_light);
+			
             // Звуки и тряска экрана
             audio_play_sound(sndGlass1, 0, false);
             if (life > 0) audio_play_sound(sndTaser, 0, false);

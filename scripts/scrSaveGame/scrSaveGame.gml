@@ -149,6 +149,20 @@ function scrSaveGame()
 		buffer_write(_buf, buffer_s32,  depth);
 	}
 	
+	// === 3.5. СОХРАНЕНИЕ ЛУЖ КРОВИ (objBloodPool) ===
+	var _blood_pool_count = instance_number(objBloodPool);
+	buffer_write(_buf, buffer_u16, _blood_pool_count);
+	
+	with (objBloodPool)
+	{
+		buffer_write(_buf, buffer_f16,  x);
+		buffer_write(_buf, buffer_f16,  y);
+		buffer_write(_buf, buffer_u8,   image_index);
+		buffer_write(_buf, buffer_f16,  image_angle);
+		buffer_write(_buf, buffer_f16,  image_xscale);
+		buffer_write(_buf, buffer_f16,  image_yscale);
+	}
+	
 	// === 4. СОХРАНЕНИЕ ОРУЖИЯ НА ПОЛУ ===
 	var _tagged_objects = tag_get_asset_ids("Weapon", asset_object);
 	var _total_weapons_count = 0;
@@ -243,7 +257,7 @@ function scrSaveGame()
 		buffer_write(_buf, buffer_u8,  image_index);
 	}
 	
-	// === 9. СОХРАНЕНИЕ ТЕЛЕВИЗОРОВ (objTV) ===
+		// === 9. СОХРАНЕНИЕ ТЕЛЕВИЗОРОВ (objTV) ===
 	var _tv_count = instance_number(objTV);
 	buffer_write(_buf, buffer_u16, _tv_count);
 	
@@ -252,12 +266,39 @@ function scrSaveGame()
 		buffer_write(_buf, buffer_f16, x);
 		buffer_write(_buf, buffer_f16, y);
 		buffer_write(_buf, buffer_u16, sprite_index);
+		buffer_write(_buf, buffer_f16, image_angle);
 		buffer_write(_buf, buffer_f16, image_speed);
 		buffer_write(_buf, buffer_u8,  energie);
 		buffer_write(_buf, buffer_u8,  life);
 	}
 	
-	// === 10. СОХРАНЕНИЕ ТРИГГЕРОВ ВХОДА (objTriggerEnter) ===
+	// === 10. СОХРАНЕНИЕ КАЛЬЯНОВ (objHookah) ===
+	var _hookah_count = instance_number(objHookah);
+	buffer_write(_buf, buffer_u16, _hookah_count);
+
+	with (objHookah)
+	{
+	    buffer_write(_buf, buffer_f16, x);
+	    buffer_write(_buf, buffer_f16, y);
+	    buffer_write(_buf, buffer_u8,  image_index);
+	}
+	
+	// === 11. СОХРАНЕНИЕ СТРЕЛКИ ПЕРЕХОДА (objFloorTranslator) ===
+	var _translator_count = instance_number(objFloorTranslator);
+	buffer_write(_buf, buffer_u16, _translator_count); // Сначала пишем количество!
+
+	with (objFloorTranslator)
+	{
+	    // Записываем координаты, чтобы найти ИМЕННО ЭТОТ объект при загрузке
+	    buffer_write(_buf, buffer_f16, x);
+	    buffer_write(_buf, buffer_f16, y);
+		
+	    buffer_write(_buf, buffer_u16, uid);            // Целое число (ID)
+	    buffer_write(_buf, buffer_u16,  trigger_unlock); // Булево (0 или 1)
+	}
+	
+	
+	// === 12. СОХРАНЕНИЕ ТРИГГЕРОВ ВХОДА (objTriggerEnter) ===
 	var _trigger_enter_count = instance_number(objTriggerEnter);
 	buffer_write(_buf, buffer_u16, _trigger_enter_count);
 	
@@ -279,7 +320,7 @@ function scrSaveGame()
 		buffer_write(_buf, buffer_f16,  target_y);
 	}
 	
-	// === 11. СОХРАНЕНИЕ ТРИГГЕРОВ СОБЫТИЙ (objTriggerAction) ===
+	// === 13. СОХРАНЕНИЕ ТРИГГЕРОВ СОБЫТИЙ (objTriggerAction) ===
 	var _trigger_action_count = instance_number(objTriggerAction);
 	buffer_write(_buf, buffer_u16, _trigger_action_count);
 	
@@ -319,6 +360,8 @@ function scrLoadGame(_is_room_transition)
 	with (objDarkness)				{ instance_destroy(); }
 	with (objDecals)				{ instance_destroy(); }
 	with (objEffect)				{ instance_destroy(); }
+	with (objHookah)				{ instance_destroy(); }
+	with (objTV)					{ instance_destroy(); }
 	
 	var _tagged_objects = tag_get_asset_ids("Weapon", asset_object);
 	for (var i = 0; i < array_length(_tagged_objects); i++) 
@@ -552,6 +595,32 @@ function scrLoadGame(_is_room_transition)
 		}
 	}
 	
+	// === ЧТЕНИЕ ЛУЖ КРОВИ (objBloodPool) ===
+	if (buffer_tell(_buf) < buffer_get_size(_buf))
+	{
+		var _blood_pool_count = buffer_read(_buf, buffer_u16);
+		
+		for (var bp = 0; bp < _blood_pool_count; bp++)
+		{
+			var _bp_x     = buffer_read(_buf, buffer_f16);
+			var _bp_y     = buffer_read(_buf, buffer_f16);
+			var _bp_img   = buffer_read(_buf, buffer_u8);
+			var _bp_angle = buffer_read(_buf, buffer_f16);
+			var _bp_xs    = buffer_read(_buf, buffer_f16);
+			var _bp_ys    = buffer_read(_buf, buffer_f16);
+			
+			var _new_bp = instance_create_layer(_bp_x, _bp_y, "Instances", objBloodPool);
+			
+			_new_bp.image_index   = _bp_img;
+			_new_bp.image_angle   = _bp_angle;
+			_new_bp.image_xscale  = _bp_xs;
+			_new_bp.image_yscale  = _bp_ys;
+			
+			// При воспроизведении лужи крови — сразу перематываем на последний кадр
+			_new_bp.image_index   = _new_bp.image_number - 1;
+		}
+	}
+	
 	// === ЧТЕНИЕ ОРУЖИЯ ===
 	if (buffer_tell(_buf) < buffer_get_size(_buf))
 	{
@@ -675,6 +744,7 @@ function scrLoadGame(_is_room_transition)
 			if (_found != noone)
 			{
 				_found.image_index = _wn_img;
+				_found.solid = (_wn_img == 2) ? false : true;
 			}
 		}
 	}
@@ -688,21 +758,78 @@ function scrLoadGame(_is_room_transition)
 		{
 			var _tv_x       = buffer_read(_buf, buffer_f16);
 			var _tv_y       = buffer_read(_buf, buffer_f16);
-			var _tv_sprite  = buffer_read(_buf, buffer_u16);
+			var _tv_sprite  = buffer_read(_buf, buffer_u16); 
+			var _tv_angle   = buffer_read(_buf, buffer_f16);
 			var _tv_speed   = buffer_read(_buf, buffer_f16);
 			var _tv_energie = buffer_read(_buf, buffer_u8);
 			var _tv_life    = buffer_read(_buf, buffer_u8);
 			
-			var _found_tv = instance_position(_tv_x, _tv_y, objTV);
-			if (_found_tv != noone)
+			var _new_tv = instance_create_layer(_tv_x, _tv_y, "Instances", objTV, {
+				image_angle: _tv_angle
+			});
+			
+			_new_tv.sprite_index = _tv_sprite;
+			_new_tv.image_angle  = _tv_angle;
+			_new_tv.image_speed  = _tv_speed;
+			_new_tv.energie      = _tv_energie;
+			_new_tv.life         = _tv_life;
+			
+			// Если телевизор загрузился сломанным (или без энергии) — 
+			// сразу же гасим его внутренний свет objLightSource, созданный в Create!
+			if (_tv_sprite == sprTVBigBroken || _tv_sprite == sprTVBigBreak || _tv_energie <= 0)
 			{
-				_found_tv.sprite_index = _tv_sprite;
-				_found_tv.image_speed  = _tv_speed;
-				_found_tv.energie      = _tv_energie;
-				_found_tv.life         = _tv_life;
+				if (_new_tv.my_light != noone && instance_exists(_new_tv.my_light))
+				{
+					instance_destroy(_new_tv.my_light);
+				}
+				_new_tv.my_light = noone;
 			}
 		}
 	}
+	
+	// === ЧТЕНИЕ КАЛЬЯНОВ (objHookah) ===
+	if (buffer_tell(_buf) < buffer_get_size(_buf))
+	{
+	    var _hookah_count = buffer_read(_buf, buffer_u16);
+    
+	    for (var hk = 0; hk < _hookah_count; hk++)
+	    {
+	        var _hk_x   = buffer_read(_buf, buffer_f16);
+	        var _hk_y   = buffer_read(_buf, buffer_f16);
+	        var _hk_img = buffer_read(_buf, buffer_u8);
+        
+	        var _new_hk = instance_create_layer(_hk_x, _hk_y, "Instances", objHookah);
+	        _new_hk.image_index = _hk_img;
+	    }
+	}
+	
+	// === ЧТЕНИЕ СТРЕЛКИ ПЕРЕХОДА (objFloorTranslator) ===
+	if (buffer_tell(_buf) < buffer_get_size(_buf))
+	{
+	    var _translator_count = buffer_read(_buf, buffer_u16);
+    
+	    for (var tr = 0; tr < _translator_count; tr++)
+	    {
+	        // Читаем маркеры позиции
+	        var _tr_x = buffer_read(_buf, buffer_f16);
+	        var _tr_y = buffer_read(_buf, buffer_f16);
+        
+	        // Читаем сохраненные свойства
+	        var _saved_uid    = buffer_read(_buf, buffer_u16);
+	        var _saved_unlock = buffer_read(_buf, buffer_u16);
+        
+	        // Ищем уже существующий на уровне объект по этим координатам
+	        var _existing_inst = instance_position(_tr_x, _tr_y, objFloorTranslator);
+        
+	        // Если объект найден на этой точке уровня — обновляем его данные
+	        if (_existing_inst != noone)
+	        {
+	            _existing_inst.uid = _saved_uid;
+	            _existing_inst.trigger_unlock = _saved_unlock;
+	        }
+	    }
+	}
+
 	
 	// === ЧТЕНИЕ ТРИГГЕРОВ ВХОДА (objTriggerEnter) ===
 	if (buffer_tell(_buf) < buffer_get_size(_buf))
@@ -752,6 +879,7 @@ function scrLoadGame(_is_room_transition)
 			}
 		}
 	}
+	
 	
 	// === ЧТЕНИЕ ТРИГГЕРОВ СОБЫТИЙ (objTriggerAction) ===
 	if (buffer_tell(_buf) < buffer_get_size(_buf))

@@ -1,3 +1,6 @@
+my_id = instance_create_layer(objEffector.x, objEffector.y, "Instances", objFloorCleared);
+
+/*
 repeat (2 + random(2))
 {
     my_id = instance_create_layer(objEffector.x, objEffector.y, "Instances", objBloodSquirt);

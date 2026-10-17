@@ -40,7 +40,7 @@ function scrPlayerInteractWeapon()
         
 		_thrown.speed = (_wall_in_front != noone) ? 0 : ((current_weapon == WEAPONS.KNIFE) ? 16 : 12);
         
-		reload = 0;
+		attack_delay = 0;
 		is_turning = false;
 		current_weapon = WEAPONS.UNARMED;
 		my_sprites = scrPlayerGetWeaponSprite(character, current_weapon);

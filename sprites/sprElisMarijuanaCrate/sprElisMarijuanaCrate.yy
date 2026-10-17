@@ -28,8 +28,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"Marijuana",
-    "path":"folders/Sprites/Furniture/Marijuana.yy",
+    "name":"Boxes",
+    "path":"folders/Sprites/Furniture/Boxes.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

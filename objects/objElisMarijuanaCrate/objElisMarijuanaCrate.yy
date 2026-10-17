@@ -6,8 +6,8 @@
   "name":"objElisMarijuanaCrate",
   "overriddenProperties":[],
   "parent":{
-    "name":"Marijuana",
-    "path":"folders/Objects/Furniture/Marijuana.yy",
+    "name":"Boxes",
+    "path":"folders/Objects/Furniture/Boxes.yy",
   },
   "parentObjectId":{
     "name":"objSolid",

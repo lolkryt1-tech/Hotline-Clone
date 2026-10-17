@@ -1,7 +1,7 @@
 // === 1. ЭФФЕКТЫ ПОПАДАНИЯ ДЛЯ ВСЕХ СОСТОЯНИЙ ДВЕРИ (ЗВУК, ДЫМ, БЕЛЫЕ ОСКОЛКИ) ===
 
 // Воспроизводим случайный звук удара по дереву
-audio_play_sound(choose(sndBulletWallImpact, sndBulletWallImpact1, sndBulletWallImpact2, sndBulletWallImpact3, sndBulletWallImpact4), 10, false);
+audio_play_sound(choose(sndBulletWoodImpact, sndBulletWoodImpact2, sndBulletWoodImpact3), 10, false);
 
 // Спавним дым в точке удара пули (отлетает назад с небольшим разбросом)
 var _smoke = instance_create_layer(other.x, other.y, "Instances", objSmokeHit);
@@ -23,7 +23,7 @@ repeat (4)
 	_debris.is_white_wall = false;
     
     // Окрашивание осколков в коричневые оттенки
-    var _col_brown_light = make_color_rgb(139, 69, 19);  
+    var _col_brown_light = make_color_rgb(115, 30, 0);  
     var _col_brown_dark  = make_color_rgb(92, 51, 23);   
     _debris.image_blend  = merge_color(_col_brown_light, _col_brown_dark, random(1));
 }

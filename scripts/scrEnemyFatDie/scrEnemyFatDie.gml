@@ -1,6 +1,8 @@
 function scrEnemyFatDie()
 {	
+	path_end();
     current_speed = 0;
+	legs_image_index = 0;
 
     // 1. Выбрасываем пушку строго на первом кадре падения
     if (floor(image_index) == 1)
@@ -45,12 +47,14 @@ function scrEnemyFatDie()
         // А: Если его добили пулями — труп летит по вектору выстрела
         _dead_body.direction = last_hit_dir;
         _dead_body.my_angle  = last_hit_dir; 
+		_dead_body.speed = 3;
     }
     else
     {
         // Б: Умер сам от анимации — угол трупа равен углу самого толстяка (my_angle)
-        _dead_body.direction = my_angle - 180;
-        _dead_body.my_angle  = my_angle - 180; 
+		_dead_body.direction = my_angle - 180;
+        _dead_body.my_angle = my_angle - 180;
+		_dead_body.speed = 2;
     }
 	
 	scrAddKillStats(250, false);

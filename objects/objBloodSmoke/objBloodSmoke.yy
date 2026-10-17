@@ -13,7 +13,10 @@
     "name":"Blood",
     "path":"folders/Objects/Blood.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"objEffect",
+    "path":"objects/objEffect/objEffect.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,

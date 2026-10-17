@@ -26,8 +26,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"Techniquic",
-    "path":"folders/Sprites/Furniture/Techniquic.yy",
+    "name":"Electronics",
+    "path":"folders/Sprites/Furniture/Electronics.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

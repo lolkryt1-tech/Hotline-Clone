@@ -1,6 +1,7 @@
 friction = 0.4;
 image_speed = 0;
 speed = 5; // Коп отлетает при смерти
+image_index = random(14);
 
 // Инициализация базовых переменных трупа
 hit_type = 0;

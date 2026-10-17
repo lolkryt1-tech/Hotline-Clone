@@ -17,8 +17,8 @@
   ],
   "name":"Start",
   "parent":{
-    "name":"Enemy AI",
-    "path":"Enemy AI.yyp",
+    "name":"Rooms",
+    "path":"folders/Rooms.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

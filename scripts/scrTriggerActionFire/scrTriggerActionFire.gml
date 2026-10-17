@@ -193,6 +193,23 @@ function scrTriggerActionFire(_trigger)
 				    }
 				    break;
 				}
+				
+				
+                // ==========================================
+                // === РАЗБЛОКИРОВАТЬ СТРЕЛКУ ПЕРЕХОДА ===
+                // ==========================================
+                case TRIGGER_ACTION.UNLOCK_FLOOR_TRANSITION: 
+                {
+                    var _target_uid = _act.target_uid;
+                    with (objFloorTranslator)
+                    {
+                        if (uid == _target_uid)
+                        {
+                            trigger_unlock = true; // Исправлено имя переменной согласно вашей системе сохранений
+                        }
+                    }
+                    break;
+                }
                 
                 // ==========================================
                 // === ЗАДЕЛЫ ===

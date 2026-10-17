@@ -14,13 +14,13 @@
   "exportDir":"",
   "name":"sndBulletWallImpact",
   "parent":{
-    "name":"Sounds",
-    "path":"folders/Sounds.yy",
+    "name":"Bullet Impact",
+    "path":"folders/Sounds/Bullet Impact.yy",
   },
   "preload":false,
   "resourceType":"GMSound",
   "resourceVersion":"2.0",
   "sampleRate":44100,
   "soundFile":"sndBulletWallImpact.wav",
-  "volume":0.1,
+  "volume":0.05,
 }

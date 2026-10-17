@@ -1,19 +1,4 @@
-//my_target = scrTargetUpdate(my_target);
 desired_angle = direction;
-
-// ВЫКЛЮЧАЕМ ВСЁ НАХУЙ ЕСЛИ ЦЕЛЬ МЕРТВА И ПЕРЕХОДИМ В ОБЫЧНОЕ ХОЖДЕНИЕ
-/*
-if (my_target != noone && my_target.object_index == objPlayerDead && state != STATES.ATTACKMELEE && state != STATES.AFTERMATH) 
-{ 
-	speed = 0;
-	path_end(); 
-	state = STATES.STEP; 
-	my_target = noone; 
-	mask_index = sprPlayerMask;
-	exit
-}
-*/
-
 
 switch (state)
 {

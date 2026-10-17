@@ -72,7 +72,7 @@ function scrWindowBreak(_window_id, _hit_dir, _hit_spd)
             image_yscale = base_scale + random_size;
                 
             // Физика движения
-            speed     = (_hit_spd * 0.25) + random_range(1.5, 4.5);
+            speed     = (_hit_spd * 0.25) + random_range(0.5, 2.5);
             friction  = 0.15; // Трение о пол
             direction = shard_dir;
         }

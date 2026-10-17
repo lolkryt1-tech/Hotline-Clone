@@ -14,8 +14,8 @@
   "exportDir":"",
   "name":"sndBulletHit2",
   "parent":{
-    "name":"Sounds",
-    "path":"folders/Sounds.yy",
+    "name":"Bullet Impact",
+    "path":"folders/Sounds/Bullet Impact.yy",
   },
   "preload":false,
   "resourceType":"GMSound",

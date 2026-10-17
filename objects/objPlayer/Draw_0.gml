@@ -88,10 +88,8 @@ for (var i = 0; i < 64; i++)
     }
 }
 
-if instance_exists(objPauseMenu) { draw_text(x - 15, y, "Da Menu yest"); }
-
 // Рисуем рядом с вашим счетчиком инстансов
-draw_text(x + 15, y + 0, "Pause menu count " + string(_surfaces_count));
+draw_text(x + 15, y + 0, "Bulbs count " + string(instance_number(objLight)));
 
 draw_text(x + 15, y + 30, "Total instances: " + string(instance_number(all)));
 

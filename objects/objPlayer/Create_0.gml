@@ -33,6 +33,8 @@ hor_velocity         = 0;
 ver_velocity         = 0;
 walking_direction    = 0;
 my_angle             = point_direction(x, y, mouse_x, mouse_y);
+is_frozen_in_transition = false; // Блокировка управления во время перехода
+transition_vector = new Vector2(0, 0); // Вектор автоматического бега
 
 // === УПРАВЛЕНИЕ (ВВОД) ===
 move_input           = 0;
@@ -54,6 +56,7 @@ icon_shake_dir   = -1; // Переключатель: -1 это влево, +1 �
 ammo_color_factor = 0;
 ammo_scale_pulse = 0;
 
+
 // === СПАВН ГИЛЬЗЫ ДРОБОВИКА
 shell_ready_to_spawn = -1;
 
@@ -66,12 +69,18 @@ turn_hold_timer   = 0;        // Таймер зависания на после
 // Накопитель резкого разворота
 flick_timer       = 0;        // Таймер окна времени для совершения рывка
 flick_accum_angle = 0;        // Накопленный угол поворота за это окно
+// Спрайты трупа
+sprDeadCut				= sprCopDeadCut; 
+sprDeadBlunt			= sprCopDeadBlunt; 
+sprDeadeadSlash			= sprCopDeadBlunt; // ПОТОМ ПОМЕНЯТЬ
+sprDeadMachineGun		= sprCopDeadMachinegun;
+sprDeadShotgun			= sprCopDeadShotgun;
+
+
 
 
 
 persistent = true;
-
-//if (instance_exists(objPlayer)) { instance_destroy(); }
 
 // === ДЕБАГ ===
 global.debug = 0;

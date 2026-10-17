@@ -8,8 +8,8 @@
   "name":"objBag",
   "overriddenProperties":[],
   "parent":{
-    "name":"Furniture",
-    "path":"folders/Objects/Furniture.yy",
+    "name":"Low objects",
+    "path":"folders/Objects/Furniture/Low objects.yy",
   },
   "parentObjectId":null,
   "persistent":false,

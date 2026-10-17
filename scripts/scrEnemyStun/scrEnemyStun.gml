@@ -45,6 +45,18 @@ function scrEnemyStun()
         var ko = instance_create_layer(x, y, "Instances", objEnemyKnockedOut);
         
         if (can_hear == 0) { instance_create_layer(x, y, "Instances", objHeadSet); }
+		
+		if (weapon != WEAPONS.UNARMED)
+        {
+            var _dropped = instance_create_layer(x, y, "Instances", objWeapon);
+            _dropped.direction = irandom(360); 
+            _dropped.speed = 8; 
+            _dropped.my_angle = irandom(360); 
+            _dropped.weapon = weapon;
+            _dropped.ammo = ammo;
+			
+            weapon = WEAPONS.UNARMED; // Защита от спавна оружия каждый подкадр
+        }
     
         // Передаем ему параметры для правильного отображения трупа/спрайта
         ko.sprite_index = sprColombianVestGetUp;

@@ -27,8 +27,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"Furniture",
-    "path":"folders/Sprites/Furniture.yy",
+    "name":"Low objects",
+    "path":"folders/Sprites/Furniture/Low objects.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

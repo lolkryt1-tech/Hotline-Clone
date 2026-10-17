@@ -47,7 +47,7 @@ function scrEnemyAttackMelee()
 		}
 		else if (_obj == objPlayer || object_is_ancestor(_obj, objPlayerExecution))
 		{ 
-			scrPlayerDieBlunt(id); 
+			scrPlayerDieMelee(id, weapon); 
 			target_speed = 0; 
 		}
 		else 

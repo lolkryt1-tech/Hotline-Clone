@@ -12,7 +12,7 @@ function scrEnemyPathfinding(update_position, target_x, target_y)
         
         path_delay_timer--;
         if (path_delay_timer > 0) return; 
-        path_delay_timer = 10; 
+        path_delay_timer = 25;
         
         var _target_x = my_target.x;
         var _target_y = my_target.y;
