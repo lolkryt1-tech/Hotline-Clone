@@ -1,7 +1,6 @@
-/// Create Event for objLightController
+depth = 15000;
 
-// === НАСТРОЙКИ AMBIENT LIGHT (значения по умолчанию) ===
-// Задаётся целым цветом (например, make_color_rgb(15, 15, 20))
+// === НАСТРОЙКИ AMBIENT LIGHT ===
 ambient_color = make_color_rgb(15, 15, 20);
 
 // === НАСТРОЙКИ РЕНДЕРЕРА ===
@@ -15,3 +14,5 @@ renderer.soft = use_soft_shadows;
 renderer.smooth = use_smooth_lighting;
 
 application_surface_draw_enable(false);
+
+lit_surf = -1;

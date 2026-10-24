@@ -1,5 +1,7 @@
 function scrEnemyDodge()
 {
+	if (my_target == noone) { scrEnemyTryGetTarget(); }
+	
 	if (sprite_index != sprColombianDDodge)
 	{
 		

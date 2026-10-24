@@ -49,6 +49,7 @@
   },
   "tags":[
     "Pausable",
+    "Eat_Bullet",
   ],
   "visible":true,
 }

@@ -18,13 +18,15 @@ enum STATES {
 	STUN,
 	FATDIE,
 	HIDERDUCK,
-	HIDERSHOOT
+	HIDERSHOOT,
+	ATTACKHITSCAN
 }
 enum SKIN {
 	COLOMBIANREGULAR,
 	COLOMBIANDODGER,
 	COLOMBIANVEST,
 	COLOMBIANFAT,
+	COLOMBIANFATVEST,
 	
 	GANGREGULAR,
 	GANGDODGER,
@@ -36,7 +38,8 @@ enum CLASS {
 	REGULAR,
 	DODGER,
 	VEST,
-	FAT
+	FAT,
+	FATVEST
 }
 
 enum MOVETYPE {
@@ -52,8 +55,8 @@ enum FACTION {
 	PLAYER
 }
 
-state_names = ["idle", "step", "chase", "search", "Investigate" , "attackMelee", "attackRange", "aftermath", "unarmedSearch", "debug", "dodge", "stun", "fat die", "Hider duck", "Hider shoot"];
-skin_names = ["Colombian Regular", "Colombian Dodger", "Colombian Vest", "Colombian Fat", "Gang Regular", "Gang Dodger", "Gang Vest", "Gang Fat"];
+state_names = ["idle", "step", "chase", "search", "Investigate" , "attackMelee", "attackRange", "aftermath", "unarmedSearch", "debug", "dodge", "stun", "fat die", "Hider duck", "Hider shoot", "Attack Hitscan"];
+skin_names = ["Colombian Regular", "Colombian Dodger", "Colombian Vest", "Colombian Fat", "Colombian Fat Vest", "Gang Regular", "Gang Dodger", "Gang Vest", "Gang Fat"];
 
 // Уникальный айди для триггера
 enemy_uid = 0;
@@ -103,6 +106,8 @@ reload               = 20;
 empty_clicks_count	 = 0;
 empty_clicks_target  = irandom_range(2, 4);
 start_shooting		 = false;	// Когда был сделан первый выстрел поворачиваемся резко, а не плавно
+laser_alpha			 = 0;
+laser_sight = noone;
 
 // === БРОНЕЖИЛЕТОНОСЕЦ ===
 stun_current = 0;		// Текущее накопленное оглушение

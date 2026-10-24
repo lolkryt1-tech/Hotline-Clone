@@ -1,3 +1,34 @@
+// === ТИКАНЬЕ ЦЕПОЧКИ ДЕЙСТВИЙ ===
+if (is_firing)
+{
+    while (action_index < array_length(actions))
+    {
+        // Если ещё ждём — уменьшаем таймер и выходим
+        if (action_timer > 0)
+        {
+            action_timer -= 1;
+            exit;
+        }
+
+        // Время пришло — выполняем текущее действие
+        scrExecuteSingleAction(id, actions[action_index]);
+        action_index += 1;
+
+        // Если действия закончились — завершаем цепочку
+        if (action_index >= array_length(actions)) break;
+
+        // Иначе ставим таймер на задержку СЛЕДУЮЩЕГО действия
+        action_timer = variable_struct_exists(actions[0], "delay") ? actions[0].delay : 0;
+    }
+
+    is_firing    = false;
+    is_triggered = true;
+    exit;
+}
+
+if (is_triggered) exit;
+
+
 if (is_triggered) exit;
 
 switch (condition_type)
@@ -53,4 +84,28 @@ switch (condition_type)
             }
         }
         break;
+		
+	case TRIGGER_CONDITION.ENTER_TRIGGER_ZONE:
+	    if (target_zone_id == noone && target_zone_uid != -1)
+	    {
+	        var _uid = target_zone_uid;
+	        with (objTriggerEnter)
+	        {
+	            if (zone_uid == _uid) { other.target_zone_id = id; break; }
+	        }
+	    }
+
+	    if (instance_exists(objPlayer) && instance_exists(target_zone_id))
+	    {
+	        var _zone = target_zone_id;
+	        with (objPlayer)
+	        {
+	            if (place_meeting(x, y, _zone))
+	            {
+	                scrTriggerActionFire(other.id);
+	                break;
+	            }
+	        }
+	    }
+	    break;
 }

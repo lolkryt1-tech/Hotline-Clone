@@ -45,6 +45,7 @@
     "pausable",
     "Executable",
     "Meleeable",
+    "Eat_Bullet",
   ],
   "visible":true,
 }

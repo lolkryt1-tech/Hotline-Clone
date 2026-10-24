@@ -1,6 +1,3 @@
-// Обязательно возвращаем звук сюда — он сработает в любом случае!
-audio_play_sound(sndWeaponHit, 1, false);
-
 my_angle = 0;
 image_speed = 0;
 friction = 0.2;

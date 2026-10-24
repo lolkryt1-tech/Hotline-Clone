@@ -8,13 +8,14 @@ function scrGetLevelData(_level_index)
         // === МИССИЯ 1: PART 1 — PRELUDE ===
         {
             name: "Part 1: Prelude",
-            total_floors: 5,
+            total_floors: 6,
             floors: [
                 { file_prefix: "story_lvl1_f0", room_name: "Room1", is_cleared: false },
                 { file_prefix: "story_lvl1_f1", room_name: "Room2", is_cleared: false },
                 { file_prefix: "story_lvl1_f2", room_name: "Room3", is_cleared: false },
 				{ file_prefix: "story_lvl1_f3", room_name: "Room4", is_cleared: false },
-				{ file_prefix: "story_lvl1_f4", room_name: "Room5", is_cleared: false }
+				{ file_prefix: "story_lvl1_f4", room_name: "Room5", is_cleared: false },
+				{ file_prefix: "story_lvl1_f5", room_name: "Room6", is_cleared: false }
             ]
         },
         

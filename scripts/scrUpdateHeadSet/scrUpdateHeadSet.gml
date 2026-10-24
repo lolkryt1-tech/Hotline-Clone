@@ -2,8 +2,9 @@
 function scrUpdateHeadSet()
 {
 	// 1. БАЗОВАЯ БАЗА ДАННЫХ НАПРЯМУЮ ПО ЭНУМАМ
-	static _anim_data = [];
-	static _dodge_data = []; // ← отдельный массив для доджа (не зависит от оружия)
+	static _anim_data	= [];
+	static _dodge_data	= []; // ← отдельный массив для доджа (не зависит от оружия)
+	static _stun_data	= []; // ← отдельный массив для стана
 	
 	if (array_length(_anim_data) == 0) 
 	{
@@ -134,11 +135,17 @@ function scrUpdateHeadSet()
 		// =========================================================================
 		// DODGE — ОБЩИЙ МАССИВ 
 		// =========================================================================
-		// Вперед-назад (ось X локально) и Влево-вправо (ось Y локально)
-		// Меняйте значения под нужный эффект. Длина массива = количество кадров доджа.
 		_dodge_data = [
 			/*Вперед-назад*/[0, 0, 7, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 7, 7, 6, 3 , 3, 1], 
 			/*Влево-вправо*/[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+		];
+        
+		// =========================================================================
+		// STUN — ОБЩИЙ МАССИВ 
+		// =========================================================================
+		_stun_data = [
+			/*Вперед-назад*/[0, -1, -1, 1], 
+			/*Влево-вправо*/[0, 0, 0, 0]
 		];
 	}
 	
@@ -159,10 +166,16 @@ function scrUpdateHeadSet()
 	var _action_index = 0; 
 	var _is_searching = false;
 	var _is_dodge = false;
+	var _is_stun = false;
 	
+    // ИСПРАВЛЕНО: Сделана правильная цепочка условий, чтобы одно состояние не перебивало другое
 	if (state == STATES.DODGE)
 	{
 		_is_dodge = true;
+	}
+	else if (state == STATES.STUN)
+	{
+		_is_stun = true;
 	}
 	else if (variable_instance_exists(id, "my_sprites") && variable_struct_exists(my_sprites, "sprites"))
 	{
@@ -174,7 +187,7 @@ function scrUpdateHeadSet()
 		else if (sprite_index == _s.idle)    _action_index = 3;
 	}
 	
-	// 4. ВЫБОР ДАННЫХ: ОРУЖИЕ ИЛИ ДОДЖ
+	// 4. ВЫБОР ДАННЫХ: ОРУЖИЕ, ДОДЖ ИЛИ СТАН
 	var _fwd  = 0;
 	var _side = 0;
 	
@@ -183,6 +196,18 @@ function scrUpdateHeadSet()
 		// Используем общий массив доджа
 		var _fwd_array  = _dodge_data[0];
 		var _side_array = _dodge_data[1];
+		
+		var _frame_fwd  = floor(image_index) % array_length(_fwd_array);
+		var _frame_side = floor(image_index) % array_length(_side_array);
+		
+		_fwd  = _fwd_array[_frame_fwd];
+		_side = _side_array[_frame_side];
+	}
+	else if (_is_stun)
+	{
+		// ИЗМЕНЕНИЕ: Используем общий массив стана
+		var _fwd_array  = _stun_data[0];
+		var _side_array = _stun_data[1];
 		
 		var _frame_fwd  = floor(image_index) % array_length(_fwd_array);
 		var _frame_side = floor(image_index) % array_length(_side_array);
@@ -234,6 +259,5 @@ function scrUpdateHeadSet()
 	}
 	
 	// ДЕБАГ
-	var _debug_text = "WEAPON: " + string(weapon) + " | ACT: " + string(_action_index) + " | FRAME: " + string(floor(image_index));
-	draw_text_transformed(x - 40, y - 30, _debug_text, 0.5, 0.5, 0);
+	var _debug_text = "WEAPON: " + string(weapon) + " | ACT: " + string(_action_index);
 }

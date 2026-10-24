@@ -41,6 +41,7 @@
   "spriteMaskId":null,
   "tags":[
     "Block_LOS",
+    "Block_Bullet",
   ],
   "visible":true,
 }

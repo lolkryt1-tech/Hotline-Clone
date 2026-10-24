@@ -39,7 +39,10 @@
     "name":"sprColombianHidingShotgun",
     "path":"sprites/sprColombianHidingShotgun/sprColombianHidingShotgun.yy",
   },
-  "spriteMaskId":null,
+  "spriteMaskId":{
+    "name":"sprPlayerMask",
+    "path":"sprites/sprPlayerMask/sprPlayerMask.yy",
+  },
   "tags":[
     "Meleeable",
   ],

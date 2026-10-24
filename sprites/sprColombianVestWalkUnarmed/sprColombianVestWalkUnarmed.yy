@@ -32,8 +32,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"ColombianVest",
-    "path":"folders/Sprites/Enemy/ColombianVest.yy",
+    "name":"Walk",
+    "path":"folders/Sprites/Enemy/ColombianVest/Walk.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

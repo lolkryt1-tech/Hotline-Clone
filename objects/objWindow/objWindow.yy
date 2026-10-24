@@ -44,6 +44,7 @@
   "spriteMaskId":null,
   "tags":[
     "Meleeable",
+    "Eat_Bullet",
   ],
   "visible":true,
 }

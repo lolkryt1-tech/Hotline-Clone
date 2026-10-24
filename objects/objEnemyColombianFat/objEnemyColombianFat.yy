@@ -43,5 +43,8 @@
     "name":"sprPlayerMask",
     "path":"sprites/sprPlayerMask/sprPlayerMask.yy",
   },
+  "tags":[
+    "Meleeable",
+  ],
   "visible":true,
 }

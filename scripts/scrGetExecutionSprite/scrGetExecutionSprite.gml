@@ -1,15 +1,31 @@
-/// @param {Real} _skin_enum Скин жертвы (из энума SKIN)
-function scrGetExecutionSprite(_skin)
+/// @param {Real} _skin    Скин жертвы (SKIN.*)
+/// @param {Real} _weapon  Оружие казни (WEAPONS.*)
+/// @param {Real} _class   Класс жертвы (CLASS.*)
+function scrGetExecutionSprite(_skin, _weapon)
 {
     switch (_skin)
     {
-        case SKIN.COLOMBIANREGULAR: return sprColombianDieBlunt;
-        case SKIN.COLOMBIANVEST:    return sprColombianVestDieBlunt;
-        
-        // Сюда в одну строчку добавляются новые скины по мере разработки:
-        // case SKIN.COLOMBIANFAT:   return sprColombianFatDieBlunt;
-        // case SKIN.GANGREGULAR:    return sprGangDieBlunt;
-        
-        default:                    return sprColombianDieBlunt; // Подстраховка
+        case SKIN.COLOMBIANREGULAR:
+            return sprColombianDieBlunt;
+
+        case SKIN.COLOMBIANVEST:
+            return sprColombianVestDieBlunt;
+
+        case SKIN.COLOMBIANFAT:
+            if (_weapon == WEAPONS.SLEDGEHAMMER)
+            {
+                return sprCopKillFatSledgeHammer;
+            }
+            return sprColombianDieBlunt; // фолбэк, если не кувалда
+
+        case SKIN.COLOMBIANFATVEST:
+            if (_weapon == WEAPONS.SLEDGEHAMMER)
+            {
+                return sprCopKillFatVestSledgeHammer;
+            }
+            return sprColombianVestDieBlunt; // фолбэк
+
+        default:
+            return sprColombianDieBlunt; // подстраховка
     }
 }

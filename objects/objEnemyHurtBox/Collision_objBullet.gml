@@ -65,7 +65,7 @@ else
 }
 
 // =========================================================================
-// 3. РАСПРЕДЕЛЕНИЕ УРОНА И ЭФФЕКТОВ ПО КЛАССАМ (SWITCH)
+// 3. РАСПРЕДЕЛЕНИЯ УРОНА И ЭФФЕКТОВ ПО КЛАССАМ (SWITCH)
 // =========================================================================
 switch (owner.class)
 {
@@ -91,12 +91,20 @@ switch (owner.class)
 
         if (owner.state == STATES.FATDIE)
         {
-            owner.fat_balance -= (_bullet_calibre == CALIBRE.SHOTGUN) ? (33 * owner.pellets_hit) : ((_bullet_calibre == CALIBRE.BIG) ? 50 : 33);
+            if (_bullet_calibre == CALIBRE.SNIPER) {
+                owner.fat_balance -= 100;
+            } else {
+                owner.fat_balance -= (_bullet_calibre == CALIBRE.SHOTGUN) ? (33 * owner.pellets_hit) : ((_bullet_calibre == CALIBRE.BIG) ? 50 : 33);
+            }
             owner.knocked_by_bullet = true;
         }
         else
         {
-            owner.fat_blood_current -= (_bullet_calibre == CALIBRE.SHOTGUN) ? (33 * owner.pellets_hit) : ((_bullet_calibre == CALIBRE.BIG) ? 50 : 25);
+            if (_bullet_calibre == CALIBRE.SNIPER) {
+                owner.fat_blood_current -= 150;
+            } else {
+                owner.fat_blood_current -= (_bullet_calibre == CALIBRE.SHOTGUN) ? (33 * owner.pellets_hit) : ((_bullet_calibre == CALIBRE.BIG) ? 50 : 25);
+            }
             owner.knocked_by_bullet = false;
         }
 
@@ -107,17 +115,36 @@ switch (owner.class)
     // -----------------------------------------------------------------
     // БРОНЕЖИЛЕТ (CLASS.VEST) — Получает искры и уходит в стан
     // -----------------------------------------------------------------
-    case CLASS.VEST:
+	case CLASS.VEST:
+	var _played_sound = audio_play_sound(choose(sndBulletHitVest, sndBulletHitVest2), 1, false);
+	audio_sound_pitch(_played_sound, random_range(0.9, 1.1));
+	
+	scrFxSparksHit(x, y, _bullet_dir);
+	owner.spark_flash = 3;
+	
+	owner.state = STATES.STUN;
+	owner.sprite_index = sprColombianVestStun;
+	owner.image_index  = 0;
+    
+	if (_bullet_calibre == CALIBRE.SNIPER) {
+		owner.stun_current += 100;
+	} else {
+		owner.stun_current += (25 * owner.pellets_hit);
+	}
+	break;
+
+    // -----------------------------------------------------------------
+    // ТОЛСТЯК В БРОНЕЖИЛЕТЕ (CLASS.FATVEST) — Только эффекты попадания
+    // в броник (звук + искры), пуля уничтожается. Урона/стана/смены
+    // состояния нет.
+    // -----------------------------------------------------------------
+    case CLASS.FATVEST:
         var _played_sound = audio_play_sound(choose(sndBulletHitVest, sndBulletHitVest2), 1, false);
         audio_sound_pitch(_played_sound, random_range(0.9, 1.1));
+		scrFxSparksHit(x, y, _bullet_dir, owner.current_speed + 2);
 		
-        var _sys = part_system_create(psSparks);
-        part_system_position(_sys, x, y);
+		part_particles_create(global.sys_sparks, x, y, global.type_sparks, 10);
 		
-        owner.state = STATES.STUN;
-        owner.sprite_index = sprColombianVestStun;
-        owner.image_index  = 0;
-        owner.stun_current += (25 * owner.pellets_hit);
 		owner.should_spark = true;
         break;
 

@@ -15,4 +15,4 @@ enemy_image_index = 0;
 enemy_faction = 0;
 enemy_class = 0;
 enemy_skin  = 0;
-enemy_sprite = 0;
+enemy_sprite = sprColombianDieLean;

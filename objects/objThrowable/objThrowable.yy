@@ -32,9 +32,12 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sprThrowable",
-    "path":"sprites/sprThrowable/sprThrowable.yy",
+    "name":"sprWeapons",
+    "path":"sprites/sprWeapons/sprWeapons.yy",
   },
-  "spriteMaskId":null,
+  "spriteMaskId":{
+    "name":"sprThrownWeaponMask",
+    "path":"sprites/sprThrownWeaponMask/sprThrownWeaponMask.yy",
+  },
   "visible":true,
 }

@@ -14,7 +14,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"rmTestSoft",
-    "path":"folders/Example/rmTestSoft.yy",
+    "path":"folders/Bulb/Example/rmTestSoft.yy",
   },
   "parentObjectId":{
     "name":"oRendererPar",

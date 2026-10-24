@@ -1,11 +1,10 @@
-if (keyboard_check_pressed(vk_f1)) { global.debug = !global.debug; }
+if (keyboard_check_pressed(vk_f1)) { global.debug = !global.debug; energy += 1000; }
 
 scrCopFlipShotgun(); 
 
 scrPlayerAttack();
 scrPlayerInteractWeapon();
 scrPlayerStartExecution();
-
 
 scrProcessShellSpawn();	// СПАВНИМ ГИЛЬЗУ ЗДЕСЬ ПОТОМУ ЧТО У ДРОБОВИКА ЗАДЕРЖКА ПЕРЕД СПАВНОМ ГИЛЬЗЫ
 

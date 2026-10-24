@@ -1,3 +1,4 @@
+/*
 var _offset_dist = 48;  // Смещение вперед вдоль тела врага
 
 var _head_x = x + lengthdir_x(_offset_dist, my_angle);

@@ -9,7 +9,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Example",
-    "path":"folders/Example.yy",
+    "path":"folders/Bulb/Example.yy",
   },
   "parentObjectId":null,
   "persistent":false,

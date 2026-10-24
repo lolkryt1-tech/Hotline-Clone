@@ -28,10 +28,6 @@ function scrPlayerShoot(_character, _weapon)
         _bullet.calibre     = my_sprites.bullet_calibre; // Передаем калибр пистолета или М16
     }
 
-    if (array_length(my_sprites.sounds) > 0) {
-        audio_play_sound(my_sprites.sounds[0], 1, false);
-    }
-
     // === 2. ЗАДЕРЖКА ТАЙМЕРА ВЫЛЕТА ГИЛЬЗЫ ===
     switch (current_weapon)
     {

@@ -1,6 +1,7 @@
 draw_set_font(fntDebug);
 draw_sprite_ext(sprColombianLegs, legs_image_index, x, y, image_xscale, image_yscale, legs_direction, image_blend, image_alpha);
 
+
 // --- ОТРИСОВКА НЕЖНОГО МЯГКОГО СВЕЧЕНИЯ ПРИ УДАРЕ ---
 if (spark_flash > 0)
 {

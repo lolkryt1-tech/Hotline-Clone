@@ -1,6 +1,6 @@
 // 1. Создаем базу на слое "Instances"
 if (!instance_exists(objGameManager))		{ instance_create_layer(x, y, "Instances", objGameManager); }
-//if (!instance_exists(objLightController))	{ instance_create_layer(x, y, "Instances", objLightController); }
+if (!instance_exists(objParticleManager))	{ instance_create_layer(0, 0, "Instances", objParticleManager); }
 if (!instance_exists(objPlayer))			{ instance_create_layer(x, y, "Instances", objPlayer); }
 if (!instance_exists(objEffector))			{ instance_create_layer(x, y, "Instances", objEffector); }
 if (!instance_exists(objLevelStatistic))	{ instance_create_layer(x, y, "Instances", objLevelStatistic);}

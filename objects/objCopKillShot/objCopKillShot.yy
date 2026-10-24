@@ -42,5 +42,8 @@
     "name":"sprPlayerMask",
     "path":"sprites/sprPlayerMask/sprPlayerMask.yy",
   },
+  "tags":[
+    "Eat_Bullet",
+  ],
   "visible":true,
 }

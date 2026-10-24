@@ -5,33 +5,13 @@ function scrEnemyStun()
     path_end();
     current_speed = 0;
     image_index += 0.25;
-    
- // --- СПАВН ИСКР ОТ ЖИЛЕТА (РАЗОК ПРИ ПОПАДАНИИ) ---
-    if (should_spark == true)
-    {
-        var _spark_count = 4 + irandom(3); // От 4 до 7 штук
-        
-        repeat (_spark_count)
-        {
-            var _random_deviation = random_range(-15, 15);
-            var _spark = instance_create_layer(x, y, "Instances", objElectricSpark);
-            
-            // Направление искр = противоположное от удара (-180) + небольшой рандом
-            _spark.direction   = (last_hit_dir - 180) + _random_deviation;
-            _spark.image_angle = _spark.direction;
-            _spark.speed       = 2 + random(3);
-        }
-        
-        // Включаем таймер вспышки круга на 3 кадра
-        spark_flash = 3;
-        
-        // Сразу выключаем, чтобы искры и таймер сработали только один раз за попадание
-        should_spark = false;
-    }
+	
+	if (my_target == noone) { scrEnemyTryGetTarget(); }
     
     if (sprite_index != sprColombianVestStun)
     {
         if (weapon != WEAPONS.UNARMED && instance_exists(my_target) && !scrHasClearView(x, y, my_target.x, my_target.y)) { state = STATES.SEARCH; exit; }
+		if (weapon == WEAPONS.SNIPER) && instance_exists(my_target) { state = STATES.ATTACKHITSCAN; exit; }
         if (weapon != WEAPONS.UNARMED && instance_exists(my_target) && isRange_weapon == true) { state = STATES.ATTACKRANGE; exit; }
         if (weapon != WEAPONS.UNARMED && instance_exists(my_target) && isRange_weapon == false) { state = STATES.CHASE; exit; }
         if (weapon != WEAPONS.UNARMED) { state = STATES.STEP; exit; }

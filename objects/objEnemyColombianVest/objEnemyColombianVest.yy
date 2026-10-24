@@ -45,6 +45,7 @@
   },
   "tags":[
     "Meleeable",
+    "Block_Bullet",
   ],
   "visible":true,
 }

@@ -45,6 +45,7 @@
   "tags":[
     "Pausable",
     "Block_LOS",
+    "Eat_Bullet",
   ],
   "visible":true,
 }

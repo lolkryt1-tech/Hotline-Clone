@@ -7,6 +7,7 @@ switch (state)
 	case STATES.CHASE:  scrEnemyChase();  break;
 	case STATES.ATTACKMELEE: scrEnemyAttackMelee() break;
 	case STATES.ATTACKRANGE: scrEnemyAttackRange() break;
+	case STATES.ATTACKHITSCAN: scrEnemyAttackHitscan() break;
 	case STATES.SEARCH: scrEnemySearch(); break;
 	case STATES.AFTERMATH: scrEnemyAftermath(); break;
 	case STATES.UNARMEDSEARCH: scrEnemyUnarmedSearch() break;

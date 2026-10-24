@@ -14,6 +14,20 @@ function scrEnemyGetHitMelee(_enemy_id, _weapon_enum, _push_dir, _source_id)
 	{
 		exit;
 	}
+	
+	// === МАРШРУТИЗАЦИЯ ТОЛСТЯКА ===
+	if (_enemy_id.class == CLASS.FAT || _enemy_id.class == CLASS.FATVEST)
+	{
+		if !(scrWeaponIsHeavy(_weapon_enum))
+		{
+			exit;
+		}
+		else
+		{
+			scrEnemyFatGetHit(_enemy_id, _weapon_enum, _push_dir);
+			exit;
+		}
+	}
 
 	// Определяем тип объекта жертвы ДО входа в блок with
 	var _is_lean = (_enemy_id.object_index == objEnemyKnockedOutLean);
@@ -23,7 +37,7 @@ function scrEnemyGetHitMelee(_enemy_id, _weapon_enum, _push_dir, _source_id)
 	// === 1. АВТОМАТИЧЕСКАЯ КОНВЕРТАЦИЯ ОРУЖИЯ В ТИП УРОНА ===
 	var _calculated_hit_type = HIT_TYPE.UNARMED; // По умолчанию кулаки
 	
-	if (_weapon_enum == WEAPONS.BAT || _weapon_enum == WEAPONS.PIPE || _weapon_enum == WEAPONS.FISTS) { _calculated_hit_type = HIT_TYPE.BLUNT; } // Дробящее оружие
+	if (_weapon_enum == WEAPONS.BAT || _weapon_enum == WEAPONS.PIPE || _weapon_enum == WEAPONS.SLEDGEHAMMER || _weapon_enum == WEAPONS.FISTS) { _calculated_hit_type = HIT_TYPE.BLUNT; } // Дробящее оружие
 	if (_weapon_enum == WEAPONS.KNIFE)								 { _calculated_hit_type = HIT_TYPE.CUT; }  // Режущее (Нож)
 
 	// === 2. ВСЯ ЛОГИКА ВНУТРИ ЖЕРТВЫ ===
@@ -71,6 +85,7 @@ function scrEnemyGetHitMelee(_enemy_id, _weapon_enum, _push_dir, _source_id)
 				_knocked.sprDeadLeanShotgun = sprDeadLeanShotgun;
 				_knocked.sprDeadLeanMachinegun = sprDeadLeanMachinegun;
 	            
+				audio_play_sound(sndWeaponHit, 1, false);
 				objEffector.shake = 1.5;
 				break;
 	           
@@ -102,7 +117,7 @@ function scrEnemyGetHitMelee(_enemy_id, _weapon_enum, _push_dir, _source_id)
 					_corpse.my_angle     = _push_dir + _random_direction;
 				}
 	            
-				objEffector.shake = 1.5;
+				objEffector.shake = 2.0;
 				break;
 				
 			case HIT_TYPE.CUT: 
@@ -133,13 +148,12 @@ function scrEnemyGetHitMelee(_enemy_id, _weapon_enum, _push_dir, _source_id)
 					_corpse.my_angle     = _push_dir + _random_direction;
 				}
 				
-				objEffector.shake = 0.5;
+				objEffector.shake = 1.5;
 				break;
 		}
 		
 		// Добавляем убийство в комбо
-		if (_calculated_hit_type != HIT_TYPE.UNARMED) scrAddKillStats(100, _is_lean);
-		
+		if (_calculated_hit_type != HIT_TYPE.UNARMED) scrAddKillStats(100, false);
 		
 		// Самоуничтожаемся прямо изнутри контекста
 		instance_destroy();

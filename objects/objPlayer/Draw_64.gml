@@ -21,13 +21,14 @@ var _y = display_get_gui_height() - 60; // Единая горизонтальн
 
 // 3. ОТРЕСОВКА ИНТЕРФЕЙСА ДЛЯ ОГНЕСТРЕЛЬНОГО ОРУЖИЯ
 // Проверяем текущее оружие игрока из энума WEAPONS
-if (current_weapon == WEAPONS.PISTOL || current_weapon == WEAPONS.SHOTGUN || current_weapon == WEAPONS.M16) 
+if  (my_sprites.is_ranged) 
 {  
     // === ОПРЕДЕЛЯЕМ КАДР ИКОНКИ ПАТРОНА (sprAmmo) ===
     var _ammo_frame = 0; // Дефолтный кадр
     
     if (current_weapon == WEAPONS.PISTOL)  _ammo_frame = 0;
     if (current_weapon == WEAPONS.M16)     _ammo_frame = 1;
+	if (current_weapon == WEAPONS.SNIPER)     _ammo_frame = 1;
 	if (current_weapon == WEAPONS.SHOTGUN) _ammo_frame = 2;
     
     // === ИСПРАВЛЕНИЕ: ПРОВЕРКА НА ПУСТОЙ МАГАЗИН (ТОЛЬКО ТЕКСТ) ===

@@ -89,6 +89,68 @@ else
 
 
 
+// =========================================================================
+// ЛОГИКА ПЕРЕХОДА ПРИ ПОЛНОЙ ТЕМНОТЕ (ИСПРАВЛЕННАЯ)
+// =========================================================================
+if (player_is_standing_on_me)
+{
+    if (instance_exists(objEffector))
+    {
+        // 1. Принудительно заставляем эффектор темнеть
+        if (objEffector.fade_darkness < 1.0)
+        {
+            objEffector.fade_darkness = min(objEffector.fade_darkness + 0.35, 1.0);
+        }
+        
+        // 2. УСЛОВИЕ НАСТУПЛЕНИЯ ПОЛНОЙ ТЬМЫ
+        if (objEffector.fade_darkness >= 1.0)
+        {
+            if (target_room != noone && room_exists(target_room))
+            {
+                // Сбрасываем флаг двери, чтобы код не зациклился
+                player_is_standing_on_me = false;
+                
+                // Твое зануление счетчиков рендеринга
+                global.blood_render_counter = 8000;
+                global.decals_render_counter = 6000;
+                global.body_render_counter = 4000;
+                global.solide_render_counter = 0;
+                global.knocked_render_counter = -1000;
+                global.weapon_render_counter = -2000;
+                global.player_render_counter = -6000;
+                global.walls_render_counter = 0;
+                global.corners_render_counter = 0;
+                global.high_object_render_counter = 0;
+                
+                // Сохраняем игру перед прыжком
+                scrSaveGame(); 
+                
+                // Перелистываем этаж
+                global.current_level.current_floor = target_floor_index; 
+                
+                // ИСПРАВЛЕНО: Возвращаем оригинальные переменные, которые были в твоей рабочей коллизии!
+                global.next_player_x   = target_x;
+                global.next_player_y   = target_y;
+                global.next_effector_x = target_x;
+                global.next_effector_y = target_y;
+                
+                // Мгновенно перемещаем персистентный эффектор в целевую точку новой комнаты
+                objEffector.x = target_x;
+                objEffector.y = target_y;
+                
+                // Совершаем переход
+                room_goto(target_room);
+            }
+        }
+    }
+}
+else
+{
+    player_is_standing_on_me = false;
+}
+
+
+
 
 
 

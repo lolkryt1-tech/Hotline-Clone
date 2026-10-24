@@ -41,5 +41,5 @@
   "tags":[
     "Pausable",
   ],
-  "visible":true,
+  "visible":false,
 }

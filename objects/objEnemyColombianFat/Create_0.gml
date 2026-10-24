@@ -23,8 +23,5 @@ reaction_time        = 15;
 
 fat_dead = false;
 
-// === ДВИЖЕНИЕ И ФИЗИКА ===
-//max_speed				= 2.75; // Единственная максимальная скорость для бега и поиска
-
-sprDeadMachineGun		= sprColombianFatDead;
-sprDeadShotgun			= sprColombianFatDead;
+sprFatDead = sprColombianFatDead;
+sprFatKnocked = sprColombianFatGetUp;

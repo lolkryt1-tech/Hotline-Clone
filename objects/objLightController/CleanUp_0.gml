@@ -1,4 +1,3 @@
+if (surface_exists(lit_surf)) surface_free(lit_surf);
 renderer.Free();
-
-// Позволяем игре снова всё отрисовывать
 application_surface_draw_enable(true);

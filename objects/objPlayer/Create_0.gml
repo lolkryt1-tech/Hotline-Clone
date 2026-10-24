@@ -78,8 +78,6 @@ sprDeadShotgun			= sprCopDeadShotgun;
 
 
 
-
-
 persistent = true;
 
 // === ДЕБАГ ===

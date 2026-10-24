@@ -9,8 +9,9 @@ function scrPlayerAttack()
         image_index += my_sprites.anim_speed; 
         
         // Если это холодное оружие — наносим урон в ближнем бою
-        if (!my_sprites.is_ranged) 
+        if (!my_sprites.is_ranged && image_index < my_sprites.hit_end) 
         {
+			debug_melee_timer = 1;
             scrPlayerAttackMelee(); 
         }
     }
@@ -23,14 +24,23 @@ function scrPlayerAttack()
             if (my_sprites.is_ranged && ammo <= 0)
             {
                 audio_play_sound(sndDryClick, 1, false); 
-                attack_delay = 15; // Небольшая задержка между щелчками пустого крючка
-                exit; // Мгновенно выходим! Анимация, тряска и звуки выстрела не сработают
+                attack_delay = 15; // Небольшая задержка между щелчками
+                exit;
             }
 
             // 1. Огнестрел: стреляем (патроны гарантированно есть)
             if (my_sprites.is_ranged) 
             {
-                scrPlayerShoot(character, current_weapon); 
+                // Разделяем обычную стрельбу и хитскан для снайперской винтовки
+                if (current_weapon == WEAPONS.SNIPER)
+                {
+                    scrPlayerHitscanShot(); // Вызываем хитскан-выстрел
+                }
+                else
+                {
+                    scrPlayerShoot(character, current_weapon); // Обычная стрельба снарядами
+                }
+                
                 objEffector.shake = my_sprites.shake_amount;
             }
             

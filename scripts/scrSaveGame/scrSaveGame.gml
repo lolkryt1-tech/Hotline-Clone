@@ -85,6 +85,7 @@ function scrSaveGame()
 		buffer_write(_buf, buffer_u16,  random_move_timer);
 		buffer_write(_buf, buffer_f16,  random_dir);
 		buffer_write(_buf, buffer_f16,  patrol_dir);
+		buffer_write(_buf, buffer_u8,	diradd);
 		
 		buffer_write(_buf, buffer_f16,  old_x);
 		buffer_write(_buf, buffer_f16,  old_y);
@@ -147,6 +148,19 @@ function scrSaveGame()
 		buffer_write(_buf, buffer_u8,   hit_type);
 		buffer_write(_buf, buffer_bool, isBleed);
 		buffer_write(_buf, buffer_s32,  depth);
+	}
+	
+	// === 3.2. СОХРАНЕНИЕ АНИМИРОВАННЫХ ТРУПОВ (objAnimatedDeadBody) ===
+	var _anim_body_count = instance_number(objAnimatedDeadBody);
+	buffer_write(_buf, buffer_u16, _anim_body_count);
+	
+	with (objAnimatedDeadBody)
+	{
+		buffer_write(_buf, buffer_f16, x);
+		buffer_write(_buf, buffer_f16, y);
+		buffer_write(_buf, buffer_u16, sprite_index);
+		buffer_write(_buf, buffer_f16, my_angle);
+		buffer_write(_buf, buffer_s32, depth);
 	}
 	
 	// === 3.5. СОХРАНЕНИЕ ЛУЖ КРОВИ (objBloodPool) ===
@@ -304,20 +318,7 @@ function scrSaveGame()
 	
 	with (objTriggerEnter)
 	{
-		buffer_write(_buf, buffer_u32,  trigger_id);
-		buffer_write(_buf, buffer_bool, is_triggered);
-		
-		buffer_write(_buf, buffer_u16,  spawn_object);
-		buffer_write(_buf, buffer_u8,   spawn_skin);
-		buffer_write(_buf, buffer_u8,   spawn_class);
-		buffer_write(_buf, buffer_u8,   spawn_weapon);
-		buffer_write(_buf, buffer_u8,   spawn_ammo);
-		buffer_write(_buf, buffer_u8,   spawn_state);
-		
-		buffer_write(_buf, buffer_f16,  spawn_x);
-		buffer_write(_buf, buffer_f16,  spawn_y);
-		buffer_write(_buf, buffer_f16,  target_x);
-		buffer_write(_buf, buffer_f16,  target_y);
+		buffer_write(_buf, buffer_u32, zone_uid);
 	}
 	
 	// === 13. СОХРАНЕНИЕ ТРИГГЕРОВ СОБЫТИЙ (objTriggerAction) ===
@@ -352,6 +353,7 @@ function scrLoadGame(_is_room_transition)
 	with (objEnemyKnockedOutLean)	{ instance_destroy(); }
 	with (objEnemyHurtBox)			{ instance_destroy(); }
 	with (objDeadBody)				{ instance_destroy(); } 
+	with (objAnimatedDeadBody)		{ instance_destroy(); } 
 	with (objBloodPool)				{ instance_destroy(); } 
 	with (objPlayerExecution)		{ instance_destroy(); }
 	with (objBullet)				{ instance_destroy(); }
@@ -362,6 +364,9 @@ function scrLoadGame(_is_room_transition)
 	with (objEffect)				{ instance_destroy(); }
 	with (objHookah)				{ instance_destroy(); }
 	with (objTV)					{ instance_destroy(); }
+	
+	objEffector.fade_darkness = 1;
+	objFloorTranslator.is_unlocked = false;
 	
 	var _tagged_objects = tag_get_asset_ids("Weapon", asset_object);
 	for (var i = 0; i < array_length(_tagged_objects); i++) 
@@ -495,6 +500,7 @@ function scrLoadGame(_is_room_transition)
 		_en.random_move_timer = buffer_read(_buf, buffer_u16);
 		_en.random_dir        = buffer_read(_buf, buffer_f16);
 		_en.patrol_dir        = buffer_read(_buf, buffer_f16);
+		_en.diradd			  = buffer_read(_buf, buffer_u8);
 		
 		_en.old_x             = buffer_read(_buf, buffer_f16);
 		_en.old_y             = buffer_read(_buf, buffer_f16);
@@ -592,6 +598,31 @@ function scrLoadGame(_is_room_transition)
 				if (depth < _min_body_depth) _min_body_depth = depth; 
 			}
 			global.body_render_counter = _min_body_depth;
+		}
+	}
+	
+	// === ЧТЕНИЕ АНИМИРОВАННЫХ ТРУПОВ ===
+	if (buffer_tell(_buf) < buffer_get_size(_buf))
+	{
+		var _anim_body_count = buffer_read(_buf, buffer_u16);
+		
+		for (var ab = 0; ab < _anim_body_count; ab++)
+		{
+			var _ab_x     = buffer_read(_buf, buffer_f16);
+			var _ab_y     = buffer_read(_buf, buffer_f16);
+			var _ab_spr   = buffer_read(_buf, buffer_u16);
+			var _ab_angle = buffer_read(_buf, buffer_f16);
+			var _ab_depth = buffer_read(_buf, buffer_s32);
+			
+			var _new_body = instance_create_layer(_ab_x, _ab_y, "Instances", objDeadBody);
+			_new_body.sprite_index      = _ab_spr;
+			_new_body.image_index       = sprite_get_number(_ab_spr) - 1;
+			_new_body.my_angle          = _ab_angle;
+			_new_body.image_angle       = _ab_angle;
+			_new_body.depth             = _ab_depth;
+			_new_body.image_speed       = 0;
+			_new_body.create_blood_pool = 0;
+			_new_body.isBleed           = false;
 		}
 	}
 	
@@ -838,42 +869,14 @@ function scrLoadGame(_is_room_transition)
 		
 		for (var t = 0; t < _trigger_enter_count; t++)
 		{
-			var _t_id        = buffer_read(_buf, buffer_u32);
-			var _t_triggered = buffer_read(_buf, buffer_bool);
-			
-			var _t_spawn_obj    = buffer_read(_buf, buffer_u16);
-			var _t_spawn_skin   = buffer_read(_buf, buffer_u8);
-			var _t_spawn_class  = buffer_read(_buf, buffer_u8);
-			var _t_spawn_weap   = buffer_read(_buf, buffer_u8);
-			var _t_spawn_ammo   = buffer_read(_buf, buffer_u8);
-			var _t_spawn_state  = buffer_read(_buf, buffer_u8);
-			
-			var _t_spawn_x      = buffer_read(_buf, buffer_f16);
-			var _t_spawn_y      = buffer_read(_buf, buffer_f16);
-			var _t_target_x     = buffer_read(_buf, buffer_f16);
-			var _t_target_y     = buffer_read(_buf, buffer_f16);
+			var _t_zone_uid = buffer_read(_buf, buffer_u32);
 			
 			with (objTriggerEnter)
 			{
-				if (trigger_id == _t_id)
+				if (zone_uid == _t_zone_uid)
 				{
-					is_triggered = _t_triggered;
-					
-					if (!is_triggered)
-					{
-						spawn_object = _t_spawn_obj;
-						spawn_skin   = _t_spawn_skin;
-						spawn_class  = _t_spawn_class;
-						spawn_weapon = _t_spawn_weap;
-						spawn_ammo   = _t_spawn_ammo;
-						spawn_state  = _t_spawn_state;
-						
-						spawn_x  = _t_spawn_x;
-						spawn_y  = _t_spawn_y;
-						target_x = _t_target_x;
-						target_y = _t_target_y;
-					}
-					
+					// zone_uid уже совпадает — восстанавливать нечего,
+					// но блок оставлен, чтобы при добавлении полей было куда писать
 					break;
 				}
 			}
@@ -881,6 +884,7 @@ function scrLoadGame(_is_room_transition)
 	}
 	
 	
+	// === ЧТЕНИЕ ТРИГГЕРОВ СОБЫТИЙ (objTriggerAction) ===
 	// === ЧТЕНИЕ ТРИГГЕРОВ СОБЫТИЙ (objTriggerAction) ===
 	if (buffer_tell(_buf) < buffer_get_size(_buf))
 	{
@@ -893,11 +897,14 @@ function scrLoadGame(_is_room_transition)
 			
 			with (objTriggerAction)
 			{
-				if (trigger_id == _t_id)
-				{
-					is_triggered = _t_triggered;
-					break;
-				}
+			    if (trigger_id == _t_id)
+			    {
+			        is_triggered = _t_triggered;
+			        is_firing    = false;
+			        action_index = 0;
+			        action_timer = 0;
+			        break;
+			    }
 			}
 		}
 	}

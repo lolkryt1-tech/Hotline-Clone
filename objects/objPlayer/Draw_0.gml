@@ -1,7 +1,9 @@
 //draw_text(x, y, velocity.magnitude());
-
+scrDrawPlayerSniperSight();
 draw_sprite_ext(sprCopLegs, legs_image_index, x, y, image_xscale, image_yscale, legs_direction, image_blend, image_alpha);
 draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, my_angle, image_blend, image_alpha);
+
+
 
 if (global.debug == 0) return;
 // === ОТРИСОВКА УДАРА

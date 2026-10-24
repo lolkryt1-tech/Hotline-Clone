@@ -4,7 +4,8 @@ enum TRIGGER_CONDITION {
     ENEMIES_COUNT_DEATH,  // N врагов умерло
     ENEMIES_ALL_CLEARED,  // все враги мертвы
     PLAYER_ENTER_ZONE,    // игрок вошёл в зону
-    FLOOR_CLEARED         // указанный этаж зачищен
+    FLOOR_CLEARED,        // указанный этаж зачищен
+	ENTER_TRIGGER_ZONE	  // Задел зону триггера
 }
 
 enum TRIGGER_ACTION {
@@ -28,9 +29,13 @@ is_triggered = false;
 /// === УСЛОВИЕ ===
 condition_type       = TRIGGER_CONDITION.ENEMY_DEATH;
 target_enemy_uid     = -1;
+
 target_enemies_count = 0;
 zone_radius          = 32;
 target_floor_index   = -1;
+
+target_zone_uid = -1;
+target_zone_id  = noone;
 
 /// === ДЕЙСТВИЯ ===
 /// Массив структур. Каждый элемент — своя структура с полем `type`.
@@ -53,3 +58,9 @@ spawn_x			= x;
 spawn_y			= y;
 target_x		= x;
 target_y		= y;
+
+
+/// === СОСТОЯНИЕ ЦЕПОЧКИ ДЕЙСТВИЙ ===
+action_index = 0;      // индекс текущего действия в actions
+action_timer = 0;      // сколько кадров ещё ждать перед выполнением
+is_firing    = false;  // идёт ли сейчас выполнение цепочки

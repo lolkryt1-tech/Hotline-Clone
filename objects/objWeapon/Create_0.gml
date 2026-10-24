@@ -12,7 +12,9 @@ enum WEAPONS {
 	PISTOL,
 	SHOTGUN,
 	KNIFE,
-	FISTS
+	FISTS,
+	SNIPER,
+	SLEDGEHAMMER
 }
 
 enum TYPE {
@@ -37,6 +39,8 @@ hover_amplitude = 2.5;     // Высота подъема/опускания в 
 if (image_index == 0) { weapon = WEAPONS.KNIFE;  weapon_type = TYPE.CUT; pickup_sound = sndPickUpWeapon; }
 if (image_index == 1) { weapon = WEAPONS.BAT;  weapon_type = TYPE.MELEE; pickup_sound = sndPickUpWeapon; }
 if (image_index == 2) { weapon = WEAPONS.PIPE; weapon_type = TYPE.MELEE; pickup_sound = sndPickUpWeapon; }
-if (image_index == 3) { weapon = WEAPONS.PISTOL;  weapon_type = TYPE.RANGE; pickup_sound = sndPickUpWeapon;  ammo = 15; }
-if (image_index == 4) { weapon = WEAPONS.SHOTGUN;  weapon_type = TYPE.RANGE; pickup_sound = sndPickUpWeapon; ammo = 6; }
-if (image_index == 5) { weapon = WEAPONS.M16;  weapon_type = TYPE.RANGE; pickup_sound = sndPickUpWeapon;	 ammo = 24; }
+if (image_index == 3) { weapon = WEAPONS.SLEDGEHAMMER; weapon_type = TYPE.MELEE; pickup_sound = sndPickUpWeapon; }
+if (image_index == 4) { weapon = WEAPONS.PISTOL;  weapon_type = TYPE.RANGE; pickup_sound = sndPickUpWeapon;  ammo = 15; }
+if (image_index == 5) { weapon = WEAPONS.SHOTGUN;  weapon_type = TYPE.RANGE; pickup_sound = sndPickUpWeapon; ammo = 6; }
+if (image_index == 6) { weapon = WEAPONS.M16;  weapon_type = TYPE.RANGE; pickup_sound = sndPickUpWeapon;	 ammo = 24; }
+if (image_index == 7) { weapon = WEAPONS.SNIPER;  weapon_type = TYPE.RANGE; pickup_sound = sndPickUpWeapon;	 ammo = 10; }

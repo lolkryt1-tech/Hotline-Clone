@@ -9,7 +9,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"rmTestLightStrip",
-    "path":"folders/Example/rmTestLightStrip.yy",
+    "path":"folders/Bulb/Example/rmTestLightStrip.yy",
   },
   "parentObjectId":null,
   "persistent":false,

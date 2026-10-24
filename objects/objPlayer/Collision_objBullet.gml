@@ -38,6 +38,15 @@ if (_bullet_calibre == CALIBRE.SHOTGUN)
     if (_pellets_hit < 3) _pellets_hit = 3; 
 }
 else 
+
+if (_bullet_calibre == CALIBRE.SNIPER)
+{
+    instance_destroy(other); // Стираем первую дробинку
+    
+	_pellets_hit = 5;
+}
+
+else 
 {
     // Обычная пуля просто уничтожается
     instance_destroy(other);

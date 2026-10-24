@@ -24,6 +24,7 @@ function scrEnemyGetSprite(_skin, _weapon)
     if (_weapon == WEAPONS.PISTOL)  { _attack_range = 128; _is_range_weapon = true;  _cooldown = 14; _anim_speed = 1;  _bullet_obj = objBullet; _bullet_calibre = CALIBRE.SMALL;  _bullet_speed = 13; _shell_obj = objShell; _shell_img = 0; _sounds = [snd9mmShot]; _shell_x = 24; _shell_y = 4; }
     if (_weapon == WEAPONS.M16)     { _attack_range = 256; _is_range_weapon = true;  _cooldown = 6;  _anim_speed = 1;  _bullet_obj = objBullet; _bullet_calibre = CALIBRE.MID;  _bullet_speed = 13; _shell_obj = objShell; _shell_img = 1; _sounds = [sndM16Shot]; _shell_x = 12; _shell_y = 4; }
     if (_weapon == WEAPONS.SHOTGUN) { _attack_range = 128; _is_range_weapon = true;  _cooldown = 75; _anim_speed = 0.5; _bullet_obj = objBullet; _bullet_calibre = CALIBRE.SHOTGUN; _bullet_speed = 13; _shell_obj = objShell; _shell_img = 2; _sounds = [sndShotgunShot]; _shell_x = 8;  _shell_y = 8; }
+	if (_weapon == WEAPONS.SNIPER)  { _attack_range = 1200;_is_range_weapon = true;  _cooldown = 75; _anim_speed = 0.25;  _bullet_obj = noone; _bullet_calibre = CALIBRE.SNIPER;  _bullet_speed = 0; _shell_obj = objShell; _shell_img = 1; _sounds = [sndSniperShot]; _shell_x = 12; _shell_y = 4; }
 
     // === 2. ДЕФОЛТНАЯ ЗАГОТОВКА ПОД СТРУКТУРУ СПРАЙТОВ ===
     var _sprites = {
@@ -50,6 +51,15 @@ function scrEnemyGetSprite(_skin, _weapon)
         if (_weapon == WEAPONS.SHOTGUN) { _sprites.idle = sprColombianFatWalkShotgun; _sprites.walk = sprColombianFatWalkShotgun; _sprites.search = sprColombianFatWalkShotgun; _sprites.attack = sprColombianFatAttackShotgun; }
     }
 	
+	if (_skin == SKIN.COLOMBIANFATVEST) 
+    {
+        if (_weapon == WEAPONS.FISTS)	{ _sprites.idle = sprColombianFatVestWalkUnarmed; _sprites.walk = sprColombianFatVestWalkUnarmed; _sprites.search = sprColombianFatVestWalkUnarmed;	_sprites.attack = sprColombianFatVestAttackUnarmed; }
+        if (_weapon == WEAPONS.PISTOL)  { _sprites.idle = sprColombianFatWalk9mm;     _sprites.walk = sprColombianFatWalk9mm;     _sprites.search = sprColombianFatWalk9mm;     _sprites.attack = sprColombianFatAttack9mm; }
+        //if (_weapon == WEAPONS.M16)     { _sprites.idle = sprColombianWalkM16;     _sprites.walk = sprColombianWalkM16;     _sprites.search = sprColombianSearchM16;     _sprites.attack = sprColombianAttackM16; }
+        if (_weapon == WEAPONS.SHOTGUN) { _sprites.idle = sprColombianFatWalkShotgun; _sprites.walk = sprColombianFatWalkShotgun; _sprites.search = sprColombianFatWalkShotgun; _sprites.attack = sprColombianFatAttackShotgun; }
+		if (_weapon == WEAPONS.SNIPER)  { _sprites.idle = sprColombianFatVestWalkHuntingRifle; _sprites.walk = sprColombianFatVestWalkHuntingRifle; _sprites.search = sprColombianFatVestWalkHuntingRifle;	_sprites.attack = sprColombianFatVestAttackHuntingRifle; }
+    }
+	
 	if (_skin == SKIN.COLOMBIANDODGER)
 	{
 		if (_weapon == WEAPONS.KNIFE)	{ _sprites.idle = sprColombianDWalkKnife;   _sprites.walk = sprColombianDWalkKnife;	  _sprites.search = sprColombianDSearchKnife;	_sprites.attack = sprColombianDAttackKnife; }
@@ -61,6 +71,7 @@ function scrEnemyGetSprite(_skin, _weapon)
 	{
 		if (_weapon == WEAPONS.UNARMED) { _sprites.idle = sprColombianVestWalkUnarmed;  _sprites.walk = sprColombianVestWalkUnarmed;	_sprites.search = sprColombianVestWalkUnarmed;	 _sprites.attack = sprColombianVestWalkUnarmed; }
 		if (_weapon == WEAPONS.PISTOL)  { _sprites.idle = sprColombianVestWalk9mm;      _sprites.walk = sprColombianVestWalk9mm;		_sprites.search = sprColombianVestSearch9mm;     _sprites.attack = sprColombianVestAttack9mm; }
+		if (_weapon == WEAPONS.SNIPER)  { _sprites.idle = sprColombianVestWalkHuntingRifle;   _sprites.walk = sprColombianVestWalkHuntingRifle;		_sprites.search = sprColombianVestWalkHuntingRifle;    _sprites.attack = sprColombianVestAttackHuntingRifle; }
 	}
 
     // === 4. АВТО-ПОДСТАНОВКА ОТСУТСТВУЮЩИХ АНИМАЦИЙ ===

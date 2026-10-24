@@ -73,7 +73,7 @@ switch (other.calibre)
         // --- БОЛЬШОЙ КАЛИБР ---
         // Мощно толкает дверь и прошибает её насквозь (пуля летит дальше)
         swingspeed = 16 * _push_direction;
-        audio_play_sound(sndBulletWallImpact, 10, false); 
+        audio_play_sound(sndBulletWallImpact, 10, false);
         break;
         
     case CALIBRE.SHOTGUN:
@@ -81,4 +81,10 @@ switch (other.calibre)
         swingspeed = 24 * _push_direction;
         instance_destroy(other);
         break;
+		
+	case CALIBRE.SNIPER:
+    swingspeed = 20 * _push_direction;
+    audio_play_sound(sndBulletWallImpact, 10, false);
+    instance_destroy(other);
+    break;
 }

@@ -42,6 +42,7 @@
   "spriteMaskId":null,
   "tags":[
     "light_source",
+    "Block_Bullet",
   ],
   "visible":true,
 }

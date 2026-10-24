@@ -1,3 +1,4 @@
+/*
 if (is_triggered) exit;
 if (!instance_exists(objPlayer)) exit;
 

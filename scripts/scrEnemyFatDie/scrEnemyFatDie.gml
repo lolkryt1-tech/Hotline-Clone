@@ -35,7 +35,7 @@ function scrEnemyFatDie()
 	
     // === 3. ФАЗА СПАВНА ТРУПА ===
     var _dead_body = instance_create_layer(x, y, "Instances", objDeadBody);
-    _dead_body.sprite_index = sprColombianFatDead; 
+    _dead_body.sprite_index = sprFatDead; 
     _dead_body.speed        = 1.5; 
     _dead_body.hit_type     = HIT_TYPE.BULLET;
     _dead_body.go_splat     = 1;
