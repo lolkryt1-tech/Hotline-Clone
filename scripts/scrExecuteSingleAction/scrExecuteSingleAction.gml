@@ -26,24 +26,26 @@ function scrExecuteSingleAction(_trigger, _act)
 			    var _tx = _act.target_x;
 			    var _ty = _act.target_y;
     
-			    // Если игрока нет, ищем любой объект казни (родитель проверит всех детей автоматически)
-			    if (!instance_exists(objPlayer))
-			    {
-                    var _exec = instance_nearest(_act.spawn_x, _act.spawn_y, objPlayerExecution);
-                    if (_exec != noone) 
-                    { 
-                        _tx = _exec.x; 
-                        _ty = _exec.y; 
-                    }
+			    if (_tx == -1) { _tx = _act.spawn_x; }
+			    if (_ty == -1) { _ty = _act.spawn_y; }
+				
+			    if (instance_exists(objPlayer)) {
+			        _enemy.my_target = instance_find(objPlayer, 0);
+			    } else {
+			        var _exec = instance_nearest(_act.spawn_x, _act.spawn_y, objPlayerExecution);
+			        if (_exec != noone) {
+			            _enemy.my_target = _exec;
+			        } else {
+			            _enemy.my_target = noone;
+			        }
 			    }
-    
-			    if (_tx == -1) { _tx = (instance_exists(objPlayer)) ? objPlayer.x : _act.spawn_x; }
-			    if (_ty == -1) { _ty = (instance_exists(objPlayer)) ? objPlayer.y : _act.spawn_y; }
-    
+			    
 			    _enemy.state         = _act.spawn_state;
 			    _enemy.noise_x       = _tx;
 			    _enemy.noise_y       = _ty;
-			    _enemy.my_target     = noone;
+			    
+			    // БЕЗОПАСНОЕ ЧТЕНИЕ ФЛАГА
+			    _enemy.is_infinite_search = variable_struct_exists(_act, "spawn_infinite_search") ? _act.spawn_infinite_search : false;
     
 			    break;
 			}
@@ -54,14 +56,6 @@ function scrExecuteSingleAction(_trigger, _act)
 			case TRIGGER_ACTION.SPAWN_GROUP:
 			{
 			    var _group = _act.spawn_group;
-    
-			    // Один раз ищем казнь на всю группу (если игрока нет)
-			    var _exec_target = noone;
-			    if (!instance_exists(objPlayer))
-			    {
-                    // Находим самый первый попавшийся инстанс любой казни в комнате
-			        _exec_target = instance_find(objPlayerExecution, 0);
-			    }
     
 			    for (var j = 0; j < array_length(_group); j++)
 			    {
@@ -81,20 +75,26 @@ function scrExecuteSingleAction(_trigger, _act)
 			        var _tx = _d.target_x;
 			        var _ty = _d.target_y;
         
-			        // Если игрока нет, но есть казнь — идём к казни
-			        if (_exec_target != noone)
-			        {
-			            _tx = _exec_target.x;
-			            _ty = _exec_target.y;
+			        if (_tx == -1) { _tx = _d.spawn_x; }
+			        if (_ty == -1) { _ty = _d.spawn_y; }
+					
+			        if (instance_exists(objPlayer)) {
+			            _enemy.my_target = instance_find(objPlayer, 0);
+			        } else {
+			            var _exec = instance_nearest(_d.spawn_x, _d.spawn_y, objPlayerExecution);
+			            if (_exec != noone) {
+			                _enemy.my_target = _exec;
+			            } else {
+			                _enemy.my_target = noone;
+			            }
 			        }
-        
-			        if (_tx == -1) { _tx = (instance_exists(objPlayer)) ? objPlayer.x : _d.spawn_x; }
-			        if (_ty == -1) { _ty = (instance_exists(objPlayer)) ? objPlayer.y : _d.spawn_y; }
-        
+			        
 			        _enemy.state        = _d.spawn_state;
 			        _enemy.noise_x      = _tx;
 			        _enemy.noise_y      = _ty;
-			        _enemy.my_target    = noone;
+			        
+			        // БЕЗОПАСНОЕ ЧТЕНИЕ ФЛАГА
+			        _enemy.is_infinite_search = variable_struct_exists(_d, "spawn_infinite_search") ? _d.spawn_infinite_search : false;
 			    }
 			    break;
 			}

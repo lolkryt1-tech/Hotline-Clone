@@ -1,0 +1,9 @@
+global.combo_current = 30;
+global.combo_max_level = 30;
+global.combo_timer = 0;
+global.combo_time_max = 240;
+global.total_score = 30;
+global.executions_count = 30;
+global.enemies_killed = 30;
+global.level_time = 124;
+global.total_restarts = 15

@@ -3,9 +3,8 @@
 function scrGetLevelData(_level_index)
 {
     // === СПИСОК ВСЕХ МИССИЙ В ИГРЕ ===
-    var _all_levels = [
-        
-        // === МИССИЯ 1: PART 1 — PRELUDE ===
+var _all_levels = [
+        // === МИССИЯ 1 ===
         {
             name: "Part 1: Prelude",
             total_floors: 6,
@@ -13,10 +12,18 @@ function scrGetLevelData(_level_index)
                 { file_prefix: "story_lvl1_f0", room_name: "Room1", is_cleared: false },
                 { file_prefix: "story_lvl1_f1", room_name: "Room2", is_cleared: false },
                 { file_prefix: "story_lvl1_f2", room_name: "Room3", is_cleared: false },
-				{ file_prefix: "story_lvl1_f3", room_name: "Room4", is_cleared: false },
-				{ file_prefix: "story_lvl1_f4", room_name: "Room5", is_cleared: false },
-				{ file_prefix: "story_lvl1_f5", room_name: "Room6", is_cleared: false }
-            ]
+                { file_prefix: "story_lvl1_f3", room_name: "Room4", is_cleared: false },
+                { file_prefix: "story_lvl1_f4", room_name: "Room5", is_cleared: false },
+                { file_prefix: "story_lvl1_f5", room_name: "Room6", is_cleared: false }
+            ],
+            
+            // === КОЛИЧЕСТВО ДЛЯ МАКСИМАЛЬНОГО РАНГА ===
+            max_stats: {
+                kills: 30,		// Всего врагов на всех этажах
+                combo: 30,		// Максимально возможный множитель комбо
+                execs: 5,		// Сколько врагов нужно казнить
+				score: 2000		// Сколько очков нужно набрать
+            }
         },
         
         // === МИССИЯ 2: PART 2 — ЧТО-ТО ===

@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"sndScoreGradeRise",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":6.6766667,
+  "exportDir":"",
+  "name":"sndScoreGradeRise",
+  "parent":{
+    "name":"Score",
+    "path":"folders/Sounds/Score.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"sndScoreGradeRise.wav",
+  "volume":0.25,
+}

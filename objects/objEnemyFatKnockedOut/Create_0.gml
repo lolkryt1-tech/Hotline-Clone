@@ -12,7 +12,7 @@ faction = 0;
 fric    = 0.15;
 is_GettingUp = false;
 
-fat_blood_current = 0;
+fat_blood_current = 100;
 fat_is_bleeding   = false;
 sprFatDead		  = sprColombianFatDead;
 

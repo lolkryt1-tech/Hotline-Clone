@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"sndScoreNumberSplash",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":2.3077097,
+  "exportDir":"",
+  "name":"sndScoreNumberSplash",
+  "parent":{
+    "name":"Score",
+    "path":"folders/Sounds/Score.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"sndScoreNumberSplash.wav",
+  "volume":0.5,
+}

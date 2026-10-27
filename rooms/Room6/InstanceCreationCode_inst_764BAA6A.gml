@@ -26,7 +26,7 @@ actions = [
         spawn_class:  CLASS.REGULAR,
         spawn_faction: FACTION.COLOMBIAN,
         spawn_weapon: WEAPONS.M16,
-        spawn_ammo:   0,
+        spawn_ammo:   20,
         spawn_state:  STATES.INVESTIGATE,
         target_x: 1000, target_y: 360
     },

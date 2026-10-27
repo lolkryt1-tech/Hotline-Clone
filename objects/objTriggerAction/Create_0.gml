@@ -58,6 +58,7 @@ spawn_x			= x;
 spawn_y			= y;
 target_x		= x;
 target_y		= y;
+spawn_infinite_search = false;
 
 
 /// === СОСТОЯНИЕ ЦЕПОЧКИ ДЕЙСТВИЙ ===

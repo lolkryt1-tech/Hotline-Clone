@@ -15,7 +15,7 @@ function scrEnemySearch()
     var clear_view = scrHasClearView(x, y, my_target.x, my_target.y);
     var _distance = point_distance(x, y, my_target.x, my_target.y);
 	
-    if (clear_view && _distance <= 300)
+    if (clear_view && _distance <= vision_radius)
     {
         last_seen_x = my_target.x;
         last_seen_y = my_target.y;
@@ -28,6 +28,32 @@ function scrEnemySearch()
         impossible_to_path = 0;
         exit;
     }
+    
+	
+    // === БЕСКОНЕЧНЫЙ ПОИСК ===
+    if (is_infinite_search) {
+		walk_on_trail = 0;
+		
+        // Просто идем к цели по пути, без всяких осмотров и сбросов
+        scrEnemyPathfinding(false, my_target.x, my_target.y);
+        
+        // План Б, если путь сломан
+        if (impossible_to_path > 0 && walk_on_trail != 1) {
+            if (path_index != -1) path_end();
+            
+            var _dist = point_distance(x, y, my_target.x, my_target.y);
+            if (_dist > 32) {
+                var _dir = point_direction(x, y, my_target.x, my_target.y);
+                scrEnemyStrafeMovement(_dir, current_speed);
+                my_angle = _dir;
+                return;
+            }
+        }
+        
+        return; // Выходим, чтобы не выполнять код осмотра
+    }
+	
+	
 	
     // Запускаем расчет пути (он будет циклически перестраиваться по таймеру)
     scrEnemyPathfinding(false, my_target.x, my_target.y);
@@ -49,7 +75,7 @@ function scrEnemySearch()
         else
         {
             path_end(); 
-            walk_on_trail = 2; // Прибыли по Плану «Б»
+            walk_on_trail = 2; 
         }
     }
 
@@ -59,7 +85,7 @@ function scrEnemySearch()
 
     if (_arrived_at_grid_path || _arrived_at_last_seen)
     {
-        walk_on_trail = 2; // Блокируем перестройки на время проигрывания анимации
+        walk_on_trail = 2; 
         target_speed = 0;
         path_end(); 
     

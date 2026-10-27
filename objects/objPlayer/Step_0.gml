@@ -1,5 +1,7 @@
 if (keyboard_check_pressed(vk_f1)) { global.debug = !global.debug; energy += 1000; }
 
+if (active == false) return;
+
 scrCopFlipShotgun(); 
 
 scrPlayerAttack();

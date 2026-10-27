@@ -14,8 +14,10 @@ actions = [
         spawn_faction: FACTION.COLOMBIAN,
         spawn_weapon: WEAPONS.PISTOL,
         spawn_ammo:   15,
-        spawn_state:  STATES.INVESTIGATE,
-        target_x: 1000, target_y: 360
+        spawn_state:  STATES.SEARCH,
+		spawn_infinite_search: true,
+        target_x: -1,
+        target_y: -1
     },
     {
         type: TRIGGER_ACTION.SPAWN,
@@ -27,8 +29,10 @@ actions = [
         spawn_faction: FACTION.COLOMBIAN,
         spawn_weapon: WEAPONS.PIPE,
         spawn_ammo:   0,
-        spawn_state:  STATES.INVESTIGATE,
-        target_x: 1000, target_y: 360
+        spawn_state:  STATES.SEARCH,
+		spawn_infinite_search: true,
+        target_x: -1,
+        target_y: -1
     },
     {
         type: TRIGGER_ACTION.CHANGE_ENEMY_STATE,
@@ -50,7 +54,9 @@ actions = [
         spawn_faction: FACTION.COLOMBIAN,
         spawn_weapon: WEAPONS.SHOTGUN,
         spawn_ammo:   6,
-        spawn_state:  STATES.INVESTIGATE,
-        target_x: 1000, target_y: 360
+        spawn_state:  STATES.SEARCH,
+        spawn_infinite_search: true,
+        target_x: -1,
+        target_y: -1
     }
 ];

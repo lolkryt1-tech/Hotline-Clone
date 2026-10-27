@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"sndCarOpen",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":0.50031745,
+  "exportDir":"",
+  "name":"sndCarOpen",
+  "parent":{
+    "name":"Car",
+    "path":"folders/Sounds/Car.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"sndCarOpen.wav",
+  "volume":0.25,
+}

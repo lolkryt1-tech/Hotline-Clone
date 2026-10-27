@@ -6,6 +6,7 @@ global.total_score = 0;
 global.executions_count = 0;
 global.enemies_killed = 0;
 global.level_time = 0;
+global.total_restarts = 0;
 
 
 // Переменные для анимации сочности (Juice)

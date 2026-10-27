@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"sndScoring",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "channelFormat":1,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":3.354271,
+  "exportDir":"",
+  "name":"sndScoring",
+  "parent":{
+    "name":"Score",
+    "path":"folders/Sounds/Score.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":48000,
+  "soundFile":"sndScoring.wav",
+  "volume":1.0,
+}

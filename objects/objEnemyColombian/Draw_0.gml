@@ -116,7 +116,7 @@ if (global.debug = 1)
 	draw_text(x, y + 75, "Walk_on_trail: " + string(walk_on_trail));
 	draw_text(x, y + 90, "impossible to path : " + string(impossible_to_path));
 	*/
-	//if my_target != noone && instance_exists(my_target) draw_text(x + 15, y, "my_target: " + string(my_target.object_index));
+	if my_target != noone && instance_exists(my_target) draw_text(x, y - 30, "my_target: " + string(my_target.object_index));
 	draw_text(x + 15, y - 15, skin_names[skin]);
 	draw_text(x + 15, y, state_names[state]);
 	draw_text(x + 15, y + 15, "Is range weapon "  + string(isRange_weapon));

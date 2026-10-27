@@ -9,6 +9,8 @@ enum CHARACTER{
 }
 
 // === ПАРАМЕТРЫ ПЕРСОНАЖА И ОРУЖИЯ ===
+active				 = true;
+
 character            = CHARACTER.COP;
 current_weapon       = WEAPONS.UNARMED;
 isRange_weapon		 = false;

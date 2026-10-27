@@ -1,3 +1,5 @@
+if (state != CAMSTATES.GAME) return;
+
 my_target = scrTargetUpdate(objPlayer);
 
 if (keyboard_check(vk_alt)) {

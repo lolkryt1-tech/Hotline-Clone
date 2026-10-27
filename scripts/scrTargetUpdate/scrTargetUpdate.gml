@@ -23,7 +23,13 @@ function scrTargetUpdate(_current_target)
     {
         return instance_nearest(x, y, objPlayerDead); // Спасаем игру, целимся в труп
     }
+    
+    // 3. Если живого игрока и его трупов нет — проверяем, сел ли он в машину
+    if (instance_exists(objPlayerCar))
+    {
+        return instance_nearest(x, y, objPlayerCar); // Спасаем игру, целимся в машину игрока
+    }
 
-    // Если трупов нет (цель просто испарилась), возвращаем noone, чтобы враг остановился
+    // Если вообще ничего не нашли (цель просто испарилась), возвращаем noone, чтобы враг остановился
     return noone; 
 }

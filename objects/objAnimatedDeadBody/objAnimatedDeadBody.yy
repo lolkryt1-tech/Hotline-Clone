@@ -38,5 +38,8 @@
     "path":"sprites/sprColombianDeadKnife/sprColombianDeadKnife.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "Pausable",
+  ],
   "visible":true,
 }

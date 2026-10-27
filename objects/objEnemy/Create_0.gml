@@ -137,6 +137,7 @@ last_seen_x          = x;
 last_seen_y          = y;
 safe_x               = x;
 safe_y               = y;
+is_infinite_search	 = false;
 
 // === ПОИСК ОРУЖИЯ (UNARMED SEARCH) ===
 weapon_search_timer  = irandom_range(1, 10);

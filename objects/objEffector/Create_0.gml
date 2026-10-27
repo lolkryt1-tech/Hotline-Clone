@@ -1,3 +1,9 @@
+enum CAMSTATES {
+    GAME,
+    CUtSCENE,
+	LEVEL_END
+}
+
 depth = -15000;
 shake = 0;
 shake_timer = 0;
@@ -5,12 +11,29 @@ shake_timer = 0;
 _cam = view_camera[0];
 my_target = 0;
 
+cam_target_x = x;
+cam_target_y = y;
+
 base_width = 480; 
 base_height = 270;
 
 zoom_level = 1.0; 
 zoom_min = 0.5;   
-zoom_max = 2.5;   
+zoom_max = 2.5;
+
+
+state = CAMSTATES.GAME;       // Начинаем в состоянии обычной игры
+cutscene_timer = 0;          
+cutscene_fly_y = 0;          
+
+// ЗАТУХАНИЕ ЭКРАНА В КОНЦЕ УРОВНЯ
+curtain_y = 0;
+curtain_speed = 10; // Скорость падения занавески (пикселей за кадр)
+target_car_x = 0;
+target_car_y = 0;
+
+
+
 
 if (instance_exists(objPlayer))
 {

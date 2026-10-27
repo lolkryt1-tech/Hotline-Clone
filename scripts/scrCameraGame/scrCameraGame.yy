@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrCameraGame",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrCameraGame",
+  "parent":{
+    "name":"Effector",
+    "path":"folders/Scripts/Player/Effector.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

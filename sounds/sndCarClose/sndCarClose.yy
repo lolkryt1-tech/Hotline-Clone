@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"sndCarClose",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":0.47315192,
+  "exportDir":"",
+  "name":"sndCarClose",
+  "parent":{
+    "name":"Car",
+    "path":"folders/Sounds/Car.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"sndCarClose.wav",
+  "volume":0.25,
+}
