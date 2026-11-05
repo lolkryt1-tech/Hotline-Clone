@@ -6,7 +6,7 @@
   "name":"BulbNormalMapShaderSet",
   "parent":{
     "name":"Normal Map",
-    "path":"folders/Bulb/Normal Map.yy",
+    "path":"folders/Assets/Bulb/Normal Map.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

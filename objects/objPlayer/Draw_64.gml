@@ -1,8 +1,3 @@
-draw_text(10, 10, "FPS: " + string(fps));
-
-// Отрисовка реального FPS (показывает чистую производительность ПК)
-draw_text(10, 30, "FPS Real: " + string(floor(fps_real)));
-
 // 1. СОХРАНЯЕМ ТЕКУЩИЕ НАСТРОЕК (чтобы не сломать дебаг)
 var _old_font   = draw_get_font();
 var _old_color  = draw_get_color();
@@ -16,10 +11,10 @@ draw_set_halign(fa_left);
 draw_set_valign(fa_middle); // Текст центрируется по оси вертикали
 
 // === БАЗОВЫЕ КООРДИНАТЫ (ЛЕВЫЙ НИЖНИЙ УГОЛ) ===
-var _x = 40; 
+var _x = 60; 
 var _y = display_get_gui_height() - 60; // Единая горизонтальная ось для всего HUD
 
-// 3. ОТРЕСОВКА ИНТЕРФЕЙСА ДЛЯ ОГНЕСТРЕЛЬНОГО ОРУЖИЯ
+// 3. ОТРИСОВКА ИНТЕРФЕЙСА ДЛЯ ОГНЕСТРЕЛЬНОГО ОРУЖИЯ
 // Проверяем текущее оружие игрока из энума WEAPONS
 if  (my_sprites.is_ranged) 
 {  
@@ -35,7 +30,7 @@ if  (my_sprites.is_ranged)
     var _text = (ammo == 0) ? "EMPTY" : string(ammo);
     
     // === НАСТРОЙКИ МАСШТАБА И ГЕОМЕТРИИ ===
-    var _icon_scale = 3.5;              // Масштаб иконки патрона
+    var _icon_scale = 4.0;              // Масштаб иконки патрона
     var _icon_w     = 12 * _icon_scale; // Расчетная ширина иконки
     var _gap        = 15;               // Отступ между иконкой и текстом
     
@@ -127,7 +122,7 @@ if  (my_sprites.is_ranged)
     draw_text_transformed(_text_x, _text_y, _text, _current_scale, _current_scale, 0);
 }
 
-// 4. ВОЗВРАЩАЕМ ВСЕ СТАРЫЕ НАСТРОЕК НАЗАД
+// 4. ВОЗВРАЩАЕМ ВСЕ СТАРЫЕ НАСТРОЙКИ НАЗАД
 draw_set_font(_old_font);
 draw_set_color(_old_color);
 draw_set_alpha(_old_alpha);

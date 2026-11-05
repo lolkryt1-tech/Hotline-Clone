@@ -1,0 +1,1 @@
+if (dont_destroy == false && global.current_level.level_fully_cleared) { instance_destroy(); }

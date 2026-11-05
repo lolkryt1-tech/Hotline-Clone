@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scrDrawTextStyled",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"ZZInterface",
+    "path":"folders/Scripts/ZZInterface.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

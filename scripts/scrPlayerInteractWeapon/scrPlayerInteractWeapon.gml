@@ -1,12 +1,7 @@
 function scrPlayerInteractWeapon()
 {
-	// === 1. ВЫЗОВ СКРИПТА МЕТАТЕЛЬНОГО НОЖА (ОБРАБАТЫВАЕТ СКМ) ===
-	if (current_weapon == WEAPONS.KNIFE)
-	{
-		if (scrPlayerThrowableHandler()) return;
-	}
 
-	// === 2. КЛАССИЧЕСКАЯ ЛОГИКА ПОДБОРА ИЛИ ВЫБРОСА (СТРОГО НА НАЖАТИЕ ПКМ) ===
+	// === 2.  ЛОГИКА ПОДБОРА ИЛИ ВЫБРОСА (СТРОГО НА НАЖАТИЕ ПКМ) ===
 	if (!mouse_check_button_pressed(mb_right)) return;
 	
 	// Поиск оружия на полу
@@ -20,7 +15,7 @@ function scrPlayerInteractWeapon()
 		return;
 	}
     
-	// [ОРИГИНАЛЬНАЯ ЛОГИКА] ДЕЙСТВИЕ А: СНАЧАЛА ЗАПОМИНАЕМ И ВЫБРАСЫВАЕМ ТЕКУЩЕЕ ОРУЖИЕ
+	// ДЕЙСТВИЕ А: СНАЧАЛА ЗАПОМИНАЕМ И ВЫБРАСЫВАЕМ ТЕКУЩЕЕ ОРУЖИЕ
 	var _old_weapon = current_weapon;
 	if (current_weapon != WEAPONS.UNARMED)
 	{
@@ -36,6 +31,7 @@ function scrPlayerInteractWeapon()
 		_thrown.my_angle = (current_weapon == WEAPONS.KNIFE) ? _throw_dir : irandom(360);
 		_thrown.image_index = scrWeaponGetImage(current_weapon);
 		_thrown.ammo = ammo;
+		_thrown.isPlayerPickedUp = true;
 		_thrown.direction = _throw_dir;
         
 		_thrown.speed = (_wall_in_front != noone) ? 0 : ((current_weapon == WEAPONS.KNIFE) ? 16 : 12);
@@ -47,7 +43,7 @@ function scrPlayerInteractWeapon()
 		sprite_index = my_sprites.walk; 
 	}
 	
-	// [ОРИГИНАЛЬНАЯ ЛОГИКА] ДЕЙСТВИЕ Б: ПОДБИРАЕМ НОВОЕ ОРУЖИЕ С ПОЛА В ЭТОТ ЖЕ КАДР
+	// ДЕЙСТВИЕ Б: ПОДБИРАЕМ НОВОЕ ОРУЖИЕ С ПОЛА
 	if (_num > 0) 
 	{
 		var _best_weapon_instance = noone;
@@ -81,7 +77,11 @@ function scrPlayerInteractWeapon()
 			my_sprites = scrPlayerGetWeaponSprite(character, current_weapon);
 			sprite_index = my_sprites.walk; 
 			image_yscale = standart_y_scale;
+			
 			ammo = _best_weapon_instance.ammo;
+			if (global.hard == true && _best_weapon_instance.isPlayerPickedUp == false) {
+			ammo = ceil(_best_weapon_instance.ammo / 2);
+			}
         
 			instance_destroy(_best_weapon_instance);
 		}

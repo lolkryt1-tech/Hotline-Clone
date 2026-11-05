@@ -1,34 +1,31 @@
 if (!instance_exists(objLightController)) exit;
+if (global.gui_w <= 0 || global.gui_h <= 0) exit; 
 
-// В Draw GUI используем размеры GUI, а не окна!
-var _w = display_get_gui_width();
-var _h = display_get_gui_height();
-if (_w <= 0 || _h <= 0) exit;
+// 1. Расчет координат строго на основе масштаба GUI (не окна!)
+var _sx = (x - global.cam_x) * global.gui_scale_x;
+var _sy = (y - global.cam_y) * global.gui_scale_y;
+var _tx = (target_x - global.cam_x) * global.gui_scale_x;
+var _ty = (target_y - global.cam_y) * global.gui_scale_y;
 
-var _cam   = view_camera[0];
-var _cam_x = camera_get_view_x(_cam);
-var _cam_y = camera_get_view_y(_cam);
-var _cam_w = camera_get_view_width(_cam);
-var _cam_h = camera_get_view_height(_cam);
+// 2. Зеркальное отражение точек относительно ширины и высоты GUI-слоя
+if (global.hard) {
+    _sx = global.gui_w - _sx;
+    _sy = global.gui_h - _sy;
+    _tx = global.gui_w - _tx;
+    _ty = global.gui_h - _ty;
+}
 
-var _scale_x = _w / _cam_w;
-var _scale_y = _h / _cam_h;
-
-var _sx = (x - _cam_x) * _scale_x;
-var _sy = (y - _cam_y) * _scale_y;
-var _tx = (target_x - _cam_x) * _scale_x;
-var _ty = (target_y - _cam_y) * _scale_y;
-
+// 3. Отрисовка геометрии трейсера
 var _prev_color = draw_get_color();
 var _prev_alpha = draw_get_alpha();
 
 draw_set_alpha(alpha);
 
-// Обводка
+// Обводка линии
 draw_set_color(c_dkgray);
 draw_line_width(_sx, _sy, _tx, _ty, 4); 
 
-// Трейсер
+// Центральная часть трейсера
 draw_set_color(c_white);
 draw_line_width(_sx, _sy, _tx, _ty, 2);
 

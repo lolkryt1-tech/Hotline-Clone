@@ -8,8 +8,8 @@
   "name":"objDoor",
   "overriddenProperties":[],
   "parent":{
-    "name":"Walls",
-    "path":"folders/Objects/Furniture/Walls.yy",
+    "name":"Doors",
+    "path":"folders/Objects/Furniture/Walls/Doors.yy",
   },
   "parentObjectId":null,
   "persistent":false,

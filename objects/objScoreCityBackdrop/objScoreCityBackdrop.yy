@@ -11,7 +11,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Score Screen",
-    "path":"folders/Objects/Effects/Score Screen.yy",
+    "path":"folders/Objects/Interface/Score Screen.yy",
   },
   "parentObjectId":null,
   "persistent":false,

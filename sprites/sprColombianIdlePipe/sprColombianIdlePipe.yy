@@ -30,8 +30,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"Colombian",
-    "path":"folders/Sprites/Enemy/Colombian.yy",
+    "name":"Idle",
+    "path":"folders/Sprites/Enemy/Colombian/Idle.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

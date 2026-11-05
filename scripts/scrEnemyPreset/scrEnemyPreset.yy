@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrEnemyPreset",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrEnemyPreset",
+  "parent":{
+    "name":"Presets",
+    "path":"folders/Scripts/Triggers/Presets.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

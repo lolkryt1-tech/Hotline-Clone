@@ -6,7 +6,7 @@ function scrGetLevelData(_level_index)
 var _all_levels = [
         // === МИССИЯ 1 ===
         {
-            name: "Part 1: Prelude",
+            name: "New Case",
             total_floors: 6,
             floors: [
                 { file_prefix: "story_lvl1_f0", room_name: "Room1", is_cleared: false },
@@ -17,12 +17,20 @@ var _all_levels = [
                 { file_prefix: "story_lvl1_f5", room_name: "Room6", is_cleared: false }
             ],
             
+			level_music: New_Case_Intro,
+			total_triggers: (global.hard) ? 11 : 7,
+			
             // === КОЛИЧЕСТВО ДЛЯ МАКСИМАЛЬНОГО РАНГА ===
-            max_stats: {
-                kills: 30,		// Всего врагов на всех этажах
-                combo: 30,		// Максимально возможный множитель комбо
-                execs: 5,		// Сколько врагов нужно казнить
-				score: 2000		// Сколько очков нужно набрать
+            max_stats: (global.hard) ? {
+                kills: 72, 
+                combo: 72,
+                execs: 5,
+                score: 600000
+            } : {
+                kills: 52, 
+                combo: 52,
+                execs: 3,
+                score: 300000
             }
         },
         

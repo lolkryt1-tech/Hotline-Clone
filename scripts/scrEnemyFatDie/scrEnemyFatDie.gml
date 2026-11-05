@@ -3,6 +3,8 @@ function scrEnemyFatDie()
 	path_end();
     current_speed = 0;
 	legs_image_index = 0;
+	
+	if (can_hear == false) { instance_create_layer(x, y, "Instances", objHeadSet); can_hear = true; }
 
     // 1. Выбрасываем пушку строго на первом кадре падения
     if (floor(image_index) == 1)

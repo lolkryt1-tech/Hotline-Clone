@@ -8,11 +8,11 @@ weapon               = WEAPONS.UNARMED;
 isRange_weapon       = false;
 
 if (sprite_index == sprColombianVestWalkUnarmed)	{ isRange_weapon = false; weapon = WEAPONS.UNARMED; }
-//if (sprite_index == sprColombianWalkBat)		{ isRange_weapon = false; weapon = WEAPONS.BAT; }
-//if (sprite_index == sprColombianWalkPipe)		{ isRange_weapon = false; weapon = WEAPONS.PIPE; }
+//if (sprite_index == sprColombianVestWalkBat)		{ isRange_weapon = false; weapon = WEAPONS.BAT; }
+//if (sprite_index == sprColombianVestWalkPipe)		{ isRange_weapon = false; weapon = WEAPONS.PIPE; }
 if (sprite_index == sprColombianVestWalk9mm)		{ isRange_weapon = true;  weapon = WEAPONS.PISTOL;  ammo = 15; }
-//if (sprite_index == sprColombianWalkShotgun)    { isRange_weapon = true;  weapon = WEAPONS.SHOTGUN; ammo = 6; }
-//if (sprite_index == sprColombianWalkM16)		{ isRange_weapon = true;  weapon = WEAPONS.M16;		ammo = 24; }
+if (sprite_index == sprColombianVestWalkShotgun)	{ isRange_weapon = true;  weapon = WEAPONS.SHOTGUN; ammo = 6; }
+//if (sprite_index == sprColombianVestWalkM16)		{ isRange_weapon = true;  weapon = WEAPONS.M16;		ammo = 24; }
 if (sprite_index == sprColombianVestWalkHuntingRifle)		{ isRange_weapon = true;  weapon = WEAPONS.SNIPER;  ammo = 10; }
 
 

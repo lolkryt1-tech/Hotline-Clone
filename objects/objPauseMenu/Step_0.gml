@@ -1,63 +1,113 @@
-// === ESCAPE — открыть/закрыть паузу ===
-if (keyboard_check_pressed(vk_escape)) 
+// === ESCAPE ===
+if (keyboard_check_pressed(vk_escape))
 {
-    is_paused = !is_paused;
-    
-    if (is_paused)
+    if (is_paused && menu_page == MENU_PAGE.OPTIONS)
     {
-        selected_index = 0;
-        objPauseManager.pause_tag("Pausable");
-        audio_play_sound(sndPauseMenuAppear, 1, false);
+        // Возврат из настроек
+        menu_page = MENU_PAGE.MAIN;
+        selected_index = 2;
+        items_slide = 0;
     }
     else
     {
-        objPauseManager.unpause_tag("Pausable");
+        is_paused = !is_paused;
+
+        if (is_paused)
+        {
+            menu_page = MENU_PAGE.MAIN;
+            selected_index = 0;
+
+            objPauseManager.pause_tag("Pausable");
+            audio_play_sound(sndPauseMenuAppear, 1, false);
+        }
+        else
+        {
+            objPauseManager.unpause_tag("Pausable");
+        }
     }
 }
 
-// === ЛЕРП ЗАТЕМНЕНИЯ ===
-var _target_alpha = is_paused ? 1 : 0;
-darken_alpha = lerp(darken_alpha, _target_alpha, 0.15);
+// === АНИМАЦИИ ===
+darken_alpha = lerp(
+    darken_alpha,
+    is_paused ? 1 : 0,
+    0.15
+);
 
-// === АНИМАЦИЯ ВЪЕЗДА ПУНКТОВ ===
-var _target_slide = is_paused ? 1 : 0;
-items_slide = lerp(items_slide, _target_slide, 0.12);
+items_slide = lerp(
+    items_slide,
+    is_paused ? 1 : 0,
+    0.12
+);
 
-// === ОБРАБОТКА МЕНЮ ===
-if (is_paused)
+if (!is_paused) exit;
+
+// === ТЕКУЩИЙ МАССИВ МЕНЮ ===
+var _items = (menu_page == MENU_PAGE.MAIN)
+    ? menu_items
+    : options_items;
+
+var _count = array_length(_items);
+
+// === НАВИГАЦИЯ ===
+var _up = keyboard_check_pressed(vk_up)
+       || keyboard_check_pressed(ord("W"));
+
+var _down = keyboard_check_pressed(vk_down)
+         || keyboard_check_pressed(ord("S"));
+
+if (_up || _down)
 {
-    // === НАВИГАЦИЯ (W/S и ↑/↓) ===
-    var _nav_up   = keyboard_check_pressed(vk_up)   || keyboard_check_pressed(ord("W"));
-    var _nav_down = keyboard_check_pressed(vk_down) || keyboard_check_pressed(ord("S"));
-    
-    if (_nav_up)
+    selected_index += _down ? 1 : -1;
+
+    if (selected_index < 0)
+        selected_index = _count - 1;
+
+    if (selected_index >= _count)
+        selected_index = 0;
+
+    var _snd = audio_play_sound(sndPauseMenuScroll, 0, false);
+
+    if (_snd != -1) { audio_sound_pitch(_snd, random_range(0.9, 1.15)); }
+}
+
+// === НАСТРОЙКА ГРОМКОСТИ ===
+if (menu_page == MENU_PAGE.OPTIONS)
+{
+    var _left = keyboard_check_pressed(vk_left)
+             || keyboard_check_pressed(ord("A"));
+
+    var _right = keyboard_check_pressed(vk_right)
+              || keyboard_check_pressed(ord("D"));
+
+    if (_left || _right)
     {
-        selected_index--;
-        if (selected_index < 0) selected_index = array_length(menu_items) - 1;
-        
-        var _snd = audio_play_sound(sndPauseMenuScroll, 0, false);
-        if (_snd != -1) audio_sound_pitch(_snd, random_range(0.9, 1.15));
+        var _change = _right ? 0.05 : -0.05;
+
+        switch (selected_index)
+        {
+            case 0: // SOUND VOLUME
+                global.settings.sound_volume = clamp(global.settings.sound_volume + _change, 0, 1);
+                audio_play_sound(sndPauseMenuScroll, 0, false);
+                break;
+
+            case 1: // MUSIC VOLUME
+                global.settings.music_volume = clamp(global.settings.music_volume + _change, 0, 1);
+                break;
+        }
+
+        // Применяем и сохраняем
+        scrSettingsApply();
+        scrSettingsSave();
     }
-    if (_nav_down)
-    {
-        selected_index++;
-        if (selected_index >= array_length(menu_items)) selected_index = 0;
-        
-        var _snd = audio_play_sound(sndPauseMenuScroll, 0, false);
-        if (_snd != -1) audio_sound_pitch(_snd, random_range(0.9, 1.15));
-    }
-    
-    // === ВЫБОР ===
-    var _confirm = false;
-    
-    // Enter или ЛКМ
-    if (keyboard_check_pressed(vk_enter) || mouse_check_button_pressed(mb_left))
-    {
-        _confirm = true;
-    }
-    
-    // Выполнение выбора
-    if (_confirm)
+}
+
+// === ПОДТВЕРЖДЕНИЕ ===
+var _confirm = keyboard_check_pressed(vk_enter) || keyboard_check_pressed(vk_space) || mouse_check_button_pressed(mb_left);
+
+if (_confirm)
+{
+    if (menu_page == MENU_PAGE.MAIN)
     {
         switch (selected_index)
         {
@@ -65,8 +115,33 @@ if (is_paused)
                 is_paused = false;
                 objPauseManager.unpause_tag("Pausable");
                 break;
-            case 1: // RESTART
+
+            case 1: // RESTART LEVEL
+                objPauseManager.unpause_tag("Pausable");
                 scrRestartLevel();
+                break;
+
+            case 2: // OPTIONS
+                menu_page = MENU_PAGE.OPTIONS;
+                selected_index = 0;
+                items_slide = 0;
+                break;
+
+            case 3: // EXIT
+				scrMusicStop(0);
+				scrDestroyManagers();
+                room_goto(rmMainMenu);
+                break;
+        }
+    }
+    else
+    {
+        switch (selected_index)
+        {
+            case 2: // BACK
+                menu_page = MENU_PAGE.MAIN;
+                selected_index = 2;
+                items_slide = 0;
                 break;
         }
     }

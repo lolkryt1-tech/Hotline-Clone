@@ -1,11 +1,12 @@
 if (!is_ready || alpha <= 0) exit;
 if (!surface_exists(application_surface)) exit;
 
-var _w = window_get_width();
-var _h = window_get_height();
+// Используем размеры чистого игрового кадра (рабочего холста)
+var _w = surface_get_width(application_surface);
+var _h = surface_get_height(application_surface);
 if (_w <= 0 || _h <= 0) exit;
 
-// Пересоздаем поверхности, если их нет или размер изменился
+// Пересоздаем поверхности, если они отсутствуют или изменился размер холста
 if (!surface_exists(mask_surf) || surface_get_width(mask_surf) != _w) {
     if (surface_exists(mask_surf)) surface_free(mask_surf);
     mask_surf = surface_create(_w, _h);
@@ -15,19 +16,31 @@ if (!surface_exists(scene_surf) || surface_get_width(scene_surf) != _w) {
     scene_surf = surface_create(_w, _h);
 }
 
-// --- Шаг 1: маска искажения ---
+// ==========================================
+// --- ШАГ 1: МАСКА ИСКАЖЕНИЯ ---
+// ==========================================
 surface_set_target(mask_surf);
 draw_clear_alpha(c_black, 0.0);
 
 var _cam_x = global.cam_x;
 var _cam_y = global.cam_y;
-var _scale_x = global.cam_scale_x;
-var _scale_y = global.cam_scale_y;
+
+// Расчет масштаба относительно игрового холста
+var _scale_x = _w / global.cam_w;
+var _scale_y = _h / global.cam_h;
 
 var _sx = (start_x - _cam_x) * _scale_x;
 var _sy = (start_y - _cam_y) * _scale_y;
 var _tx = (target_x - _cam_x) * _scale_x;
 var _ty = (target_y - _cam_y) * _scale_y;
+
+// Режим хардмода: зеркальное отражение координат внутри маски
+if (global.hard) {
+    _sx = _w - _sx;
+    _sy = _h - _sy;
+    _tx = _w - _tx;
+    _ty = _h - _ty;
+}
 
 var _true_dir = point_direction(_sx, _sy, _tx, _ty);
 var _nx = lengthdir_x(wave_width, _true_dir + 90);
@@ -50,7 +63,9 @@ draw_primitive_end();
 
 surface_reset_target();
 
-// --- Шаг 2: сцена с шейдером ---
+// ==========================================
+// --- ШАГ 2: СЦЕНА С ШЕЙДЕРОМ ---
+// ==========================================
 surface_set_target(scene_surf);
 draw_clear_alpha(c_black, 0);
 
@@ -59,6 +74,7 @@ shader_set(shd_explosion_ripple);
 var _light_ctrl = instance_find(objLightController, 0);
 var _src_surf = application_surface;
 
+// Проверяем наличие контроллера света и его поверхности
 if (_light_ctrl != noone && surface_exists(_light_ctrl.lit_surf)) {
     _src_surf = _light_ctrl.lit_surf;
 }
@@ -67,10 +83,17 @@ texture_set_stage(u_scene_tex, surface_get_texture(_src_surf));
 texture_set_stage(u_distort_tex, surface_get_texture(mask_surf));
 shader_set_uniform_f(u_force, distortion_force);
 
+// Принудительно растягиваем текстуру источника под размеры холста игры,
+// чтобы устранить сужение экрана из-за разницы разрешений оконного режима
 draw_surface_stretched(_src_surf, 0, 0, _w, _h);
 
 shader_reset();
 surface_reset_target();
 
-// --- Шаг 3: вывод на экран ---
-draw_surface_stretched(scene_surf, 0, 0, display_get_gui_width(), display_get_gui_height());
+// ==========================================
+// --- ШАГ 3: ВЫВОД НА ЭКРАН ---
+// ==========================================
+// Записываем финальный результат обратно без смещения пропорций
+gpu_set_blendenable(false);
+draw_surface(scene_surf, 0, 0);
+gpu_set_blendenable(true);

@@ -7,14 +7,28 @@ function scrSaveGame()
 
 	var _buf = buffer_create(1024, buffer_grow, 1);
 	
-	// === 0. СОХРАНЕНИЕ objEffector (ДО ИГРОКА) ===
+	// === 0. СОХРАНЕНИЕ ГЛОБАЛОВ ===
+	with (objGameManager)
+	{
+		buffer_write(_buf, buffer_u16,  global.current_level.total_triggers)
+		
+		buffer_write(_buf, buffer_u32,  global.total_score);
+		buffer_write(_buf, buffer_u16,  global.enemies_killed);
+		buffer_write(_buf, buffer_u16,  global.executions_count);
+	
+		buffer_write(_buf, buffer_u16,  global.combo_current);
+		buffer_write(_buf, buffer_u16,  global.combo_max_level);
+		buffer_write(_buf, buffer_f16,  global.combo_timer);
+	}
+	
+	// === 1. СОХРАНЕНИЕ objEffector ===
 	with (objEffector)
 	{
 		buffer_write(_buf, buffer_u8, state);
 		buffer_write(_buf, buffer_f16, image_alpha);
 	}
 	
-	// === 1. СОХРАНЕНИЕ ДАННЫХ ИГРОКА ===
+	// === 1.5. СОХРАНЕНИЕ ДАННЫХ ИГРОКА ===
 	with (objPlayer)
 	{
 		buffer_write(_buf, buffer_f16,  x);
@@ -29,14 +43,6 @@ function scrSaveGame()
 		buffer_write(_buf, buffer_f16,  hor_velocity);
 		buffer_write(_buf, buffer_f16,  ver_velocity);
 		buffer_write(_buf, buffer_bool, active);
-		
-		buffer_write(_buf, buffer_u32,  global.total_score);
-		buffer_write(_buf, buffer_u16,  global.enemies_killed);
-		buffer_write(_buf, buffer_u16,  global.executions_count);
-	
-		buffer_write(_buf, buffer_u16,  global.combo_current);
-		buffer_write(_buf, buffer_u16,  global.combo_max_level);
-		buffer_write(_buf, buffer_f16,  global.combo_timer);
 	}
 	
 	// === 2. СОХРАНЕНИЕ ВРАГОВ ===
@@ -211,6 +217,7 @@ function scrSaveGame()
 			buffer_write(_buf, buffer_s32, depth);
 			buffer_write(_buf, buffer_u16, object_index); 
 			buffer_write(_buf, buffer_u8,  ammo);
+			buffer_write(_buf, buffer_u8,  isPlayerPickedUp);
 		}
 	}
 	
@@ -329,11 +336,15 @@ function scrSaveGame()
 	// === 13. СОХРАНЕНИЕ ТРИГГЕРОВ СОБЫТИЙ (objTriggerAction) ===
 	var _trigger_action_count = instance_number(objTriggerAction);
 	buffer_write(_buf, buffer_u16, _trigger_action_count);
-	
+
 	with (objTriggerAction)
 	{
-		buffer_write(_buf, buffer_u32,  trigger_id);
-		buffer_write(_buf, buffer_bool, is_triggered);
+	    buffer_write(_buf, buffer_u32, trigger_id);
+	    buffer_write(_buf, buffer_bool, is_triggered);
+	    buffer_write(_buf, buffer_bool, is_firing);
+	    buffer_write(_buf, buffer_u16, action_index);
+	    buffer_write(_buf, buffer_u16, action_timer);
+	    buffer_write(_buf, buffer_bool, blocks_floor_clear);
 	}
 	
 	var _file_name = scrGetSaveFileName();
@@ -385,7 +396,38 @@ function scrLoadGame(_is_room_transition)
 	var _buf = buffer_load(_file_name);
 	buffer_seek(_buf, buffer_seek_start, 0);
 	
-	// === 0. ЧТЕНИЕ objEffector ===
+	// === 0. ЧТЕНИЕ ГЛОБАЛОВ ===
+	// === КОЛИЧЕСТВО ТРИГГЕРОВ ===
+	var _total_triggers = buffer_read(_buf, buffer_u16);
+	
+	// === СТАТИСТИКА ===
+	var _s_total_score  = buffer_read(_buf, buffer_u32);
+	var _s_enemies      = buffer_read(_buf, buffer_u16);
+	var _s_executions   = buffer_read(_buf, buffer_u16);
+	
+	var _s_combo_cur    = buffer_read(_buf, buffer_u16);
+	var _s_combo_max    = buffer_read(_buf, buffer_u16);
+	var _s_combo_timer  = buffer_read(_buf, buffer_f16);
+	
+	if (!_is_room_transition)
+	{
+		global.current_level.total_triggers = _total_triggers;
+		
+		global.total_score      = _s_total_score;
+		global.enemies_killed   = _s_enemies;
+		global.executions_count = _s_executions;
+		
+		global.combo_current    = _s_combo_cur;
+		global.combo_max_level  = _s_combo_max;
+		global.combo_timer      = _s_combo_timer;
+	}
+	
+	with(objGameManager)
+	{
+		
+	}
+	
+	// === 1. ЧТЕНИЕ objEffector ===
 	var _eff_state = buffer_read(_buf, buffer_u8);
 	var _eff_alpha = buffer_read (_buf, buffer_f16);
 	
@@ -393,9 +435,10 @@ function scrLoadGame(_is_room_transition)
 	{
 		objEffector.state = _eff_state;
 		objEffector.image_alpha = _eff_alpha;
+		objEffector.cam_initialized = false;
 	}
 	
-	// === 1. ЧТЕНИЕ ДАННЫХ ИГРОКА ===
+	// === 1.5. ЧТЕНИЕ ДАННЫХ ИГРОКА ===
 	var _p_x        = buffer_read(_buf, buffer_f16);
 	var _p_y        = buffer_read(_buf, buffer_f16);
 	var _p_angle    = buffer_read(_buf, buffer_f16);
@@ -435,26 +478,6 @@ function scrLoadGame(_is_room_transition)
 		energy     = max_energy;
 		
 		my_sprites         = scrPlayerGetWeaponSprite(character, current_weapon);
-	}
-	
-	// === ЧТЕНИЕ СТАТИСТИКИ ===
-	var _s_total_score  = buffer_read(_buf, buffer_u32);
-	var _s_enemies      = buffer_read(_buf, buffer_u16);
-	var _s_executions   = buffer_read(_buf, buffer_u16);
-	
-	var _s_combo_cur    = buffer_read(_buf, buffer_u16);
-	var _s_combo_max    = buffer_read(_buf, buffer_u16);
-	var _s_combo_timer  = buffer_read(_buf, buffer_f16);
-	
-	if (!_is_room_transition)
-	{
-		global.total_score      = _s_total_score;
-		global.enemies_killed   = _s_enemies;
-		global.executions_count = _s_executions;
-		
-		global.combo_current    = _s_combo_cur;
-		global.combo_max_level  = _s_combo_max;
-		global.combo_timer      = _s_combo_timer;
 	}
 	
 	// === ЧТЕНИЕ ВРАГОВ ===
@@ -687,6 +710,7 @@ function scrLoadGame(_is_room_transition)
 			var _w_dpth = buffer_read(_buf, buffer_s32); 
 			var _w_object_index = buffer_read(_buf, buffer_u16);
 			var _w_ammo = buffer_read(_buf, buffer_u8);
+			var _w_beingPicked = buffer_read(_buf, buffer_u8);
 			
 			var _weap = instance_create_layer(_w_x, _w_y, "Instances", _w_object_index);
 			
@@ -696,6 +720,7 @@ function scrLoadGame(_is_room_transition)
 			_weap.weapon_type = _w_type;
 			_weap.depth       = _w_dpth; 
 			_weap.ammo		  =	_w_ammo;
+			_weap.isPlayerPickedUp = _w_beingPicked;
 			
 			_weap.speed       = 0;
 			_weap.image_speed = 0;
@@ -896,25 +921,31 @@ function scrLoadGame(_is_room_transition)
 	// === ЧТЕНИЕ ТРИГГЕРОВ СОБЫТИЙ (objTriggerAction) ===
 	if (buffer_tell(_buf) < buffer_get_size(_buf))
 	{
-		var _trigger_action_count = buffer_read(_buf, buffer_u16);
-		
-		for (var t = 0; t < _trigger_action_count; t++)
-		{
-			var _t_id        = buffer_read(_buf, buffer_u32);
-			var _t_triggered = buffer_read(_buf, buffer_bool);
-			
-			with (objTriggerAction)
-			{
-			    if (trigger_id == _t_id)
-			    {
-			        is_triggered = _t_triggered;
-			        is_firing    = false;
-			        action_index = 0;
-			        action_timer = 0;
-			        break;
-			    }
-			}
-		}
+	    var _trigger_action_count = buffer_read(_buf, buffer_u16);
+
+	    for (var t = 0; t < _trigger_action_count; t++)
+	    {
+	        var _t_id = buffer_read(_buf, buffer_u32);
+	        var _t_triggered = buffer_read(_buf, buffer_bool);
+	        var _t_is_firing = buffer_read(_buf, buffer_bool);
+	        var _t_action_index = buffer_read(_buf, buffer_u16);
+	        var _t_action_timer = buffer_read(_buf, buffer_u16);
+	        var _t_blocks_clear = buffer_read(_buf, buffer_bool);
+
+	        with (objTriggerAction)
+	        {
+	            if (trigger_id == _t_id)
+	            {
+	                is_triggered = _t_triggered;
+	                is_firing = _t_is_firing;
+	                action_index = _t_action_index;
+	                action_timer = _t_action_timer;
+	                blocks_floor_clear = _t_blocks_clear;
+
+	                break;
+	            }
+	        }
+	    }
 	}
 	
 	buffer_delete(_buf); 
@@ -948,6 +979,13 @@ function scrLoadGame(_is_room_transition)
 			surface_reset_target();
 		}
 	}
+	
+	
+    with (objGameManager)
+    {
+        floor_had_enemies = false;
+        floor_clear_check_delay = 3;
+    }
 	
 	global.is_cleaning_level = false;
 }

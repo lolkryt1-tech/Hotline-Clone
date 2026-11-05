@@ -15,7 +15,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"rmTestLightStrip",
-    "path":"folders/Bulb/Example/rmTestLightStrip.yy",
+    "path":"folders/Assets/Bulb/Example/rmTestLightStrip.yy",
   },
   "parentObjectId":{
     "name":"oRendererPar",

@@ -38,5 +38,8 @@
     "path":"sprites/sprFloorCleared/sprFloorCleared.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "Pausable",
+  ],
   "visible":true,
 }

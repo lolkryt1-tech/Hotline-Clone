@@ -1,0 +1,1 @@
+light_scale = 1.5;

@@ -13,7 +13,7 @@ function scrEnemyUnarmedSearch()
 		return;
 	}
 	
-	// Теперь читать object_index на 100% безопасно
+	// ПОДБОР ОРУЖИЯ
 	if (my_target.object_index == objWeapon)
 	{
 		scrEnemyTryGetWeapon(my_target);
@@ -29,6 +29,7 @@ function scrEnemyUnarmedSearch()
 		audio_play_sound(sndPickUpWeapon, 1, false);
 	    weapon = my_target.weapon;
 		ammo   = my_target.ammo;
+		isPlayerPickedUp = my_target.isPlayerPickedUp;
 		
 	    instance_destroy(my_target); 
 		

@@ -6,6 +6,13 @@ draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, my_
 
 
 if (global.debug == 0) return;
+
+draw_set_font(fntDebug);
+draw_set_color(c_white); 
+
+draw_text(x - 30, y + 30, global.current_level.total_triggers);
+
+
 // === ОТРИСОВКА УДАРА
 if (debug_melee_timer > 0)
 {

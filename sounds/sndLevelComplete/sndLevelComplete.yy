@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"sndLevelComplete",
+  "audioGroupId":{
+    "name":"audiogroup_sounds",
+    "path":"audiogroups/audiogroup_sounds",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":2.2856236,
+  "exportDir":"",
+  "name":"sndLevelComplete",
+  "parent":{
+    "name":"Sounds",
+    "path":"folders/Sounds.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"sndLevelComplete.wav",
+  "volume":0.75,
+}

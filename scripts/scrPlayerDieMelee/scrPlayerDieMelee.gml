@@ -16,9 +16,6 @@ function scrPlayerDieMelee(_killer, _weapon)
 
 	var _px = _victim_id.x;
 	var _py = _victim_id.y;
-	
-	// Вычисляем направление удара от убийцы к игроку
-	var _push_dir = point_direction(_killer.x, _killer.y, _px, _py);
     
 	// === 2. КОНВЕРТАЦИЯ ОРУЖИЯ В ТИП УРОНА ===
 	var _calculated_hit_type = HIT_TYPE.BLUNT; // По умолчанию дробящее
@@ -62,9 +59,9 @@ function scrPlayerDieMelee(_killer, _weapon)
 	_corpse.image_index  = irandom_range(1, 14);
 	
 	// Передаем физику и углы
-	_corpse.direction    = _push_dir;
+	_corpse.direction    = _killer.direction;
 	_corpse.speed        = _corpse_speed;
-	_corpse.my_angle     = _push_dir;
+	_corpse.my_angle     = _killer.direction;
 	
 	// Скармливаем трупу игрока тип урона для корректных брызг крови на полу (go_splat)
 	_corpse.hit_type     = _calculated_hit_type;

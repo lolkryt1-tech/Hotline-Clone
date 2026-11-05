@@ -1,3 +1,5 @@
+image_alpha = 0;
+
 pause_elements = [];
 pause_queue = [];
 unpause_queue = [];

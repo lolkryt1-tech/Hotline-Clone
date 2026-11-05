@@ -8,6 +8,7 @@ weapon               = WEAPONS.PIPE;
 isRange_weapon       = false;
 
 if (sprite_index == sprColombianWalkUnarmed)	{ isRange_weapon = false; weapon = WEAPONS.UNARMED; }
+if (sprite_index == sprColombianWalkKnife)		{ isRange_weapon = false; weapon = WEAPONS.KNIFE; }
 if (sprite_index == sprColombianWalkBat)		{ isRange_weapon = false; weapon = WEAPONS.BAT; }
 if (sprite_index == sprColombianWalkPipe)		{ isRange_weapon = false; weapon = WEAPONS.PIPE; }
 if (sprite_index == sprColombianWalk9mm)		{ isRange_weapon = true;  weapon = WEAPONS.PISTOL;  ammo = 15; }

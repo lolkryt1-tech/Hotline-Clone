@@ -24,6 +24,8 @@ enum TYPE {
 	SLASH
 }
 
+isPlayerPickedUp = false;
+
 ammo = 0
 my_angle = random(360);
 weapon = 0;

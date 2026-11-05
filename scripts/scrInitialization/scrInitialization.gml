@@ -1,3 +1,11 @@
+global.hard = false;
+
+
+// Настройки меню тряски экрана
+global.camera_shake_menu_x = 12;
+global.camera_shake_menu_y = 12;
+
+/*
 function scrInitialization()
 {
 	if (!instance_exists(objEffector)) { instance_create_layer(x, y, "Instances", objEffector); }

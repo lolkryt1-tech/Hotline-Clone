@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"Score_Music",
+  "audioGroupId":{
+    "name":"audiogroup_music",
+    "path":"audiogroups/audiogroup_music",
+  },
+  "bitDepth":1,
+  "channelFormat":1,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":212.9127,
+  "exportDir":"",
+  "name":"Score_Music",
+  "parent":{
+    "name":"Music",
+    "path":"folders/Sounds/Music.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"Score_Music.ogg",
+  "volume":1.0,
+}

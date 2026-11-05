@@ -18,6 +18,6 @@ function scrEnemyLegs()
 	}
 	
 	// Дошагиваем до идеальной позы: назад или вперед
-	if (current_cycle_pos < 4)  { legs_image_index -= legs_animation_speed; }
-	if (current_cycle_pos >= 4) { legs_image_index += legs_animation_speed; } 
+	if (current_cycle_pos < 4)  { legs_image_index -= 1; }
+	if (current_cycle_pos >= 4) { legs_image_index += 1; } 
 }

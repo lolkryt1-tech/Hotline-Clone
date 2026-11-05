@@ -1,3 +1,12 @@
+/*
+// =========================================================================
+// 0. БЛОК ОТРИСОВКИ ФПС
+// =========================================================================
+draw_set_font(fntDebug);
+draw_set_color(c_white);
+draw_text(10, 10, "FPS: " + string(fps));
+*/
+
 // =========================================================================
 // 1. БЛОК ОТРИСОВКИ КОМБО С ЕСТЕСТВЕННЫМ РАЗМЕРОМ (Слева сверху)
 // =========================================================================
@@ -10,17 +19,16 @@ if (global.combo_current > 1)
     var _text = string(global.combo_current) + "X";
     
     // Координаты отрисовки текста
-    var _tx = 60;
+    var _tx = 50;
     var _ty = 40;
     
     // --- НАСТРОЙКА ЦВЕТА С МЯГКИМ ОСВЕТЛЕНИЕМ ---
     var _base_purple = make_color_rgb(180, 50, 250); 
     var _current_color = merge_color(_base_purple, c_white, combo_flash * 0.4);
     
-    // 🔥 ИСПРАВЛЕНО: Убран коэффициент 1.3, берем чистый combo_scale (в покое равен 1.0)
     var _final_scale = combo_scale;
     
-    // --- ПЛОТНАЯ ОБВОДКА В 2 ПИКСЕЛЯ ДЛЯ ТВОЕГО ШРИФТА ---
+    // --- ПЛОТНАЯ ОБВОДКА В 2 ПИКСЕЛЯ ДЛЯ ШРИФТА ---
     var _text_border_color = make_color_rgb(40, 40, 40); 
     
     // Плотное смещение по осям (2 пикселя)
@@ -39,8 +47,8 @@ if (global.combo_current > 1)
     draw_text_transformed_color(_tx, _ty, _text, _final_scale, _final_scale, 0, _current_color, _current_color, _current_color, _current_color, 1);
     
     // --- УВЕЛИЧЕННАЯ ПОЛОСКА С ТЁМНОЙ ОБВОДКОЙ ---
-    var _bar_x = 35;
-    var _bar_y = 140;        
+    var _bar_x = 32;
+    var _bar_y = 160;        
     var _bar_width = 140;   
     var _bar_height = 12;   
     
@@ -114,7 +122,7 @@ var _cx = _start_x;
 _draw_stable_text(_cx, _timer_y, string_char_at(_str_mins, 1), _timer_scale); _cx += _char_w;
 _draw_stable_text(_cx, _timer_y, string_char_at(_str_mins, 2), _timer_scale); _cx += _char_w;
 
-// 2. Рисуем Двоеточие
+// 2. Рисуем	Двоеточие
 _draw_stable_text(_cx, _timer_y, ":", _timer_scale); _cx += _sep_w;
 
 // 3. Рисуем Секунды (2 цифры посимвольно)

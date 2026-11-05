@@ -1,3 +1,3 @@
-depth = 50;
+depth = 100;
 moon_radius = 200;
 anim_time = 0; // Для пульсации

@@ -1,5 +1,6 @@
 function scrCameraLevelEnd()
 {
+	scrMusicPlay(Score_Music, 1, 90);
 	image_alpha -= 0.25;
 	
     // 1. Считаем целевую позицию X для левого верхнего угла камеры, чтобы центрироваться по машине
@@ -24,17 +25,7 @@ function scrCameraLevelEnd()
     if (cutscene_timer <= 0) 
     {
          room_goto(rmScore);
-		 
-		 instance_destroy(objSaveManager);
-		 instance_destroy(objBloodSurfaceManager);
-		 instance_destroy(objDepthManager);
-		 instance_destroy(objParticleManager);
-		 instance_destroy(objPathManager);
-		 instance_destroy(objPauseManager);
-		 instance_destroy(objPauseMenu);
-		 instance_destroy(objGameManager);
-		 instance_destroy(objEffector);
-		 instance_destroy(objLevelStatistic);
+		 scrDestroyManagers(); 
     }
 	
 	if (fade_darkness > 0) 

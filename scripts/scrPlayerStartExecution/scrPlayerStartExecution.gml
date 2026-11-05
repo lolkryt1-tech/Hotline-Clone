@@ -36,6 +36,8 @@ function scrPlayerStartExecution()
             var _thrown = instance_create_layer(x, y, "Instances", objWeaponThrow);
             _thrown.weapon = current_weapon;
             _thrown.ammo   = ammo;
+			_thrown.isPlayerPickedUp = true;
+			
             _thrown.my_angle = irandom(360);
             _thrown.image_index = scrWeaponGetImage(current_weapon);
             
@@ -122,6 +124,8 @@ function scrPlayerStartExecution()
                     var _thrown = instance_create_layer(x, y, "Instances", objWeaponThrow);
                     _thrown.weapon = current_weapon;
                     _thrown.ammo   = ammo;
+					_thrown.isPlayerPickedUp = true;
+					
                     _thrown.my_angle = irandom(360);
                     _thrown.speed = 2;
                     _thrown.image_index = scrWeaponGetImage(current_weapon);

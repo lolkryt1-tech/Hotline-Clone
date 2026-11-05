@@ -2,6 +2,24 @@ function scrPlayerAttack()
 {
     attack_delay--;
     is_attacking = (attack_delay > 0);
+	
+	
+	// === ПРОВЕРКА ВЗАИМОДЕЙСТВИЯ С МЕНЮ ===
+
+	var _ui_blocked = global.camera_shake_menu_hover || global.camera_shake_menu_dragging;
+
+	var _menu = instance_find(objCameraShakeMenu, 0);
+
+	if (_menu != noone)
+	{
+	    var _mx = device_mouse_x_to_gui(0);
+	    var _my = device_mouse_y_to_gui(0);
+
+	    if (_menu.dragging || point_in_rectangle(_mx, _my, _menu.x, _menu.y, _menu.x + _menu.window_w, _menu.y + _menu.window_h))
+	    {
+	        _ui_blocked = true;
+	    }
+	}
     
     // === ЛОГИКА КАЖДОГО КАДРА АТАКИ ===
     if (sprite_index == my_sprites.attack) 
@@ -17,7 +35,8 @@ function scrPlayerAttack()
     }
     
     // === ЛОГИКА НАЖАТИЯ МЫШИ (СТАРТ АТАКИ) ===
-    if (mouse_check_button(mb_left) && attack_delay <= 0)
+    //if (mouse_check_button(mb_left) && attack_delay <= 0)
+	if (!_ui_blocked && mouse_check_button(mb_left) && attack_delay <= 0)
     {
         if (sprite_index == my_sprites.walk || sprite_index == sprCopTurnShotgun) 
         { 
@@ -40,14 +59,22 @@ function scrPlayerAttack()
                 {
                     scrPlayerShoot(character, current_weapon); // Обычная стрельба снарядами
                 }
-                
-                objEffector.shake = my_sprites.shake_amount;
+
+				with (objEffector)
+				{
+				    var _shake = other.my_sprites.shake;
+
+				    scrCameraKickShakeStart(_shake.kick.strength, _shake.kick.rotation, _shake.kick.attack, _shake.kick.release);
+				    scrCameraBounceShakeStart(_shake.bounce.strength, _shake.bounce.rotation, _shake.bounce.frequency, _shake.bounce.damping);
+				}
             }
             
             // 2. Ближний бой: даём импульс тряски
             if (!my_sprites.is_ranged)
             {
-                objEffector.shake = my_sprites.shake_amount;
+                with (objEffector) {
+				    scrCameraBounceShakeStart(2, 2, 2, 2);
+				}
             }
             
             // === ВОСПРОИЗВЕДЕНИЕ СЛУЧАЙНОГО ЗВУКА ВЫСТРЕЛA / УДАРА ===

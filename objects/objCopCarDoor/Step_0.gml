@@ -4,6 +4,8 @@ if (target_angle == 0 && base_angle != 0) {
     image_angle = base_angle;
 }
 
+if (!global.current_level.level_fully_cleared) exit;
+
 // 2. ПРОВЕРКА ИГРОКА В ЗОНЕ (ИСПРАВЛЕНО)
 var _player_in_zone = false;
 if (instance_exists(objPlayer)) {

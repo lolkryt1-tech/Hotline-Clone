@@ -71,10 +71,9 @@ if (_hit_wall != noone || _hit_door != noone)
             _debris.direction = direction - 140 - random(80);
             _debris.speed     = random(4);
             _debris.is_white_wall = false;
-            
-            var _col_brown_light = make_color_rgb(115, 30, 0);  
-            var _col_brown_dark  = make_color_rgb(92, 51, 23);   
-            _debris.image_blend  = merge_color(_col_brown_light, _col_brown_dark, random(1));
+              
+            _debris.blend_start = make_color_rgb(115, 30, 0);  
+			_debris.blend_end   = make_color_rgb(92, 51, 23);   
         }
     }
     else

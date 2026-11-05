@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrSettingsLoad",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrSettingsLoad",
+  "parent":{
+    "name":"ZOptions",
+    "path":"folders/Scripts/ZOptions.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -6,7 +6,7 @@ function scrEnemyHiderDuck()
         my_target = noone; // Обнуляем ссылку на уничтоженный инстанс
     }
 
-    // 1. БЕЗОПАСНАЯ СМЕНА СПРАЙТА
+    // 1.  СМЕНА СПРАЙТА
     if (sprite_index != sprColombianHidingShotgun)
     {
         sprite_index = sprColombianHidingShotgun;
@@ -21,8 +21,8 @@ function scrEnemyHiderDuck()
         scrEnemyTryGetTarget();
     }
     
-    // 3. ЛИНЕЙНЫЙ И ПЛАВНЫЙ ПОВОРОТ (Выполняется только если цель ЖИВА)
-    if (my_target != noone)
+    // 3. ЛИНЕЙНЫЙ И ПЛАВНЫЙ ПОВОРОТ
+    if (my_target != noone && reload <= 0)
     {
         var _target_dir = point_direction(x, y, my_target.x, my_target.y);
         var _diff = angle_difference(_target_dir, my_angle);
@@ -46,7 +46,7 @@ function scrEnemyHiderDuck()
     }
     else 
     {
-        // Если цель умерла или мы на перезарядке — плавно прячемся обратно в засаду!
+        // Если цель умерла или мы на перезарядке — плавно прячемся
         if (image_index > 0) image_index -= 0.25; 
         else                 image_index = 0; 
     }

@@ -4,7 +4,9 @@ trigger_unlock = true;
 
 image_speed = 0;
 image_index = 0;
-depth = - 8000;
+depth = - 15000;
+
+hover_timer = 0;
 
 target_room = noone;
 target_floor_index = 0;
@@ -29,5 +31,3 @@ gui_icon_y     = 0;
 gui_icon_angle = 0;     
 
 player_is_standing_on_me = false;
-has_spawned_clear_text = false; // Флаг: была ли уже показана надпись о зачистке
-first_frame_check      = true;  // Технический флаг для проверки комнаты в самый первый кадр на наличие врагов

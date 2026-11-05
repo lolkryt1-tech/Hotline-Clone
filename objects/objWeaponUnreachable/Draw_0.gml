@@ -26,4 +26,4 @@ draw_sprite_ext(sprite_index, image_index, x + 1, y + 2, image_xscale, image_ysc
 // 4. РИСУЕМ САМО ОРУЖИЕ
 draw_sprite_ext(sprite_index, image_index, x, y + _y_offset, image_xscale, image_yscale, my_angle, image_blend, image_alpha);
 
-draw_rectangle(bbox_left,bbox_top,bbox_right,bbox_bottom,true)
+//draw_rectangle(bbox_left,bbox_top,bbox_right,bbox_bottom,true)

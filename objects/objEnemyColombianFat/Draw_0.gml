@@ -2,25 +2,22 @@ draw_set_font(fntDebug);
 draw_sprite_ext(sprColombianLegs, legs_image_index, x, y, image_xscale, image_yscale, legs_direction, image_blend, image_alpha);
 draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, my_angle, image_blend, image_alpha);
 
-draw_text(x + 15, y, current_speed);
+
+if (can_hear == false)
+{
+	// Запускаем расчет координат и угла headgear_angle
+	scrUpdateHeadSet();
+	
+	// ИСПРАВЛЕНО: Заменили my_angle на headgear_angle, чтобы картинка начала крутиться на поиске!
+	draw_sprite_ext(sprHeadGear, 1, headgear_x, headgear_y, image_xscale, image_yscale, headgear_angle, image_blend, image_alpha);
+}
+
 
 if (global.debug == 0) return;
 
 draw_text(x + 15, y - 40, "Walk on trail count: " + string(walk_on_trail));
 
 draw_rectangle(bbox_left,bbox_top,bbox_right,bbox_bottom,true)
-
-
-
-// 2. ВСЯ ЛОГИКА ОБНОВЛЕНИЯ И ОТРИСОВКИ ОЧКОВ/НАУШНИКОВ ВНУТРИ DRAW
-if (can_hear == false) // ИСПРАВЛЕНО: Наушники/очки рисуются, если враг НЕ слышит
-{
-	// Запускаем расчет координат и угла headgear_angle
-	scrUpdateHeadSet();
-	
-	// ИСПРАВЛЕНО: Заменили my_angle на headgear_angle, чтобы картинка начала крутиться на поиске!
-	draw_sprite_ext(sprHeadGear, 0, headgear_x, headgear_y, image_xscale, image_yscale, headgear_angle, image_blend, image_alpha);
-}
 
 
 

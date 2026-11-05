@@ -16,6 +16,8 @@ rel_dist = 0;          // Расстояние от центра двери до
 rel_dir = 0;           // Направление от центра двери до точки втыкания
 is_stuck_in_door = false;
 
+isPlayerPickedUp = true; // Просто заглушка
+
 if (image_index == 0) { weapon = WEAPONS.KNIFE;  weapon_type = TYPE.MELEE; pickup_sound = sndPickUpWeapon; }
 if (image_index == 1) { weapon = WEAPONS.BAT;  weapon_type = TYPE.MELEE; pickup_sound = sndPickUpWeapon; }
 if (image_index == 2) { weapon = WEAPONS.PIPE; weapon_type = TYPE.MELEE; pickup_sound = sndPickUpWeapon; }

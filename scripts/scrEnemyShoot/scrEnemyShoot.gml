@@ -21,6 +21,7 @@ function scrEnemyShoot()
 			_pellet.speed       = my_sprites.bullet_speed + random_range(-1, 1);
 			_pellet.faction     = faction;
 			_pellet.calibre     = my_sprites.bullet_calibre;
+			_pellet.invisible_timer = my_sprites.bullet_inv;
 		}
 	}
 	else
@@ -31,6 +32,7 @@ function scrEnemyShoot()
 		_bullet.speed       = my_sprites.bullet_speed; 
 		_bullet.faction     = faction;
 		_bullet.calibre     = my_sprites.bullet_calibre; 
+		_bullet.invisible_timer = my_sprites.bullet_inv;
 	}
 	
 	// === 2. ВОСПРОИЗВЕДЕНИЕ ЗВУКА СТРЕЛЬБЫ ===

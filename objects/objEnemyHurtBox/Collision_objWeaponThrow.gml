@@ -17,6 +17,8 @@ switch (owner.class)
         var _dropped_player_weapon = instance_create_layer(owner.x, owner.y, "Instances", objWeapon);
         _dropped_player_weapon.weapon = other.weapon;
 		_dropped_player_weapon.ammo   = other.ammo;
+		_dropped_player_weapon.isPlayerPickedUp = true;
+		
         instance_destroy(other); 
 		
         scrEnemyGetHitMelee(owner, WEAPONS.UNARMED, _weapon_flight_dir, id);
@@ -32,6 +34,8 @@ switch (owner.class)
         _dropped_player_weapon = instance_create_layer(owner.x, owner.y, "Instances", objWeapon);
         _dropped_player_weapon.weapon = other.weapon;
 		_dropped_player_weapon.ammo   = other.ammo;
+		_dropped_player_weapon.isPlayerPickedUp = true;
+		
         instance_destroy(other); 
 		
         scrEnemyGetHitMelee(owner, WEAPONS.UNARMED, _weapon_flight_dir, id);

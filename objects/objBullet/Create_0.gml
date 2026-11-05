@@ -8,13 +8,13 @@ enum CALIBRE
 }
 
 image_blend = merge_color(c_white, c_white, random(1));
-image_alpha = 0.7;
+image_alpha = 0;
 image_speed = 0;
 image_index = floor(random(4));
 depth = -10000;
 
 
-
+invisible_timer = 0;
 
 faction = noone;
 caliber = noone;

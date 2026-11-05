@@ -3,7 +3,9 @@ friction = 0.8;
 
 
 my_angle = 0;
+
 weapon = 0;
+isPlayerPickedUp = false;
 ammo = 0;
 
 hover_timer = 0; // Случайный старт, чтобы куча пушек не качалась синхронно

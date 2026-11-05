@@ -5,7 +5,7 @@ draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, my_
 
 
 // 2. ВСЯ ЛОГИКА ОБНОВЛЕНИЯ И ОТРИСОВКИ ОЧКОВ/НАУШНИКОВ ВНУТРИ DRAW
-if (can_hear == false) // ИСПРАВЛЕНО: Наушники/очки рисуются, если враг НЕ слышит
+if (can_hear == false)
 {
 	// Запускаем расчет координат и угла headgear_angle
 	scrUpdateHeadSet();

@@ -2,7 +2,7 @@ var _screen_cx = display_get_gui_width() / 2;
 var _screen_cy = display_get_gui_height() / 2;
 
 // Масштаб надписи
-var _sc = 2.5; 
+var _sc = 3.0; 
 
 // Фирменные цвета
 var _c_cyan  = make_color_rgb(0, 240, 210);  

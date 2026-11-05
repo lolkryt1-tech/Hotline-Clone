@@ -15,7 +15,8 @@ function scrPlayerShoot(_character, _weapon)
             _pellet.image_angle  = _pellet.direction;
             _pellet.speed        = my_sprites.bullet_speed + random_range(-2, 2);
             _pellet.faction      = faction;
-            _pellet.calibre      = my_sprites.bullet_calibre; // Передаем калибр дроби дробовика
+            _pellet.calibre      = my_sprites.bullet_calibre;
+			_pellet.invisible_timer = my_sprites.bullet_inv;
         }
     } 
     else 
@@ -25,7 +26,8 @@ function scrPlayerShoot(_character, _weapon)
         _bullet.direction   = my_angle;
         _bullet.speed       = my_sprites.bullet_speed;
         _bullet.faction     = faction;
-        _bullet.calibre     = my_sprites.bullet_calibre; // Передаем калибр пистолета или М16
+        _bullet.calibre     = my_sprites.bullet_calibre; 
+		_bullet.invisible_timer = my_sprites.bullet_inv;
     }
 
     // === 2. ЗАДЕРЖКА ТАЙМЕРА ВЫЛЕТА ГИЛЬЗЫ ===

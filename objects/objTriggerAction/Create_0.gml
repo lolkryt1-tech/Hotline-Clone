@@ -5,7 +5,8 @@ enum TRIGGER_CONDITION {
     ENEMIES_ALL_CLEARED,  // все враги мертвы
     PLAYER_ENTER_ZONE,    // игрок вошёл в зону
     FLOOR_CLEARED,        // указанный этаж зачищен
-	ENTER_TRIGGER_ZONE	  // Задел зону триггера
+	ENTER_TRIGGER_ZONE,	  // Задел зону триггера
+	ENTER_FLOOR			  // Зашёл на этаж
 }
 
 enum TRIGGER_ACTION {
@@ -19,7 +20,9 @@ enum TRIGGER_ACTION {
 	UNLOCK_FLOOR_TRANSITION,	// Открыть переход на этаж
     DIALOG,						// задел
     TRANSITION,					// задел
-    SCRIPT						// задел
+    SCRIPT,						// задел
+	START_MUSIC,				// Музыка начинается
+	STOP_MUSIC					// Музыка закнчивается
 }
 
 /// === ОСНОВНЫЕ ПЕРЕМЕННЫЕ ===
@@ -60,8 +63,14 @@ target_x		= x;
 target_y		= y;
 spawn_infinite_search = false;
 
+/// == ПАРАМЕТРЫ МУЫЗКИ ===
+trigger_sound = noone;
+trigger_loop = noone;
+trigger_fade_frames = noone;
+
 
 /// === СОСТОЯНИЕ ЦЕПОЧКИ ДЕЙСТВИЙ ===
 action_index = 0;      // индекс текущего действия в actions
 action_timer = 0;      // сколько кадров ещё ждать перед выполнением
 is_firing    = false;  // идёт ли сейчас выполнение цепочки
+blocks_floor_clear = false;

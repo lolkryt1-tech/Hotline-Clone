@@ -11,28 +11,56 @@ function scrPlayerGetWeaponSprite(_character, _weapon)
     
     var _melee_type  = HIT_TYPE.UNARMED; 
     
-    var _shake       = 0; 
     var _sounds      = []; 
+	
+	// === ПРЕСЕТЫ ТРЯСКИ КАМЕРЫ ===
+
+	var _shake = {
+	    kick_enabled: false,
+	    bounce_enabled: false,
+	    perlin_enabled: false,
+
+	    kick: {
+	        strength: 0,
+	        rotation: 0,
+	        attack: 0.04,
+	        release: 0.15
+	    },
+
+	    bounce: {
+	        strength: 0,
+	        rotation: 0,
+			frequency: 4.0,
+			damping: 10.0
+	    },
+
+	    perlin: {
+	        strength: 0
+	    }
+	};
+	
+	
     
     // Параметры для вылета пули и гильз у игрока
     var _bullet_obj     = noone;
     var _bullet_speed   = 15;
     var _bullet_calibre = CALIBRE.SMALL; 
+	var _bullet_inv		= 15;
     var _shell_obj      = noone;
     var _shell_img      = 0; 
     var _shell_x        = 0; 
     var _shell_y        = 0; 
     
     // Перебор параметров
-    if (_weapon == WEAPONS.UNARMED)			{ _cooldown = 18; _anim_speed = 0.35; _is_ranged = false; _frame_start = 0; _melee_type = HIT_TYPE.UNARMED; _shake = 0.5; _sounds = [sndSwing1, sndSwing2]; }
-	if (_weapon == WEAPONS.KNIFE)			{ _cooldown = 0;  _anim_speed = 0.75; _is_ranged = false; _frame_start = 0; _melee_type = HIT_TYPE.CUT;		_shake = 0.2; _sounds = [sndSwing1, sndSwing2]; }
-    if (_weapon == WEAPONS.BAT)				{ _cooldown = 32; _anim_speed = 0.35; _is_ranged = false; _frame_start = 1; _melee_type = HIT_TYPE.BLUNT;   _shake = 0.5; _sounds = [sndSwing1, sndSwing2]; }
-    if (_weapon == WEAPONS.PIPE)			{ _cooldown = 18; _anim_speed = 0.35; _is_ranged = false; _frame_start = 1; _melee_type = HIT_TYPE.BLUNT;   _shake = 0.5; _sounds = [sndSwing1, sndSwing2]; }
-	if (_weapon == WEAPONS.SLEDGEHAMMER)    { _cooldown = 46; _anim_speed = 0.4; _is_ranged = false;  _frame_start = 1; _melee_type = HIT_TYPE.BLUNT;   _shake = 0.5; _sounds = [sndSwing1, sndSwing2]; _hit_end = 13; }
-    if (_weapon == WEAPONS.PISTOL)			{ _cooldown = 14; _anim_speed = 1.0;  _is_ranged = true;  _frame_start = 0; _shake = 1;   _bullet_obj = objBullet; _bullet_calibre = CALIBRE.SMALL;  _bullet_speed = 13; _shell_obj = objShell; _shell_img = 0; _sounds = [snd9mmShot]; _shell_x = 24; _shell_y = 4; }
-    if (_weapon == WEAPONS.SHOTGUN)			{ _cooldown = 30; _anim_speed = 0.5;  _is_ranged = true;  _frame_start = 0; _shake = 2;   _bullet_obj = objBullet; _bullet_calibre = CALIBRE.SHOTGUN; _bullet_speed = 13; _shell_obj = objShell; _shell_img = 2; _sounds = [sndShotgunShot];  _shell_x = 8;  _shell_y = 8; }
-    if (_weapon == WEAPONS.M16)				{ _cooldown = 6;  _anim_speed = 1.0;  _is_ranged = true;  _frame_start = 0; _shake = 0.5; _bullet_obj = objBullet; _bullet_calibre = CALIBRE.MID;  _bullet_speed = 13; _shell_obj = objShell; _shell_img = 1; _sounds = [sndM16Shot];  _shell_x = 12; _shell_y = 4; }
-	if (_weapon == WEAPONS.SNIPER)			{ _cooldown = 50; _anim_speed = 0.25; _is_ranged = true;  _frame_start = 0; _shake = 1.0; _bullet_obj = noone;	   _bullet_calibre = CALIBRE.MID;  _bullet_speed = 0; _shell_obj = objShell; _shell_img = 1; _sounds = [sndSniperShot];  _shell_x = 12; _shell_y = 4; }
+    if (_weapon == WEAPONS.UNARMED)			{ _cooldown = 18; _anim_speed = 0.35; _is_ranged = false; _frame_start = 0; _melee_type = HIT_TYPE.UNARMED; _sounds = [sndSwing1, sndSwing2]; }
+	if (_weapon == WEAPONS.KNIFE)			{ _cooldown = 0;  _anim_speed = 0.75; _is_ranged = false; _frame_start = 0; _melee_type = HIT_TYPE.CUT;		_sounds = [sndSwing1, sndSwing2]; }
+    if (_weapon == WEAPONS.BAT)				{ _cooldown = 32; _anim_speed = 0.35; _is_ranged = false; _frame_start = 1; _melee_type = HIT_TYPE.BLUNT;   _sounds = [sndSwing1, sndSwing2]; }
+    if (_weapon == WEAPONS.PIPE)			{ _cooldown = 18; _anim_speed = 0.35; _is_ranged = false; _frame_start = 1; _melee_type = HIT_TYPE.BLUNT;   _sounds = [sndSwing1, sndSwing2]; }
+	if (_weapon == WEAPONS.SLEDGEHAMMER)    { _cooldown = 46; _anim_speed = 0.4; _is_ranged = false;  _frame_start = 1; _melee_type = HIT_TYPE.BLUNT;   _sounds = [sndSwing1, sndSwing2]; _hit_end = 13; }
+    if (_weapon == WEAPONS.PISTOL)			{ _cooldown = 14; _anim_speed = 1.0;  _is_ranged = true;  _frame_start = 0;	_shake = global.camera_shake.presets.pistol;  _bullet_obj = objBullet;	_bullet_calibre = CALIBRE.SMALL; _bullet_speed = 13; _shell_obj = objShell; _shell_img = 0; _sounds = [snd9mmShot]; _shell_x = 24; _shell_y = 4; _bullet_inv = 1.5; }
+	if (_weapon == WEAPONS.SHOTGUN)         { _cooldown = 30; _anim_speed = 0.5;  _is_ranged = true;  _frame_start = 0; _shake = global.camera_shake.presets.shotgun; _bullet_obj = objBullet;	_bullet_calibre = CALIBRE.SHOTGUN; _bullet_speed = 13; _shell_obj = objShell; _shell_img = 2; _sounds = [sndShotgunShot]; _shell_x = 8;  _shell_y = 8; _bullet_inv = 0; }
+	if (_weapon == WEAPONS.M16)             { _cooldown = 6;  _anim_speed = 1.0;  _is_ranged = true;  _frame_start = 0; _shake = global.camera_shake.presets.m16;     _bullet_obj = objBullet;	_bullet_calibre = CALIBRE.MID;  _bullet_speed = 13; _shell_obj = objShell; _shell_img = 1; _sounds = [sndM16Shot]; _shell_x = 12; _shell_y = 4; _bullet_inv = 2; }
+	if (_weapon == WEAPONS.SNIPER)          { _cooldown = 50; _anim_speed = 0.25; _is_ranged = true;  _frame_start = 0; _shake = global.camera_shake.presets.sniper;  _bullet_obj = noone;		_bullet_calibre = CALIBRE.MID;  _bullet_speed = 0; _shell_obj = objShell; _shell_img = 1; _sounds = [sndSniperShot]; _shell_x = 12; _shell_y = 4; }
 
     // === 2. СТРУКТУРА СПРАЙТОВ ===
     var _sprites = { 
@@ -68,18 +96,20 @@ function scrPlayerGetWeaponSprite(_character, _weapon)
     return {
         walk:           _sprites.walk, 
         attack:         _sprites.attack, 
-		throw_prep:     _sprites.throw_prep, // ДОБАВЛЕНО В МАССИВ ВОЗВРАТА
-		throw_walk:     _sprites.throw_walk, // ДОБАВЛЕНО В МАССИВ ВОЗВРАТА
+		throw_prep:     _sprites.throw_prep,
+		throw_walk:     _sprites.throw_walk,
         cooldown:       _cooldown,
         anim_speed:     _anim_speed, 
 		hit_end:		_hit_end,
         is_ranged:      _is_ranged, 
         frame_start:    _frame_start, 
         melee_type:     _melee_type, 
-        shake_amount:   _shake,
+        shake_amount:   1,					// ПОТОМ УБРАТЬ
+		shake:			_shake,
         bullet_obj:     _bullet_obj,
         bullet_speed:   _bullet_speed,
         bullet_calibre: _bullet_calibre, 
+		bullet_inv:		_bullet_inv,
         shell_obj:      _shell_obj,
         shell_img:      _shell_img,
         shell_x:        _shell_x, 

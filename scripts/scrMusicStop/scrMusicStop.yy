@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrMusicStop",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrMusicStop",
+  "parent":{
+    "name":"ZMusic",
+    "path":"folders/Scripts/ZMusic.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

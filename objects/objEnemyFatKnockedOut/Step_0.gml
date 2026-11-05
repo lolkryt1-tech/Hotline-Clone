@@ -6,8 +6,10 @@ if (fat_blood_current <= 0)
 	_body.direction = direction;
 	_body.speed = 2;
 	
+	_body.go_splat = true;
 	_body.my_angle = my_angle - 180;
 	
+	scrAddKillStats(200, false);
 	instance_destroy();
 }
 
@@ -43,7 +45,7 @@ if (place_meeting(x + _hspd, y + _vspd, objSolid))
     // Изначально ставим флаг, что угол не определен
     var _final_angle = -1; 
     
-    // Выбор угла строго по осям плитки
+    // Выбор угла строго по осям
     if (_wall_right)      { _final_angle = 180; } // Стена справа -> лицом влево
     else if (_wall_left)  { _final_angle = 0;   } // Стена слева  -> лицом вправо
     else if (_wall_down)  { _final_angle = 90;  } // Стена снизу  -> лицом вверх

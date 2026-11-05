@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"Level_Cleared",
+  "audioGroupId":{
+    "name":"audiogroup_music",
+    "path":"audiogroups/audiogroup_music",
+  },
+  "bitDepth":1,
+  "channelFormat":1,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":105.20515,
+  "exportDir":"",
+  "name":"Level_Cleared",
+  "parent":{
+    "name":"Music",
+    "path":"folders/Sounds/Music.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"Level_Cleared.ogg",
+  "volume":1.0,
+}

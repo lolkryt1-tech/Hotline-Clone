@@ -9,7 +9,7 @@ function scrTriggerActionFire(_trigger)
             is_triggered = true;
             exit;
         }
-
+		
         action_index = 0;
         action_timer = variable_struct_exists(actions[0], "delay") ? actions[0].delay : 0;
         is_firing    = true;

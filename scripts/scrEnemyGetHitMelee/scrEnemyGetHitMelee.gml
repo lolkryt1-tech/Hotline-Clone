@@ -58,9 +58,10 @@ function scrEnemyGetHitMelee(_enemy_id, _weapon_enum, _push_dir, _source_id)
 				_dropped.direction = irandom(360);
 				_dropped.speed     = 5;
 				_dropped.ammo      = ammo; 
+				_dropped.isPlayerPickedUp = _enemy_id.isPlayerPickedUp;
 			}
 
-			// Дроп наушников
+			// Дроп головного убора
 			if (can_hear == 0) 
 			{ 
 				instance_create_layer(x, y, "Instances", objHeadSet); 

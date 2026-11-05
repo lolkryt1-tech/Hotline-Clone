@@ -28,8 +28,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"Interface",
-    "path":"folders/Sprites/Interface.yy",
+    "name":"Score Screen",
+    "path":"folders/Sprites/Interface/Score Screen.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

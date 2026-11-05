@@ -12,41 +12,65 @@ function scrExecuteSingleAction(_trigger, _act)
             // ==========================================
 			case TRIGGER_ACTION.SPAWN:
 			{
-			    var _enemy = instance_create_layer(_act.spawn_x, _act.spawn_y, "Instances", _act.spawn_object);
-    
-			    _enemy.skin          = _act.spawn_skin;
-			    _enemy.class         = _act.spawn_class;
-			    _enemy.faction       = _act.spawn_faction;
-			    _enemy.weapon        = _act.spawn_weapon;
-			    _enemy.ammo          = _act.spawn_ammo;
-			    _enemy.my_sprites    = scrEnemyGetSprite(_act.spawn_skin, _act.spawn_weapon);
+			    // Получаем конфигурацию врага
+			    var _preset = scrEnemyGetPreset(_act.enemy_preset);
+
+			    // Создаём врага
+			    var _enemy = instance_create_layer(
+			        _act.spawn_x,
+			        _act.spawn_y,
+			        "Instances",
+			        _preset.spawn_object
+			    );
+
+			    // Применяем параметры пресета
+			    _enemy.skin = _preset.spawn_skin;
+			    _enemy.class = _preset.spawn_class;
+			    _enemy.faction = _preset.spawn_faction;
+
+			    // Оружие и остальные параметры задаются отдельно
+			    _enemy.weapon = _act.spawn_weapon;
+			    _enemy.ammo = _act.spawn_ammo;
+
+			    _enemy.my_sprites = scrEnemyGetSprite(
+			        _enemy.skin,
+			        _enemy.weapon
+			    );
+
 			    _enemy.isRange_weapon = _enemy.my_sprites.is_ranged;
-			    _enemy.sprite_index  = _enemy.my_sprites.sprites.walk;
-    
+			    _enemy.sprite_index = _enemy.my_sprites.sprites.walk;
+
+			    // Цель поиска
 			    var _tx = _act.target_x;
 			    var _ty = _act.target_y;
-    
-			    if (_tx == -1) { _tx = _act.spawn_x; }
-			    if (_ty == -1) { _ty = _act.spawn_y; }
-				
-			    if (instance_exists(objPlayer)) {
+
+			    if (_tx == -1) _tx = _act.spawn_x;
+			    if (_ty == -1) _ty = _act.spawn_y;
+
+			    if (instance_exists(objPlayer))
+			    {
 			        _enemy.my_target = instance_find(objPlayer, 0);
-			    } else {
-			        var _exec = instance_nearest(_act.spawn_x, _act.spawn_y, objPlayerExecution);
-			        if (_exec != noone) {
-			            _enemy.my_target = _exec;
-			        } else {
-			            _enemy.my_target = noone;
-			        }
 			    }
-			    
-			    _enemy.state         = _act.spawn_state;
-			    _enemy.noise_x       = _tx;
-			    _enemy.noise_y       = _ty;
-			    
-			    // БЕЗОПАСНОЕ ЧТЕНИЕ ФЛАГА
-			    _enemy.is_infinite_search = variable_struct_exists(_act, "spawn_infinite_search") ? _act.spawn_infinite_search : false;
-    
+			    else
+			    {
+			        var _exec = instance_nearest(
+			            _act.spawn_x,
+			            _act.spawn_y,
+			            objPlayerExecution
+			        );
+
+			        _enemy.my_target = (_exec != noone) ? _exec : noone;
+			    }
+
+			    _enemy.state = _act.spawn_state;
+			    _enemy.noise_x = _tx;
+			    _enemy.noise_y = _ty;
+
+			    _enemy.is_infinite_search =
+			        variable_struct_exists(_act, "spawn_infinite_search")
+			        ? _act.spawn_infinite_search
+			        : false;
+
 			    break;
 			}
             
@@ -232,6 +256,20 @@ function scrExecuteSingleAction(_trigger, _act)
                 }
                 break;
             }
+			
+			case TRIGGER_ACTION.START_MUSIC:
+			{
+				scrMusicPlay(_act.trigger_sound, _act.trigger_loop, _act.trigger_fade_frames);
+				
+				break;
+			}
+			
+			case TRIGGER_ACTION.STOP_MUSIC:
+			{
+				scrMusicStop(_act.trigger_fade_frames);
+				
+				break;
+			}
             
             // ==========================================
             // === ЗАДЕЛЫ ===

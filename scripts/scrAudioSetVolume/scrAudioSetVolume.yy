@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrAudioSetVolume",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrAudioSetVolume",
+  "parent":{
+    "name":"ZOptions",
+    "path":"folders/Scripts/ZOptions.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

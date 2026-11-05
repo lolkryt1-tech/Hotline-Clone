@@ -13,3 +13,7 @@ function scrBuildStaticOccluders(_renderer)
     _renderer.RefreshStaticOccluders();
     global.static_occluder = _occluder;
 }
+
+
+
+floor_had_enemies = false;

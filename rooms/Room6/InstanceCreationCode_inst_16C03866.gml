@@ -1,3 +1,6 @@
+//ФЛАГ
+blocks_floor_clear = false;
+
 // === УСЛОВИЕ ===
 condition_type   = TRIGGER_CONDITION.ENEMY_DEATH;
 target_enemy_uid = 6;
@@ -7,6 +10,7 @@ actions = [
 
 	// 1. ТЬМА РАСТВОРЯЕТСЯ
     {
+		delay: 30,
         type: TRIGGER_ACTION.FADE_OUT_DARKNESS,
         target_uid: 2
     },

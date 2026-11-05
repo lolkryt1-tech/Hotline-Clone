@@ -1,3 +1,5 @@
+if (global.hard == false) { instance_destroy(); }
+
 // === УСЛОВИЕ ===
 condition_type   = TRIGGER_CONDITION.ENEMY_DEATH;
 target_enemy_uid = 1;
@@ -20,10 +22,7 @@ actions = [
     {
         type: TRIGGER_ACTION.SPAWN,
         spawn_x: 820, spawn_y: 460,
-        spawn_object: objEnemyColombianVest,
-		spawn_faction: FACTION.COLOMBIAN,
-        spawn_skin:   SKIN.COLOMBIANVEST,
-        spawn_class:  CLASS.VEST,
+		enemy_preset: ENEMY_PRESET.COLOMBIANVEST,
         spawn_weapon: WEAPONS.PISTOL,
         spawn_ammo:   15,
         spawn_state:  STATES.INVESTIGATE,

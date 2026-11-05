@@ -1,12 +1,26 @@
 hit_count++;
 
-// === ИСПРАВЛЕНО: Если бьем ТРУБОЙ, то удар сразу засчитывается за три ===
+// === Если бьем ТРУБОЙ, то удар сразу засчитывается за три ===
 if (weapon == WEAPONS.PIPE)
 {
     hit_count = 3;
+
+    with (objEffector)
+    {
+        //scrCameraKickShakeStart(3, 0.75, 0.075, 4.0);
+        scrCameraBounceShakeStart(1.0, 0.4, 4, 10.0);
+    }
+}
+else
+{
+    with (objEffector)
+    {
+        //scrCameraKickShakeStart(1.5, 0.75, 0.05, 4.0);
+        scrCameraBounceShakeStart(1.0, 0.4, 4, 10.0);
+    }
 }
 
-objEffector.shake = 1.5;
+
 
 var _dist = 20; 
 	

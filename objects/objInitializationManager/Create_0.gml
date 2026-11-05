@@ -1,3 +1,15 @@
+#region СБРАСЫВАЕМ ЭКРАН В ПЕРВОМ КАДРЕ
+var _win_w = window_get_width();
+var _win_h = window_get_height();
+if (window_get_fullscreen()) {
+    _win_w = display_get_width();
+    _win_h = display_get_height();
+}
+surface_resize(application_surface, _win_w, _win_h);
+display_set_gui_size(_win_w, _win_h);
+#endregion
+
+
 // 1. Создаем базу на слое "Instances"
 if (!instance_exists(objGameManager))		{ instance_create_layer(x, y, "Instances", objGameManager); }
 if (!instance_exists(objParticleManager))	{ instance_create_layer(0, 0, "Instances", objParticleManager); }
@@ -9,6 +21,11 @@ if (!instance_exists(objPathManager))		{ instance_create_layer(0, 0, "Instances"
 if (!instance_exists(objSaveManager))		{ instance_create_layer(0, 0, "Instances", objSaveManager); }
 if (!instance_exists(objPauseMenu))			{ instance_create_layer(0, 0, "Instances", objPauseMenu); }
 if (!instance_exists(objPauseManager))		{ instance_create_layer(0, 0, "Instances", objPauseManager); }
+if (!instance_exists(objSettingsManager))	{ instance_create_layer(x, y, "Instances", objSettingsManager); }
+if (!instance_exists(objMusicManager))		{ instance_create_layer(x, y, "Instances", objMusicManager); }
+
+// 1.1. На всякий обнуляем предыдущие сейвы
+scrClearFloorData();
 
 // 2. ИСПРАВЛЕНО: Автоматическое создание слоя для крови, если его нет в текущей комнате
 var _blood_layer = layer_get_id("Blood_layer");

@@ -2,8 +2,8 @@
   "$GMSound":"v2",
   "%Name":"sndCut2",
   "audioGroupId":{
-    "name":"audiogroup_default",
-    "path":"audiogroups/audiogroup_default",
+    "name":"audiogroup_sounds",
+    "path":"audiogroups/audiogroup_sounds",
   },
   "bitDepth":1,
   "channelFormat":0,

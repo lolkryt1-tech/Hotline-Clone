@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scrCameraGame",
   "parent":{
-    "name":"Effector",
-    "path":"folders/Scripts/Player/Effector.yy",
+    "name":"States",
+    "path":"folders/Scripts/Player/Effector/States.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

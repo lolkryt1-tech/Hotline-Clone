@@ -9,11 +9,19 @@ var _muzzle_y = owner_inst.y + lengthdir_y(_offset, _dir);
 var _target_x = _muzzle_x + lengthdir_x(laser_dist, _dir);
 var _target_y = _muzzle_y + lengthdir_y(laser_dist, _dir);
 
-// Переводим в экранные с помощью глобалов
+// Переводим в экранные с помощью глобалов (СТРОГО ОКОННЫЙ МАСШТАБ, как в рабочем коде)
 var _sx = (_muzzle_x - global.cam_x) * global.cam_scale_x;
 var _sy = (_muzzle_y - global.cam_y) * global.cam_scale_y;
 var _tx = (_target_x - global.cam_x) * global.cam_scale_x;
 var _ty = (_target_y - global.cam_y) * global.cam_scale_y;
+
+// ХАРДМОД: Зеркалим относительно динамического размера окна, а не GUI!
+if (global.hard) {
+    _sx = global.last_window_w - _sx;
+    _sy = global.last_window_h - _sy;
+    _tx = global.last_window_w - _tx;
+    _ty = global.last_window_h - _ty;
+}
 
 var _prev_color = draw_get_color();
 var _prev_alpha = draw_get_alpha();

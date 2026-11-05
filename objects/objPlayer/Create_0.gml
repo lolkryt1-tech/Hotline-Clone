@@ -19,6 +19,7 @@ sprite_index         = my_sprites.walk
 pickup_radius        = 24;
 standart_y_scale	 = image_yscale;
 ammo				 = 0;
+isPlayerPickedUp	 = false;		// ЛОГИКА ДЛЯ ХАРДМОДА. РЕЖИМ ПАТРОНЫ ОДИН РАЗ
 depth				 = -6000;
 faction				 = FACTION.PLAYER;
 MMB_hold_timer		 = 0;

@@ -22,7 +22,7 @@ function scrEnemyHiderShoot()
         exit;
     }
     
-    // 2. ЧЕСТНЫЙ ЛИНЕЙНЫЙ ПОВОРОТ БЕЗ ЛЕРПА
+    // 2. ПОВОРОТ
     var _pdir = point_direction(x, y, my_target.x, my_target.y);
     var _diff = angle_difference(_pdir, my_angle);
     
@@ -78,7 +78,7 @@ function scrEnemyHiderShoot()
     
     if (reload > 0) reload--;
     
-    // Пока не наведёмся идеально — не стреляем (Зажали до честных 8 градусов)
+    // Пока не наведёмся  — не стреляем
     if (abs(_diff) > 8 || reload > 0) return;
     
     // 4. ПРОВЕРКА ПУСТОГО МАГАЗИНА

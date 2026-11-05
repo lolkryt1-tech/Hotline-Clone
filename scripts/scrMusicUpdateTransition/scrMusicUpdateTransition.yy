@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrMusicUpdateTransition",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrMusicUpdateTransition",
+  "parent":{
+    "name":"ZMusic",
+    "path":"folders/Scripts/ZMusic.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

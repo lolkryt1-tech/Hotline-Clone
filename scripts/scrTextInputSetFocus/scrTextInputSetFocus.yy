@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrTextInputSetFocus",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrTextInputSetFocus",
+  "parent":{
+    "name":"A",
+    "path":"folders/Scripts/A.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

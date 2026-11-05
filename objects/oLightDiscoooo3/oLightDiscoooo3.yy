@@ -11,7 +11,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"rmTestSoft",
-    "path":"folders/Bulb/Example/rmTestSoft.yy",
+    "path":"folders/Assets/Bulb/Example/rmTestSoft.yy",
   },
   "parentObjectId":null,
   "persistent":false,

@@ -1,3 +1,7 @@
+if (!global.current_level.level_fully_cleared) exit;
+
+mask_index = sprCopCarMask;
+
 // === 1. ЛОГИКА АКТИВНОГО ТОЛЧКА (ПОКА ТИКАЕТ ТАЙМЕР ПУША) ===
 if (push_timer > 0) {
     push_timer--;

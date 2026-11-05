@@ -26,31 +26,23 @@ if (keyboard_check(vk_shift)) look_distance = 0.5;
 var target_x_pos = lerp(x, my_target.x, look_distance);
 var target_y_pos = lerp(y, my_target.y, look_distance);
 
-var current_camera_x = camera_get_view_x(_cam);
-var current_camera_y = camera_get_view_y(_cam);
-
-var new_cam_x = lerp(current_camera_x, target_x_pos - (new_w / 2), 0.2);
-var new_cam_y = lerp(current_camera_y, target_y_pos - (new_h / 2), 0.2);
-
-camera_set_view_pos(_cam, new_cam_x, new_cam_y);
+cam_follow_x = lerp(cam_follow_x, target_x_pos - (new_w / 2), 0.2);
+cam_follow_y = lerp(cam_follow_y, target_y_pos - (new_h / 2), 0.2);
 #endregion
 
-// ==========================================
-// === ЛОГИКА НЕЖНОГО ГОЛЛАНДСКОГО УГЛА ===
-// ==========================================
-var _target_angle = 0;
-if (shake > 0) 
-{
-    shake_timer += 0.4; 
-    _target_angle = sin(shake_timer) * shake;
-    shake *= 0.90; 
-    if (shake < 0.05) shake = 0;
-}
-else 
-{
-    shake = 0;
-    shake_timer = 0; 
-}
-var _current_angle = camera_get_view_angle(_cam);
-var _new_angle = lerp(_current_angle, _target_angle, 0.1);
-camera_set_view_angle(_cam, _new_angle);
+
+
+// === SCREEN SHAKE ===
+var _dt = delta_time / 1000000;
+
+scrCameraKickShakeUpdate(_dt);
+scrCameraBounceShakeUpdate(_dt);
+
+camera_set_view_pos(_cam,
+    cam_follow_x + kick_offset_x + bounce_offset_x,
+    cam_follow_y + kick_offset_y + bounce_offset_y
+);
+
+camera_set_view_angle(_cam,
+    cam_base_angle + kick_offset_angle + bounce_offset_angle
+);

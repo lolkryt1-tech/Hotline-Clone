@@ -10,7 +10,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"rmTest Objects",
-    "path":"folders/Bulb/Example/rmTest Objects.yy",
+    "path":"folders/Assets/Bulb/Example/rmTest Objects.yy",
   },
   "parentObjectId":null,
   "persistent":false,

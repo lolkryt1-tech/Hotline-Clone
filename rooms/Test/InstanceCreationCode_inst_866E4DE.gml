@@ -1,0 +1,1 @@
+ambient_color = make_color_rgb(60, 90, 150);

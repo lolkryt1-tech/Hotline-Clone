@@ -5,7 +5,8 @@ enum ANIM_DEATH
 	// Сюда можно будет добавлять новые типы
 }
 
-
+global.body_render_counter--;
+depth = global.body_render_counter;
 image_speed = 0.35;
 my_angle = 0;
 

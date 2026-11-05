@@ -1,0 +1,1 @@
+if (!instance_exists(objSettingsManager))	{ instance_create_layer(0, 0, "Instances", objSettingsManager); }

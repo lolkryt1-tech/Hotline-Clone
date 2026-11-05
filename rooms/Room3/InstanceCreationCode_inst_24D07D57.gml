@@ -1,0 +1,31 @@
+if (global.hard == true) { instance_destroy(); }
+
+// === УСЛОВИЕ ===
+condition_type   = TRIGGER_CONDITION.ENEMY_DEATH;
+target_enemy_uid = 1;
+
+// === ДЕЙСТВИЯ ===
+actions = [
+    // 1. ТЬМА РАСТВОРЯЕТСЯ
+    {
+        type: TRIGGER_ACTION.FADE_OUT_DARKNESS,
+        target_uid: 1
+    },
+    
+    // 2. ОТКРЫВАЕТСЯ ДВЕРЬ
+    {
+        type: TRIGGER_ACTION.OPEN_DOOR,
+        target_uid: 2
+    },
+    
+    // 3. СПАВН ВРАГА, ИДЁТ INVESTIGATE К ИГРОКУ
+    {
+        type: TRIGGER_ACTION.SPAWN,
+        spawn_x: 820, spawn_y: 460,
+		enemy_preset: ENEMY_PRESET.COLOMBIANREGULAR,
+        spawn_weapon: WEAPONS.PIPE,
+        spawn_ammo:   0,
+        spawn_state:  STATES.INVESTIGATE,
+        target_x: -1, target_y: -1
+    }
+];

@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"New_Case_Intro",
+  "audioGroupId":{
+    "name":"audiogroup_music",
+    "path":"audiogroups/audiogroup_music",
+  },
+  "bitDepth":1,
+  "channelFormat":1,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":34.907936,
+  "exportDir":"",
+  "name":"New_Case_Intro",
+  "parent":{
+    "name":"Music",
+    "path":"folders/Sounds/Music.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"New_Case_Intro.ogg",
+  "volume":1.0,
+}

@@ -6,7 +6,7 @@
   "name":"BulbSpecularMapShaderSet",
   "parent":{
     "name":"Specular Map",
-    "path":"folders/Bulb/Normal Map/Specular Map.yy",
+    "path":"folders/Assets/Bulb/Normal Map/Specular Map.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

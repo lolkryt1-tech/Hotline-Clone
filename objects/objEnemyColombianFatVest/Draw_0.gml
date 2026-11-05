@@ -14,7 +14,7 @@ draw_rectangle(bbox_left,bbox_top,bbox_right,bbox_bottom,true)
 
 
 // 2. ВСЯ ЛОГИКА ОБНОВЛЕНИЯ И ОТРИСОВКИ ОЧКОВ/НАУШНИКОВ ВНУТРИ DRAW
-if (can_hear == false) // ИСПРАВЛЕНО: Наушники/очки рисуются, если враг НЕ слышит
+if (can_hear == false)
 {
 	// Запускаем расчет координат и угла headgear_angle
 	scrUpdateHeadSet();

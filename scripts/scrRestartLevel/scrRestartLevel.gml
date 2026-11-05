@@ -1,6 +1,9 @@
 /// @desc Полный рестарт текущего уровня (здания)
 function scrRestartLevel()
 {
+	// 0. Перезапускаем музыку
+	scrMusicPlay(global.current_level.level_music, true, 10);
+	
     // 1. Возвращаем игру из паузы (если была)
     if (instance_exists(objPauseManager))
     {

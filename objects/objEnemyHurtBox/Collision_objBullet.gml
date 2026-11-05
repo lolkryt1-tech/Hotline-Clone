@@ -158,7 +158,7 @@ switch (owner.class)
         var _played_sound = audio_play_sound(_hit_sound, 1, false);
         audio_sound_pitch(_played_sound, random_range(0.9, 1.1));
 
-        if (owner.can_hear == 0) { instance_create_layer(owner.x, owner.y, "Instances", objHeadSet); }
+        if (owner.can_hear == false) { instance_create_layer(owner.x, owner.y, "Instances", objHeadSet); }
 
         var _dead_body = instance_create_layer(owner.x, owner.y, "Instances", objDeadBody);
         _dead_body.sprite_index = (!owner.kill_instantly && owner.pellets_hit >= 3) ? owner.sprDeadShotgun : owner.sprDeadMachineGun;
@@ -178,6 +178,7 @@ switch (owner.class)
 			_dropped.my_angle  = irandom(360); 
 			_dropped.weapon    = owner.weapon;
             _dropped.ammo      = owner.ammo;
+			_dropped.isPlayerPickedUp = owner.isPlayerPickedUp;
         }
 
         instance_destroy(owner);

@@ -1,4 +1,5 @@
 depth = 15000;
+image_alpha = 0;
 
 // === НАСТРОЙКИ AMBIENT LIGHT ===
 ambient_color = make_color_rgb(15, 15, 20);

@@ -14,7 +14,8 @@ if (hurt_index == 0)
 	else if (keyboard_check_pressed(vk_space))
 	{
 		sprite_index = sprCopKillKnifeQuick;
-		enemy_sprite = sprColombianDieKnifeQuick;
+		if (enemy_skin == SKIN.COLOMBIANREGULAR) { enemy_sprite = sprColombianDieKnifeQuick }
+		if (enemy_skin == SKIN.COLOMBIANVEST)	 { enemy_sprite = sprColombianVestDieKnifeQuick }
 		is_fast_execution = true;
 		hurt_index = 1;
 		finish_index = 4;

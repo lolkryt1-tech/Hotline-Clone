@@ -43,25 +43,25 @@ if (speed == 0 && create_blood_pool == 0)
 		
 		switch (hit_type)
 		{
-			case HIT_TYPE.STOMP: // Растаптывание у стены
+			case HIT_TYPE.STOMP:
 				_head_offset    = 0;
 				_pool_min_scale = 0.5;
 				_pool_max_scale = 0.8;
 				break;
 				
-			case HIT_TYPE.BULLET: // Пулевое ранение в туловище
+			case HIT_TYPE.BULLET:
 				_head_offset    = 0;
 				_pool_min_scale = 1.2;
 				_pool_max_scale = 1.5;
 				break;
 				
-			case HIT_TYPE.CUT: // Порез шеи
+			case HIT_TYPE.CUT:
 				_head_offset    = 7;
 				_pool_min_scale = 0.9;
 				_pool_max_scale = 1.3;
 				break;
 				
-			case HIT_TYPE.BLUNT: // Обычный удар битой
+			case HIT_TYPE.BLUNT:
 				_head_offset    = 15;
 				_pool_min_scale = 0.8;
 				_pool_max_scale = 1.2;

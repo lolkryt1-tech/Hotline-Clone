@@ -1,6 +1,8 @@
 /// @desc Обрабатывает замах, фазы анимации удержания и бросок метательного ножа СТРОГО через СКМ
 function scrPlayerThrowableHandler()
 {
+	if (current_weapon != WEAPONS.KNIFE) return;
+	
 	// Считаем таймер зажатия СКМ (колесика)
 	if (mouse_check_button(mb_middle)) { MMB_hold_timer++; }
 	else { MMB_hold_timer = 0; }

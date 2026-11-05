@@ -7,7 +7,7 @@ var _weapon_flight_dir = other.direction;
 
 if (owner.class == CLASS.REGULAR && owner.state == STATES.HIDERDUCK)
 {
-    exit; // Пуля НЕ уничтожается, урон НЕ наносится, она летит дальше!
+    exit;
 }
 
 // === СЮДА ДОБАВЛЯЮТСЯ КЛАССЫ ВРАГОВ ===
@@ -23,6 +23,7 @@ switch (owner.class)
         var _dropped_weapon = instance_create_layer(owner.x, owner.y, "Instances", objWeapon);
         _dropped_weapon.weapon = owner.weapon;
         _dropped_weapon.ammo   = owner.ammo;
+		_dropped_weapon.isPlayerPickedUp = owner.isPlayerPickedUp;
 		
         // 3. Спавним анимированный труп вместо стандартного knockeddown
         var _dead_body = instance_create_layer(owner.x, owner.y, "Instances", objAnimatedDeadBody);
@@ -61,7 +62,30 @@ switch (owner.class)
         break;
         
     case CLASS.VEST:
-        // === МЕСТО ДЛЯ БРОНИРОВАННОГО ===
+        scrAddKillStats(500, false);
+		audio_play_sound(sndCut1, 1, false);
+		
+		if (owner.can_hear == 0) { instance_create_layer(owner.x, owner.y, "Instances", objHeadSet); }
+	
+        // 1. Выбрасываем оружие, которое было у врага
+        _dropped_weapon = instance_create_layer(owner.x, owner.y, "Instances", objWeapon);
+        _dropped_weapon.weapon = owner.weapon;
+        _dropped_weapon.ammo   = owner.ammo;
+		_dropped_weapon.isPlayerPickedUp = owner.isPlayerPickedUp;
+		
+        // 3. Спавним анимированный труп вместо стандартного knockeddown
+        _dead_body = instance_create_layer(owner.x, owner.y, "Instances", objAnimatedDeadBody);
+        _dead_body.my_angle = _weapon_flight_dir - 180;
+		_dead_body.sprite_index = sprColombianVestDeadKnife;
+        
+        // 4. Уничтожаем самого врага, так как он мгновенно погиб
+		instance_destroy(other);
+        instance_destroy(owner);
+		
+        // 5. Уничтожаем текущий хартбокс
+        instance_destroy();
+		
+		objEffector.shake = 0.25;
         break;
         
     case CLASS.DODGER:

@@ -9,6 +9,9 @@ if (speed <= 0)
     _falled_weapon.my_angle    = my_angle;
 	_falled_weapon.weapon	   = weapon;
 	_falled_weapon.ammo		   = ammo;
+	_falled_weapon.hover_timer = 0;
+	
+	_falled_weapon.isPlayerPickedUp = isPlayerPickedUp
     
     instance_destroy();
     exit; // Ранний выход
@@ -66,6 +69,8 @@ if (_is_hit)
 	_falled_weapon.my_angle    = my_angle;
 	_falled_weapon.weapon	   = weapon;
 	_falled_weapon.ammo		   = ammo;
-    
+	
+	_falled_weapon.isPlayerPickedUp = isPlayerPickedUp
+	
     instance_destroy();
 }

@@ -36,5 +36,8 @@
   "solid":false,
   "spriteId":null,
   "spriteMaskId":null,
+  "tags":[
+    "Pausable",
+  ],
   "visible":true,
 }

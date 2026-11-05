@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"setGradeRank",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"setGradeRank",
+  "parent":{
+    "name":"ZZInterface",
+    "path":"folders/Scripts/ZZInterface.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -8,3 +8,6 @@ deadlined = 0;
 mode = 0;
 
 is_white_wall = true;
+
+blend_start = c_white;  // Цвет, когда обломок только вылетел
+blend_end = c_ltgray;   // Цвет, когда обломок остановился

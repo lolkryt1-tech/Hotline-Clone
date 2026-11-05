@@ -1,6 +1,8 @@
 draw_set_font(fntDebug);
 draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, my_angle, image_blend, image_alpha);
 
+
+/*
 draw_text(x + 15, y, current_speed);
 
 if (global.debug == 0) return;
@@ -12,7 +14,7 @@ draw_rectangle(bbox_left,bbox_top,bbox_right,bbox_bottom,true)
 
 
 // 2. ВСЯ ЛОГИКА ОБНОВЛЕНИЯ И ОТРИСОВКИ ОЧКОВ/НАУШНИКОВ ВНУТРИ DRAW
-if (can_hear == false) // ИСПРАВЛЕНО: Наушники/очки рисуются, если враг НЕ слышит
+if (can_hear == false)
 {
 	// Запускаем расчет координат и угла headgear_angle
 	scrUpdateHeadSet();
@@ -62,7 +64,6 @@ if (global.debug = 1)
 	draw_text(x, y + 60, "Path_delay_timer: " + string(path_delay_timer));
 	draw_text(x, y + 75, "Walk_on_trail: " + string(walk_on_trail));
 	draw_text(x, y + 90, "impossible to path : " + string(impossible_to_path));
-	*/
 	//if my_target != noone && instance_exists(my_target) draw_text(x + 15, y, "my_target: " + string(my_target.object_index));
 	draw_text(x + 15, y - 15, skin_names[skin]);
 	draw_text(x + 15, y, state_names[state]);

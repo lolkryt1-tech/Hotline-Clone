@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrMusicUpdateEnvironment",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrMusicUpdateEnvironment",
+  "parent":{
+    "name":"ZMusic",
+    "path":"folders/Scripts/ZMusic.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

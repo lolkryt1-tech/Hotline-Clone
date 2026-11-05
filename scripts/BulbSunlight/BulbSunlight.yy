@@ -6,7 +6,7 @@
   "name":"BulbSunlight",
   "parent":{
     "name":"Bulb",
-    "path":"folders/Bulb.yy",
+    "path":"folders/Assets/Bulb.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

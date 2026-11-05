@@ -18,8 +18,9 @@ function scrEnemyTryGetTarget()
         // === 1. УНИВЕРСАЛЬНЫЙ ПАСПОРТ ЦЕЛИ ===
         var _is_execution = variable_instance_exists(_inst, "is_execution") ? _inst.is_execution : false;
         var _is_target_weapon = (_inst.object_index == objWeapon || object_is_ancestor(_inst.object_index, objWeapon));
-		
-        // === 2. ФИЛЬТРЫ И ИГНОРЫ ===
+		if (_is_target_weapon && _inst.image_index == 3) || (_is_target_weapon && _inst.image_index == 7) continue;
+        
+		// === 2. ФИЛЬТРЫ И ИГНОРЫ ===
         // Если враг ВООРУЖЕН, оружие на полу ему вообще не интересно
         if (weapon != WEAPONS.UNARMED && _is_target_weapon) continue; 
 		

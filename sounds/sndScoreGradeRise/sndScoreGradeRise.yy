@@ -2,15 +2,15 @@
   "$GMSound":"v2",
   "%Name":"sndScoreGradeRise",
   "audioGroupId":{
-    "name":"audiogroup_default",
-    "path":"audiogroups/audiogroup_default",
+    "name":"audiogroup_sounds",
+    "path":"audiogroups/audiogroup_sounds",
   },
   "bitDepth":1,
   "channelFormat":0,
   "compression":0,
   "compressionQuality":4,
   "conversionMode":0,
-  "duration":6.6766667,
+  "duration":7.0,
   "exportDir":"",
   "name":"sndScoreGradeRise",
   "parent":{

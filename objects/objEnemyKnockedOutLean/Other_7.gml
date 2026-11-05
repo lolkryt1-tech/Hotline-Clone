@@ -34,8 +34,8 @@ _revived.class          = class;
 _revived.faction        = faction; // Враг встает и помнит свою фракцию!
 _revived.weapon         = WEAPONS.UNARMED; // Встает без оружия
 _revived.reaction_time  = 0;
-_revived.my_angle       = _look_dir;
-_revived.direction      = _look_dir;
+_revived.my_angle       = _look_dir - 180;
+_revived.direction		= direction;
 _revived.state          = STATES.UNARMEDSEARCH;
 
 // 4. НАСТРОЙКА СПРАЙТОВ:

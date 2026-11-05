@@ -102,12 +102,13 @@ headgear_y = y;
 
 // === БОЕВАЯ СИСТЕМА ===
 ammo				 = 0;
+isPlayerPickedUp	 = false;
 reload               = 20;
 empty_clicks_count	 = 0;
 empty_clicks_target  = irandom_range(2, 4);
 start_shooting		 = false;	// Когда был сделан первый выстрел поворачиваемся резко, а не плавно
 laser_alpha			 = 0;
-laser_sight = noone;
+laser_sight			 = noone;
 
 // === БРОНЕЖИЛЕТОНОСЕЦ ===
 stun_current = 0;		// Текущее накопленное оглушение

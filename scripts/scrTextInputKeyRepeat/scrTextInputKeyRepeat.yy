@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrTextInputKeyRepeat",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrTextInputKeyRepeat",
+  "parent":{
+    "name":"A",
+    "path":"folders/Scripts/A.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

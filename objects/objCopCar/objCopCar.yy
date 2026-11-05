@@ -39,10 +39,7 @@
     "name":"sprCopCarStart",
     "path":"sprites/sprCopCarStart/sprCopCarStart.yy",
   },
-  "spriteMaskId":{
-    "name":"sprCopCarMask",
-    "path":"sprites/sprCopCarMask/sprCopCarMask.yy",
-  },
+  "spriteMaskId":null,
   "tags":[
     "Pausable",
   ],

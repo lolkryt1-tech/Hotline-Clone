@@ -18,16 +18,16 @@ if (is_firing)
         if (action_index >= array_length(actions)) break;
 
         // Иначе ставим таймер на задержку СЛЕДУЮЩЕГО действия
-        action_timer = variable_struct_exists(actions[0], "delay") ? actions[0].delay : 0;
+        action_timer = variable_struct_exists(actions[action_index], "delay")
+    ? actions[action_index].delay
+    : 0;
     }
 
     is_firing    = false;
     is_triggered = true;
+	global.current_level.total_triggers--;
     exit;
 }
-
-if (is_triggered) exit;
-
 
 if (is_triggered) exit;
 
@@ -108,4 +108,9 @@ switch (condition_type)
 	        }
 	    }
 	    break;
+	
+	case TRIGGER_CONDITION.ENTER_FLOOR:
+	scrTriggerActionFire(id);
+	
+	break;
 }

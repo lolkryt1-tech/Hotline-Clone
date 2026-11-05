@@ -26,7 +26,7 @@
   "origin":0,
   "parent":{
     "name":"(Pay no attention to that man behind the curtain)",
-    "path":"folders/Bulb/(System)/(Pay no attention to that man behind the curtain).yy",
+    "path":"folders/Assets/Bulb/(System)/(Pay no attention to that man behind the curtain).yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

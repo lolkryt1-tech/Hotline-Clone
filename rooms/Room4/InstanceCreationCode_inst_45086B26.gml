@@ -9,10 +9,7 @@ actions = [
     {
         type: TRIGGER_ACTION.SPAWN,
         spawn_x: 1028, spawn_y: 527,
-        spawn_object: objEnemyColombian,
-		spawn_faction: FACTION.COLOMBIAN,
-        spawn_skin:   SKIN.COLOMBIANREGULAR,
-        spawn_class:  CLASS.REGULAR,
+		enemy_preset: ENEMY_PRESET.COLOMBIANREGULAR,
         spawn_weapon: WEAPONS.PISTOL,
         spawn_ammo:   15,
         spawn_state:  STATES.INVESTIGATE,

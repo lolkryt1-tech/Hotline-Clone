@@ -45,18 +45,13 @@ var _total_crosses = array_length(_cross_positions);
 // ==========================================
 // 2. ОТРИСОВКА ВСЕХ ТЕНЕЙ (ПОДЛОЖКА)
 // ==========================================
-// Тень самой стены
-draw_sprite_ext(sprite_index, image_index, x + 2, y, image_xscale, image_yscale, image_angle, c_black, 0.5);
-
-// Тени торцевых углов
-draw_sprite_ext(sprWallCorner, 0, _top_x + 2, _top_y, image_xscale, 1, image_angle, c_black, 0.5);
-draw_sprite_ext(sprWallCorner, 0, _bot_x + 2, _bot_y, image_xscale, 1, image_angle, c_black, 0.5);
-
-// Тени ВСЕХ центральных перекрестий
-for (var i = 0; i < _total_crosses; i++) {
-    var _pos = _cross_positions[i];
-    draw_sprite_ext(sprWallCorner, 0, _pos.cx + 2, _pos.cy, image_xscale, 1, image_angle, c_black, 0.5);
+var _shadow_offset_x = 2;
+if (global.hard == true) {
+    _shadow_offset_x = -2; 
 }
+
+// Оставляем ТОЛЬКО тень самой стены. Тени углов удалены навсегда.
+draw_sprite_ext(sprite_index, image_index, x + _shadow_offset_x, y, image_xscale, image_yscale, image_angle, c_black, 0.5);
 
 
 // ==========================================
@@ -65,12 +60,16 @@ for (var i = 0; i < _total_crosses; i++) {
 // Сама стена
 draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, image_angle, image_blend, image_alpha);
 
-// Торцевые углы сверху и снизу
-draw_sprite_ext(sprWallCorner, 0, _top_x, _top_y, image_xscale, 1, image_angle, image_blend, image_alpha);
-draw_sprite_ext(sprWallCorner, 0, _bot_x, _bot_y, image_xscale, 1, image_angle, image_blend, image_alpha);
+// Основные спрайты углов рисуются только при draw_corners = true
+if (draw_corners == true) 
+{
+    // Торцевые углы сверху и снизу
+    draw_sprite_ext(sprWallCorner, corner_subimage, _top_x, _top_y, image_xscale, 1, image_angle, image_blend, image_alpha);
+    draw_sprite_ext(sprWallCorner, corner_subimage, _bot_x, _bot_y, image_xscale, 1, image_angle, image_blend, image_alpha);
 
-// Центральные перекрестия поверх всего
-for (var i = 0; i < _total_crosses; i++) {
-    var _pos = _cross_positions[i];
-    draw_sprite_ext(sprWallCorner, 0, _pos.cx, _pos.cy, image_xscale, 1, image_angle, image_blend, image_alpha);
+    // Центральные перекрестия поверх всего
+    for (var i = 0; i < _total_crosses; i++) {
+        var _pos = _cross_positions[i];
+        draw_sprite_ext(sprWallCorner, corner_subimage, _pos.cx, _pos.cy, image_xscale, 1, image_angle, image_blend, image_alpha);
+    }
 }

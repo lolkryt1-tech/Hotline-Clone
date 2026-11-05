@@ -4,7 +4,7 @@
   "name":"__shdBulbKawaseDownWithThreshold",
   "parent":{
     "name":"Kawase",
-    "path":"folders/Bulb/(System)/(Pay no attention to that man behind the curtain)/Shaders/Kawase.yy",
+    "path":"folders/Assets/Bulb/(System)/(Pay no attention to that man behind the curtain)/Shaders/Kawase.yy",
   },
   "resourceType":"GMShader",
   "resourceVersion":"2.0",
