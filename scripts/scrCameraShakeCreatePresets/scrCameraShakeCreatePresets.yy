@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scrCameraShakeCreatePresets",
   "parent":{
-    "name":"Screen Shake",
-    "path":"folders/Scripts/Player/Effector/Screen Shake.yy",
+    "name":"Initialization",
+    "path":"folders/Scripts/ZZInterface/Camera Shake/Initialization.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

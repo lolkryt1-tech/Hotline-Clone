@@ -14,32 +14,29 @@ dragging = false;
 drag_offset_x = 0;
 drag_offset_y = 0;
 
-// === ПРЕСЕТЫ ОРУЖИЯ ===
+// === ФЛАГИ СИНХРОНИЗАЦИИ ===
+is_syncing_textboxes = false;
 
-weapon_presets = [
-    { id: "pistol", name: "Pistol" },
-    { id: "shotgun", name: "Shotgun" },
-    { id: "m16", name: "M16" },
-    { id: "sniper", name: "Sniper" }
-];
-
-// Выбираем пресет в зависимости от оружия игрока
+// === ВЫБОР ПРЕСЕТА ПРИ СТАРТЕ ===
+selected_category = "weapons";
 selected_preset = "pistol";
+
 if (instance_exists(objPlayer))
 {
-    var _weapon = objPlayer.current_weapon;
-
-    switch (_weapon)
-    {
-        case WEAPONS.PISTOL:  selected_preset = "pistol";  break;
-        case WEAPONS.SHOTGUN: selected_preset = "shotgun"; break;
-        case WEAPONS.M16:     selected_preset = "m16";     break;
-        case WEAPONS.SNIPER:  selected_preset = "sniper";  break;
+    // Получаем строку ID оружия (например, "pipe" или "pistol")
+    var _weapon_str = scrCameraShakeWeaponToString(objPlayer.current_weapon);
+    
+    // Если оружие распознано — выбираем его пресет
+    if (_weapon_str != "") {
+        selected_preset = _weapon_str;
     }
 }
 
-// === ВЫПАДАЮЩИЙ СПИСОК ===
+execution_manually_selected = false;
 
+
+// === ВЫПАДАЮЩИЙ СПИСОК ПРЕСЕТОВ (слева) ===
+last_weapon = instance_exists(objPlayer) ? objPlayer.current_weapon : -1;
 preset_dropdown_open = false;
 preset_scroll = 0;
 
@@ -49,10 +46,20 @@ preset_dropdown_w = 150;
 preset_item_h = 24;
 preset_visible_count = 6;
 
+// === ВЫПАДАЮЩИЙ СПИСОК КАТЕГОРИЙ (справа) ===
+category_dropdown_open = false;
+category_scroll = 0;
+
+category_dropdown_x = 220;
+category_dropdown_y = 65;
+category_dropdown_w = 160;
+category_item_h = 24;
+category_visible_count = 6;
+
 // === ПЕРЕКЛЮЧАТЕЛИ ЭФФЕКТОВ ===
 
 effect_button_x = 16;
-effect_button_y = 115;
+effect_button_y = 120;
 effect_button_w = 112;
 effect_button_h = 26;
 effect_button_gap = 12;
@@ -89,9 +96,116 @@ sliders = [
     { effect: "perlin", field: "strength", name: "STRENGTH", min: 0, max: 24, y: 740 }
 ];
 
+// === QUILL: СОЗДАНИЕ БОКСОВ ===
+for (var i = 0; i < array_length(sliders); i++)
+{
+    var _slider = sliders[i];
+
+    _slider.textbox = QuillSingle("", "0.00")
+        .SetInputMode(QUILL_TEXTMODE_FLOAT)
+        .SetSelectAllOnFocus(true);
+
+    _slider.draw_x = 0;
+    _slider.draw_y = 0;
+    _slider.max_current = _slider.max;
+
+    // Ввод в реальном времени (без клампа)
+    _slider.textbox.OnChange(method(self, function(_tb, _value) {
+        if (is_syncing_textboxes) return;
+        if (_value == "" || _value == "." || _value == "-") return;
+        var _num = real(_value);
+
+        var _s = undefined;
+        for (var k = 0; k < array_length(sliders); k++) {
+            if (sliders[k].textbox == _tb) { _s = sliders[k]; break; }
+        }
+        if (_s == undefined) return;
+
+        var _preset = scrCameraShakeGetSelectedPreset();
+        var _data = scrCameraShakeMenuGetEffectData(_preset, _s.effect);
+        
+        var _old_val = variable_struct_get(_data, _s.field);
+        if (abs(_old_val - _num) > 0.0001) {
+            variable_struct_set(_data, _s.field, _num);
+        }
+    }));
+
+    // Enter → поднятие max_current, кламп, переформат
+    _slider.textbox.OnSubmit(method(self, function(_tb, _value) {
+        if (_value == "" || _value == "." || _value == "-") return;
+        var _num = real(_value);
+
+        var _s = undefined;
+        for (var k = 0; k < array_length(sliders); k++) {
+            if (sliders[k].textbox == _tb) { _s = sliders[k]; break; }
+        }
+        if (_s == undefined) return;
+
+        if (_num > _s.max) {
+            _s.max_current = _num;
+        } else {
+            _s.max_current = _s.max;
+            _num = clamp(_num, _s.min, _s.max);
+        }
+
+        var _preset = scrCameraShakeGetSelectedPreset();
+        var _data = scrCameraShakeMenuGetEffectData(_preset, _s.effect);
+        
+        var _old_val = variable_struct_get(_data, _s.field);
+        if (abs(_old_val - _num) > 0.0001) {
+            variable_struct_set(_data, _s.field, _num);
+        }
+
+        _tb.SetValue(string_format(_num, 0, 2));
+        _tb.Blur();
+    }));
+    
+    // Клик мимо поля применяем как Enter (но без Enter)
+    _slider.textbox.OnBlur(method(self, function(_tb) {
+        if (is_syncing_textboxes) return;
+        var _value = _tb.GetValue();
+
+        var _num = 0;
+        if (_value != "" && _value != "." && _value != "-") {
+            _num = real(_value);
+        }
+
+        var _s = undefined;
+        for (var k = 0; k < array_length(sliders); k++) {
+            if (sliders[k].textbox == _tb) { _s = sliders[k]; break; }
+        }
+        if (_s == undefined) return;
+
+        if (_num > _s.max) {
+            _s.max_current = _num;
+        } else {
+            _s.max_current = _s.max;
+            _num = clamp(_num, _s.min, _s.max);
+        }
+
+        var _preset = scrCameraShakeGetSelectedPreset();
+        var _data = scrCameraShakeMenuGetEffectData(_preset, _s.effect);
+        
+        var _old_val = variable_struct_get(_data, _s.field);
+        if (abs(_old_val - _num) > 0.0001) {
+            variable_struct_set(_data, _s.field, _num);
+        }
+
+        _tb.SetValue(string_format(_num, 0, 2));
+    }));
+}
+
+// Инициализация max_current при открытии
+var _cat_presets = variable_struct_get(global.camera_shake.presets, selected_category);
+var _preset = variable_struct_get(_cat_presets, selected_preset);
+for (var i = 0; i < array_length(sliders); i++)
+{
+    var _data = scrCameraShakeMenuGetEffectData(_preset, sliders[i].effect);
+    var _v = variable_struct_get(_data, sliders[i].field);
+    sliders[i].max_current = max(sliders[i].max, _v);
+}
 
 // === КООРДИНАТЫ КНОПОК СНИЗУ ===
-
 save_button_x = 24;
 save_button_y = 800;
 
@@ -106,23 +220,7 @@ action_button_w = 104;
 action_button_h = 30;
 action_button_gap = 8;
 
-
 // === СТИЛЬ ИНТЕРФЕЙСА ===
-
 gui_font = fntDebug;
 gui_text_color = c_white;
 gui_secondary_color = make_color_rgb(150, 150, 160);
-
-
-// === РЕДАКТИРОВАНИЕ ЗНАЧЕНИЙ ===
-
-editing_slider = -1;
-editing_value = "";
-editing_original_value = "";
-
-editing_cursor = 0;
-editing_selection_start = 0;
-editing_selection_end = 0;
-
-editing_mouse_select = false;
-editing_last_valid_value = 0;

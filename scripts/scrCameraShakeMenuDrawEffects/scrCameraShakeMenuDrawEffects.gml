@@ -3,7 +3,7 @@ function scrCameraShakeMenuDrawEffects()
     draw_set_color(gui_secondary_color);
     draw_text(x + effect_button_x, y + effect_button_y - 14, "EFFECTS");
 
-    var _preset = variable_struct_get(global.camera_shake.presets, selected_preset);
+    var _preset = scrCameraShakeGetSelectedPreset();
 
     var _effects = ["kick", "bounce", "perlin"];
     var _effect_names = ["KICK", "BOUNCE", "PERLIN"];
@@ -19,11 +19,11 @@ function scrCameraShakeMenuDrawEffects()
         var _button_x = x + effect_button_x + i * (effect_button_w + effect_button_gap);
         var _button_y = y + effect_button_y;
 
-        var _hover = !preset_dropdown_open && point_in_rectangle(
-		    _mx, _my,
-		    _button_x, _button_y,
-		    _button_x + effect_button_w, _button_y + effect_button_h
-		);
+        var _hover = !(preset_dropdown_open || category_dropdown_open) && point_in_rectangle(
+            _mx, _my,
+            _button_x, _button_y,
+            _button_x + effect_button_w, _button_y + effect_button_h
+        );
 
         var _button_color = _enabled
             ? (_hover ? make_color_rgb(70, 125, 105) : make_color_rgb(55, 105, 90))

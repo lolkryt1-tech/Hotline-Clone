@@ -12,7 +12,7 @@ function scrCameraShakeMenuHandleSlider(_mx)
     if (slider_dragging == -1) return false;
 
     var _slider = sliders[slider_dragging];
-    var _preset = variable_struct_get(global.camera_shake.presets, selected_preset);
+    var _preset = scrCameraShakeGetSelectedPreset();
     var _enabled = variable_struct_get(_preset, _slider.effect + "_enabled");
 
     if (!_enabled)
@@ -26,7 +26,7 @@ function scrCameraShakeMenuHandleSlider(_mx)
         var _data = scrCameraShakeMenuGetEffectData(_preset, _slider.effect);
 
         var _progress = clamp((_mx - (x + slider_x)) / slider_w, 0, 1);
-        var _value = lerp(_slider.min, _slider.max, _progress);
+        var _value = lerp(_slider.min, _slider.max_current, _progress);
 
         variable_struct_set(_data, _slider.field, _value);
     }

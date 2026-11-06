@@ -1,6 +1,6 @@
 function scrCameraShakeMenuDrawSliders()
 {
-    var _preset = variable_struct_get(global.camera_shake.presets, selected_preset);
+    var _preset = scrCameraShakeGetSelectedPreset();
 
     for (var i = 0; i < array_length(sliders); i++)
     {
@@ -19,7 +19,7 @@ function scrCameraShakeMenuDrawSliders()
 		var _mx = device_mouse_x_to_gui(0);
 		var _my = device_mouse_y_to_gui(0);
 
-		var _hover = !preset_dropdown_open && point_in_rectangle(
+		var _hover = !(preset_dropdown_open || category_dropdown_open)  && point_in_rectangle(
 		    _mx, _my, _track_x, _track_y - slider_handle_size,
 		    _track_x + slider_w, _track_y + slider_handle_size
 			);
@@ -45,13 +45,16 @@ function scrCameraShakeMenuDrawSliders()
         draw_set_halign(fa_left);
         draw_text(_track_x, _row_y, _slider.name);
 
-        // Числовое значение.
+        // Числовое значение
+        var _tb_w = 70;
+        var _tb_x = _track_x + slider_w - _tb_w;
+        var _tb_y = _row_y - 20;
 
-        draw_set_color(_value_color);
-        draw_set_halign(fa_right);
-        draw_text(_track_x + slider_w, _row_y, string_format(_value, 1, 2));
+        // Запоминаем позицию — понадобится в Step и HandleButtons
+        _slider.draw_x = _tb_x;
+        _slider.draw_y = _tb_y;
 
-        draw_set_halign(fa_left);
+        _slider.textbox.Draw(_tb_x, _tb_y, _tb_w);
 
         // Фоновая дорожка.
 
@@ -60,7 +63,7 @@ function scrCameraShakeMenuDrawSliders()
 
         // Положение маркера.
 
-        var _progress = clamp((_value - _slider.min) / (_slider.max - _slider.min), 0, 1);
+        var _progress = clamp((_value - _slider.min) / (_slider.max_current - _slider.min), 0, 1);
         var _handle_x = _track_x + _progress * slider_w;
 
         // Заполненная часть.

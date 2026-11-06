@@ -21,6 +21,7 @@ function scrPlayerAttack()
 	    }
 	}
     
+	
     // === ЛОГИКА КАЖДОГО КАДРА АТАКИ ===
     if (sprite_index == my_sprites.attack) 
     { 
@@ -57,24 +58,18 @@ function scrPlayerAttack()
                 }
                 else
                 {
-                    scrPlayerShoot(character, current_weapon); // Обычная стрельба снарядами
+                    scrPlayerShoot(character, current_weapon); // Обычная стрельба объектами пули
                 }
-
-				with (objEffector)
-				{
-				    var _shake = other.my_sprites.shake;
-
-				    scrCameraKickShakeStart(_shake.kick.strength, _shake.kick.rotation, _shake.kick.attack, _shake.kick.release);
-				    scrCameraBounceShakeStart(_shake.bounce.strength, _shake.bounce.rotation, _shake.bounce.frequency, _shake.bounce.damping);
-				}
+				
+				var _weapon_str = scrCameraShakeWeaponToString(current_weapon);
+				scrCameraShakePlay("weapons", _weapon_str);
             }
             
             // 2. Ближний бой: даём импульс тряски
             if (!my_sprites.is_ranged)
             {
-                with (objEffector) {
-				    scrCameraBounceShakeStart(2, 2, 2, 2);
-				}
+				var _weapon_str = scrCameraShakeWeaponToString(current_weapon);
+                scrCameraShakePlay("weapons", _weapon_str);
             }
             
             // === ВОСПРОИЗВЕДЕНИЕ СЛУЧАЙНОГО ЗВУКА ВЫСТРЕЛA / УДАРА ===

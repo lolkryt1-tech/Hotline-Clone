@@ -73,7 +73,7 @@
     {"name":"inst_734003BA","path":"rooms/Room1/Room1.yy",},
     {"name":"inst_34D10D08","path":"rooms/Room1/Room1.yy",},
     {"name":"inst_319F0270","path":"rooms/Room1/Room1.yy",},
-    {"name":"inst_52A62518","path":"rooms/Room1/Room1.yy",},
+    {"name":"inst_652AF143","path":"rooms/Room1/Room1.yy",},
   ],
   "isDnd":false,
   "layers":[
@@ -147,7 +147,7 @@
         {"$GMRInstance":"v4","%Name":"inst_734003BA","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_734003BA","objectId":{"name":"objEnemyColombian","path":"objects/objEnemyColombian/objEnemyColombian.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":92.826385,"scaleX":1.0,"scaleY":1.0,"x":626.0,"y":597.0,},
         {"$GMRInstance":"v4","%Name":"inst_34D10D08","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":4,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_34D10D08","objectId":{"name":"objWeapon","path":"objects/objWeapon/objWeapon.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":761.5,"y":798.3832,},
         {"$GMRInstance":"v4","%Name":"inst_319F0270","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":true,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_319F0270","objectId":{"name":"objTextInputTest","path":"objects/objTextInputTest/objTextInputTest.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":637.0,"y":733.0,},
-        {"$GMRInstance":"v4","%Name":"inst_52A62518","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_52A62518","objectId":{"name":"obj_example","path":"objects/obj_example/obj_example.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":668.0,"y":717.0,},
+        {"$GMRInstance":"v4","%Name":"inst_652AF143","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":3,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_652AF143","objectId":{"name":"objWeapon","path":"objects/objWeapon/objWeapon.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":635.5,"y":723.0,},
       ],"layers":[],"name":"Instances","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRTileLayer":"","%Name":"Edges","depth":11900,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Edges","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":63,"SerialiseWidth":75,"TileCompressedData":[
           -935,-2147483648,-9,8776,-290,-2147483648,-2,8796,-7,-2147483648,-2,8796,-138,-2147483648,1,8593,-10,

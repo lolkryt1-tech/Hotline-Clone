@@ -4,20 +4,12 @@ hit_count++;
 if (weapon == WEAPONS.PIPE)
 {
     hit_count = 3;
-
-    with (objEffector)
-    {
-        //scrCameraKickShakeStart(3, 0.75, 0.075, 4.0);
-        scrCameraBounceShakeStart(1.0, 0.4, 4, 10.0);
-    }
+	
+	scrCameraShakePlay(SHAKE_EXECUTIONS, SHAKE_EXEC_BLUNT_PIPE);
 }
 else
 {
-    with (objEffector)
-    {
-        //scrCameraKickShakeStart(1.5, 0.75, 0.05, 4.0);
-        scrCameraBounceShakeStart(1.0, 0.4, 4, 10.0);
-    }
+	scrCameraShakePlay(SHAKE_EXECUTIONS, SHAKE_EXEC_BLUNT);
 }
 
 

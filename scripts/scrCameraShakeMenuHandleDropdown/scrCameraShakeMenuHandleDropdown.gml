@@ -1,8 +1,15 @@
 function scrCameraShakeMenuHandleDropdown(_mx, _my, _pressed)
 {
     if (!preset_dropdown_open) return false;
-
-    var _list_count = array_length(weapon_presets);
+	
+    var _presets = scrCameraShakeGetCategoryPresets(selected_category);
+    array_sort(_presets, function(_a, _b) {
+        if (_a.name < _b.name) return -1;
+        if (_a.name > _b.name) return 1;
+        return 0;
+    });
+	
+    var _list_count = array_length(_presets);
     var _list_visible = min(preset_visible_count, _list_count);
 
     var _list_x = x + preset_dropdown_x;
@@ -24,15 +31,8 @@ function scrCameraShakeMenuHandleDropdown(_mx, _my, _pressed)
 
     if (_list_hover)
     {
-        if (mouse_wheel_up())
-        {
-            preset_scroll = max(0, preset_scroll - 1);
-        }
-
-        if (mouse_wheel_down())
-        {
-            preset_scroll = min(max(0, _list_count - preset_visible_count), preset_scroll + 1);
-        }
+        if (mouse_wheel_up())   preset_scroll = max(0, preset_scroll - 1);
+        if (mouse_wheel_down()) preset_scroll = min(max(0, _list_count - preset_visible_count), preset_scroll + 1);
     }
 
     if (_pressed)
@@ -48,7 +48,21 @@ function scrCameraShakeMenuHandleDropdown(_mx, _my, _pressed)
 
             if (_index >= 0 && _index < _list_count)
             {
-                selected_preset = weapon_presets[_index].id;
+                selected_preset = _presets[_index].id;
+                
+                if (selected_category == "executions") {
+                    execution_manually_selected = true;
+                }
+
+                var _preset = scrCameraShakeGetSelectedPreset();
+                for (var j = 0; j < array_length(sliders); j++)
+                {
+                    var _data = scrCameraShakeMenuGetEffectData(_preset, sliders[j].effect);
+                    var _v = variable_struct_get(_data, sliders[j].field);
+                    sliders[j].max_current = max(sliders[j].max, _v);
+                }
+
+                scrCameraShakeMenuSyncTextboxes();
             }
 
             preset_dropdown_open = false;

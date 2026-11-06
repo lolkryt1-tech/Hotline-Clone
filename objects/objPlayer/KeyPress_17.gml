@@ -1,9 +1,3 @@
-my_id = instance_create_layer(objEffector.x, objEffector.y, "Instances", objLevelCleared);
-scrCameraShakeToggle(global.camera_shake.presets.m16, "kick");
-
-
-
-
 /*
 repeat (2 + random(2))
 {

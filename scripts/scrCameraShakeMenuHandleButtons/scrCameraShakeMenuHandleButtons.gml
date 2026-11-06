@@ -36,8 +36,13 @@ function scrCameraShakeMenuHandleButtons(_mx, _my)
 	if (_default_hover)
 	{
 	    var _defaults = scrCameraShakeCreatePresets();
-	    var _default_preset = variable_struct_get(_defaults, selected_preset);
-	    var _preset = variable_struct_get(global.camera_shake.presets, selected_preset);
+	    
+	    // Достаём дефолтные настройки для текущей категории и пресета
+	    var _def_cat = variable_struct_get(_defaults, selected_category);
+	    var _default_preset = variable_struct_get(_def_cat, selected_preset);
+	    
+	    // Достаём текущие настройки
+	    var _preset = scrCameraShakeGetSelectedPreset();
 
 	    scrCameraShakeCopyPreset(_default_preset, _preset);
 
@@ -68,8 +73,18 @@ function scrCameraShakeMenuHandleButtons(_mx, _my)
 		}
 	}
 	
+	 // === КНОПКА ВЫБОРА КАТЕГОРИИ ===
+    var _cat_btn_x = x + category_dropdown_x;
+    var _cat_btn_y = y + category_dropdown_y;
+    if (point_in_rectangle(_mx, _my, _cat_btn_x, _cat_btn_y, _cat_btn_x + category_dropdown_w, _cat_btn_y + category_item_h))
+    {
+        category_dropdown_open = true;
+        preset_dropdown_open = false;   // закрываем соседний, чтобы не открывались оба
+        return true;
+    }
 	
-    // === ВЫБОР ПРЕСЕТА ===
+	
+    // === КНОПКА ВЫБОРА ПРЕСЕТА ===
 
     var _list_x = x + preset_dropdown_x;
     var _list_y = y + preset_dropdown_y;
@@ -84,6 +99,7 @@ function scrCameraShakeMenuHandleButtons(_mx, _my)
     if (_dropdown_hover)
     {
         preset_dropdown_open = true;
+		category_dropdown_open = false;
         return true;
     }
 
@@ -92,6 +108,7 @@ function scrCameraShakeMenuHandleButtons(_mx, _my)
     for (var i = 0; i < array_length(sliders); i++)
     {
         var _slider = sliders[i];
+		
 
         var _track_x = x + slider_x;
         var _track_y = y + _slider.y + 20;
@@ -104,7 +121,7 @@ function scrCameraShakeMenuHandleButtons(_mx, _my)
 
         if (_hover)
 		{
-		    var _preset = variable_struct_get(global.camera_shake.presets, selected_preset);
+		    var _preset = scrCameraShakeGetSelectedPreset();
 		    var _enabled = variable_struct_get(_preset, _slider.effect + "_enabled");
 
 		    if (!_enabled) return true;
@@ -114,7 +131,7 @@ function scrCameraShakeMenuHandleButtons(_mx, _my)
 		    var _data = scrCameraShakeMenuGetEffectData(_preset, _slider.effect);
 
 		    var _progress = clamp((_mx - (x + slider_x)) / slider_w, 0, 1);
-		    var _value = lerp(_slider.min, _slider.max, _progress);
+		    var _value = lerp(_slider.min, _slider.max_current, _progress);
 
 		    variable_struct_set(_data, _slider.field, _value);
 		    return true;
@@ -123,7 +140,7 @@ function scrCameraShakeMenuHandleButtons(_mx, _my)
 
     // === ПЕРЕКЛЮЧАТЕЛИ ЭФФЕКТОВ ===
 
-    var _preset = variable_struct_get(global.camera_shake.presets, selected_preset);
+    var _preset = scrCameraShakeGetSelectedPreset();
     var _effects = ["kick", "bounce", "perlin"];
 
     for (var i = 0; i < array_length(_effects); i++)

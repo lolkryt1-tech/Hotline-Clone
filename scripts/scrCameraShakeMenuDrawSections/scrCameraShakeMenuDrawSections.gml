@@ -1,7 +1,6 @@
-
 function scrCameraShakeMenuDrawSections()
 {
-    var _preset = variable_struct_get(global.camera_shake.presets, selected_preset);
+    var _preset = scrCameraShakeGetSelectedPreset();
 
     for (var i = 0; i < array_length(slider_sections); i++)
     {

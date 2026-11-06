@@ -32,4 +32,4 @@ gui_font = fntDebug;
 key_repeat_delay = 450;
 key_repeat_interval = 40;
 
-key_repeat_timers = { backspace: 0, delete: 0, left: 0, right: 0  };
+//key_repeat_timers = delete backspace: 0,: 0, left: 0, right: 0  };

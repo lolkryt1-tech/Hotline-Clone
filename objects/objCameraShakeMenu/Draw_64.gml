@@ -81,6 +81,7 @@ draw_set_alpha(1);
 // === ЭЛЕМЕНТЫ ИНТЕРФЕЙСА ===
 
 scrCameraShakeMenuDrawPreset();
+scrCameraShakeMenuDrawCategory();
 scrCameraShakeMenuDrawEffects();
 scrCameraShakeMenuDrawSections();
 scrCameraShakeMenuDrawSliders();
@@ -91,6 +92,11 @@ scrCameraShakeMenuDrawActionButtons();
 if (preset_dropdown_open)
 {
     scrCameraShakeMenuDrawDropdown();
+}
+
+if (category_dropdown_open)
+{
+    scrCameraShakeMenuDrawCategoryDropdown();
 }
 
 // === ВОССТАНОВЛЕНИЕ НАСТРОЕК ОТРИСОВКИ ===

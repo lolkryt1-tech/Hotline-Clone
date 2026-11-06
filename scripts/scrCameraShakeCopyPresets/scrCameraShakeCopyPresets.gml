@@ -7,8 +7,19 @@
 
 function scrCameraShakeCopyPresets(_source, _target)
 {
-    scrCameraShakeCopyPreset(_source.pistol, _target.pistol);
-    scrCameraShakeCopyPreset(_source.shotgun, _target.shotgun);
-    scrCameraShakeCopyPreset(_source.m16, _target.m16);
-    scrCameraShakeCopyPreset(_source.sniper, _target.sniper);
+    for (var i = 0; i < array_length(global.camera_shake.categories); i++)
+    {
+        var _cat = global.camera_shake.categories[i];
+        var _src_cat = variable_struct_get(_source, _cat.id);
+        var _tgt_cat = variable_struct_get(_target, _cat.id);
+
+        for (var j = 0; j < array_length(_cat.presets); j++)
+        {
+            var _pid = _cat.presets[j].id;
+            scrCameraShakeCopyPreset(
+                variable_struct_get(_src_cat, _pid),
+                variable_struct_get(_tgt_cat, _pid)
+            );
+        }
+    }
 }

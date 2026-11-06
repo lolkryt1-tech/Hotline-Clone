@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scrCameraBounceShakeStart",
   "parent":{
-    "name":"Logic",
-    "path":"folders/Scripts/Player/Effector/Screen Shake/Logic.yy",
+    "name":"Screen Shake",
+    "path":"folders/Scripts/Player/Effector/Screen Shake.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -109,7 +109,7 @@ function scrPlayerStartExecution()
                         
                     case WEAPONS.M16:
                     case WEAPONS.SHOTGUN:
-                        _target_object = objCopKillWeaponBlunt;
+                        _target_object = objCopKillFireArmsBlunt;
                         break;
                 }
             }

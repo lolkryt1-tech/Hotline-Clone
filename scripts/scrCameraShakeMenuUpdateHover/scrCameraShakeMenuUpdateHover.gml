@@ -12,7 +12,8 @@ function scrCameraShakeMenuUpdateHover(_mx, _my)
 
     if (preset_dropdown_open)
     {
-        var _list_count = array_length(weapon_presets);
+        var _presets = scrCameraShakeGetCategoryPresets(selected_category);
+        var _list_count = array_length(_presets);
         var _list_visible = min(preset_visible_count, _list_count);
 
         var _list_x = x + preset_dropdown_x;
