@@ -37,7 +37,7 @@ function scrPlayerAttack()
     
     // === ЛОГИКА НАЖАТИЯ МЫШИ (СТАРТ АТАКИ) ===
     //if (mouse_check_button(mb_left) && attack_delay <= 0)
-	if (!_ui_blocked && mouse_check_button(mb_left) && attack_delay <= 0)
+	if (!_ui_blocked && scrBindCheck("attack") && attack_delay <= 0)
     {
         if (sprite_index == my_sprites.walk || sprite_index == sprCopTurnShotgun) 
         { 

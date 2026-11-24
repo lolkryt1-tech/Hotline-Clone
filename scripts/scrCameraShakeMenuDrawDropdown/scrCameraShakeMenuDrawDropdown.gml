@@ -1,21 +1,18 @@
-function scrCameraShakeMenuDrawDropdown()
+function scrCameraShakeMenuDrawDropdown(_mx, _my)
 {
-	// Получаем массив и сортируем его по имени
+    // Получаем массив и сортируем его по имени
     var _presets = scrCameraShakeGetCategoryPresets(selected_category);
-        array_sort(_presets, function(_a, _b) {
+    array_sort(_presets, function(_a, _b) {
         if (_a.name < _b.name) return -1;
         if (_a.name > _b.name) return 1;
         return 0;
     });
-	
-	var _count = array_length(_presets);
+
+    var _count = array_length(_presets);
     var _visible = min(preset_visible_count, _count);
 
     var _list_x = x + preset_dropdown_x;
     var _list_y = y + preset_dropdown_y;
-
-    var _mx = device_mouse_x_to_gui(0);
-    var _my = device_mouse_y_to_gui(0);
 
     // Фон списка.
     draw_set_color(make_color_rgb(30, 30, 36));

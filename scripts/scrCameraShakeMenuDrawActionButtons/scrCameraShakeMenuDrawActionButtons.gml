@@ -1,8 +1,5 @@
-function scrCameraShakeMenuDrawActionButtons()
+function scrCameraShakeMenuDrawActionButtons(_mx, _my)
 {
-    var _mx = device_mouse_x_to_gui(0);
-    var _my = device_mouse_y_to_gui(0);
-
     var _button_y = y + action_button_y;
 
     // SAVE и CANCEL

@@ -19,24 +19,24 @@ switch (owner.class)
 		
 		if (owner.can_hear == 0) { instance_create_layer(owner.x, owner.y, "Instances", objHeadSet); }
 	
-        // 1. Выбрасываем оружие, которое было у врага
-        var _dropped_weapon = instance_create_layer(owner.x, owner.y, "Instances", objWeapon);
-        _dropped_weapon.weapon = owner.weapon;
-        _dropped_weapon.ammo   = owner.ammo;
-		_dropped_weapon.isPlayerPickedUp = owner.isPlayerPickedUp;
-		
-        // 3. Спавним анимированный труп вместо стандартного knockeddown
-        var _dead_body = instance_create_layer(owner.x, owner.y, "Instances", objAnimatedDeadBody);
-        _dead_body.my_angle = _weapon_flight_dir - 180;
+        // Выбрасываем оружие, ТОЛЬКО если враг не был безоружным
+		if (owner.weapon != WEAPONS.UNARMED) {
+	        var _dropped_weapon = instance_create_layer(owner.x, owner.y, "Instances", objWeapon);
+			_dropped_weapon.speed = random_range(5, 7);
+			_dropped_weapon.direction = irandom(360);
+	        _dropped_weapon.weapon = owner.weapon;
+	        _dropped_weapon.ammo   = owner.ammo;
+			_dropped_weapon.isPlayerPickedUp = owner.isPlayerPickedUp;
+		}
         
-        // 4. Уничтожаем самого врага, так как он мгновенно погиб
-		instance_destroy(other);
-        instance_destroy(owner);
+        // Труп спавним в любом случае
+	    var _dead_body = instance_create_layer(owner.x, owner.y, "Instances", objAnimatedDeadBody);
+	    _dead_body.my_angle = _weapon_flight_dir - 180;
+        
+		instance_destroy(other); // Уничтожаем нож
+        instance_destroy(owner); // Уничтожаем врага
 		
-        // 5. Уничтожаем текущий хартбокс
-        instance_destroy();
-		
-		objEffector.shake = 0.25;
+		scrCameraShakePlay(SHAKE_ACTIONS, SHAKE_ACT_KILL_CUT);
         break;
 
     case CLASS.FAT:
@@ -47,7 +47,7 @@ switch (owner.class)
         var _played_sound = audio_play_sound(_hit_sound, 1, false);
         audio_sound_pitch(_played_sound, random_range(0.8, 0.95)); 
 
-        // ИСПРАВЛЕННЫЙ БЛОК: Теперь скорость применяется к созданному объекту крови!
+        // Скорость применяется к созданному объекту крови
         var _smoke_count = irandom_range(1, 4);
         repeat(_smoke_count)
         {
@@ -67,29 +67,28 @@ switch (owner.class)
 		
 		if (owner.can_hear == 0) { instance_create_layer(owner.x, owner.y, "Instances", objHeadSet); }
 	
-        // 1. Выбрасываем оружие, которое было у врага
-        _dropped_weapon = instance_create_layer(owner.x, owner.y, "Instances", objWeapon);
-        _dropped_weapon.weapon = owner.weapon;
-        _dropped_weapon.ammo   = owner.ammo;
-		_dropped_weapon.isPlayerPickedUp = owner.isPlayerPickedUp;
+        // Выбрасываем оружие, если враг не был безоружным
+        if (owner.weapon != WEAPONS.UNARMED) {
+            var _dropped_weapon = instance_create_layer(owner.x, owner.y, "Instances", objWeapon);
+			_dropped_weapon.speed = random_range(5, 7);
+			_dropped_weapon.direction = irandom(360);
+            _dropped_weapon.weapon = owner.weapon;
+            _dropped_weapon.ammo   = owner.ammo;
+		    _dropped_weapon.isPlayerPickedUp = owner.isPlayerPickedUp;
+        }
 		
-        // 3. Спавним анимированный труп вместо стандартного knockeddown
-        _dead_body = instance_create_layer(owner.x, owner.y, "Instances", objAnimatedDeadBody);
+        // Спавним анимированный труп
+        var _dead_body = instance_create_layer(owner.x, owner.y, "Instances", objAnimatedDeadBody);
         _dead_body.my_angle = _weapon_flight_dir - 180;
 		_dead_body.sprite_index = sprColombianVestDeadKnife;
         
-        // 4. Уничтожаем самого врага, так как он мгновенно погиб
 		instance_destroy(other);
         instance_destroy(owner);
 		
-        // 5. Уничтожаем текущий хартбокс
-        instance_destroy();
-		
-		objEffector.shake = 0.25;
+		scrCameraShakePlay(SHAKE_ACTIONS, SHAKE_ACT_KILL_CUT);
         break;
         
     case CLASS.DODGER:
-        // Доджер полностью игнорирует урон от метательного оружия и просто уворачивается
         owner.reload = max(owner.reload, 20);
         owner.state = STATES.DODGE;
 	

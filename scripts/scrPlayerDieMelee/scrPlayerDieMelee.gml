@@ -26,28 +26,28 @@ function scrPlayerDieMelee(_killer, _weapon)
 	// ЗАГОТОВКА НА БУДУЩЕЕ: Раскомментируй и добавь сюда свои мечи/топоры
 	// if (_weapon == WEAPONS.KATANA || _weapon == WEAPONS.AXE)       { _calculated_hit_type = HIT_TYPE.SLASH; }
 
-	// === 3. ОБРАБОТКА ТИПА УДАРA: ЗВУКИ, СЛИТЫ И СПРАЙТЫ ===
+	// === 3. ОБРАБОТКА ТИПА УДАРA ===
 	var _selected_sprite = sprCopDeadMachinegun; 
 	var _corpse_speed = 5;                       
 
 	switch(_calculated_hit_type)
 	{
-		case HIT_TYPE.BLUNT: // Размозжили битой/трубой/кулаком
+		case HIT_TYPE.BLUNT:
 			var _played_sound = audio_play_sound(sndHit3, 1, false);
 			if (_played_sound != -1) audio_sound_pitch(_played_sound, random_range(0.9, 1.1));
 			
 			_selected_sprite = sprCopDeadBlunt; 
 			_corpse_speed = 3.5;
-			objEffector.shake = 5;
+			scrCameraShakePlay(SHAKE_ACTIONS, SHAKE_ACT_DIE_BLUNT);
 			break;
 			
-		case HIT_TYPE.CUT: // Полоснули ножом
+		case HIT_TYPE.CUT:
 			var _played_sound = audio_play_sound(choose(sndCut1, sndCut2), 1, false); 
 			if (_played_sound != -1) audio_sound_pitch(_played_sound, random_range(0.9, 1.1));
 			
 			_selected_sprite = sprCopDeadCut;  
 			_corpse_speed = 3.5;
-			objEffector.shake = 4;
+			scrCameraShakePlay(SHAKE_ACTIONS, SHAKE_ACT_DIE_CUT);
 			break;
 	}
 

@@ -12,10 +12,16 @@ scrCameraShakeInit();
 scrCameraShakeLoad();
 
 _cam = view_camera[0];
-depth = -15000;
+depth = -15900;
 
 cam_follow_x = camera_get_view_x(_cam);
 cam_follow_y = camera_get_view_y(_cam);
+
+// ==========================================
+// === ИНЕРЦИЯ СЛЕЖЕНИЯ КАМЕРЫ ===
+// ==========================================
+cam_velocity_x = 0;
+cam_velocity_y = 0;
 
 my_target = 0;
 
@@ -126,10 +132,15 @@ camera_set_view_angle(_cam, cam_base_angle);
 
 
 // ==========================================
-// === КУРСОР ===
+// === ВИРТУАЛЬНЫЙ КУРСОР ===
 // ==========================================
+global.cursor_sprite = sprEffector;
+
+global.cursor_screen_x = window_get_width() * 0.5;
+global.cursor_screen_y = window_get_height() * 0.5;
 
 window_set_cursor(cr_none);
+
 
 
 // ==========================================

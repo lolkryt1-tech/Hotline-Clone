@@ -6,6 +6,7 @@ enum MENU_PAGE {
 is_paused = false;
 
 menu_page = MENU_PAGE.MAIN;
+menu_active = true;
 selected_index = 0;
 
 menu_items = [
@@ -16,9 +17,10 @@ menu_items = [
 ];
 
 options_items = [
-	"SOUND VOLUME",
-    "MUSIC VOLUME",
-    "BACK"
+    "SOUND VOLUME",     // 0
+    "MUSIC VOLUME",     // 1
+    "GAME SETTINGS",    // 2
+    "BACK"              // 3
 ];
 
 darken_alpha = 0;

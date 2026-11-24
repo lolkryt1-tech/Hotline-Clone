@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrMusicConstants",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrMusicConstants",
+  "parent":{
+    "name":"ZMusic",
+    "path":"folders/Scripts/ZMusic.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

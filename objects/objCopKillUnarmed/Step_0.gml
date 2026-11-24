@@ -30,7 +30,7 @@ if (image_index >= hurt_index && !triggered_hurt)
 	}
 
 	// Тряска экрана при ударе
-	objEffector.shake = 3.5; 
+	scrCameraShakePlay(SHAKE_EXECUTIONS, SHAKE_EXEC_UNARMED_STOMP);
 
 	// Расстояние от центра (Origin) персонажа до его головы
 	var _dist = 30; 

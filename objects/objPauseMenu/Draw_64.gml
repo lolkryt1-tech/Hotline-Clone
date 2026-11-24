@@ -1,3 +1,5 @@
+if (!menu_active) exit;
+
 if (darken_alpha <= 0.001) exit;
 
 var _gui_w = display_get_gui_width();

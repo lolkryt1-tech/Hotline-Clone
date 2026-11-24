@@ -2,7 +2,7 @@ if (enemy_skin == SKIN.COLOMBIANREGULAR)  { enemy_sprite = sprColombianDieShot; 
 if (enemy_skin == SKIN.COLOMBIANVEST)  { enemy_sprite = sprColombianVestDieShot; }
 
 // === 1. ОБРАБОТКА БУФЕРА ВВОДА (ПРОБЕЛ) ===
-if (keyboard_check_pressed(vk_space))
+if (scrBindCheckPressed("execution"))
 {
 	input_buffer = true;
 	input_buffer_time = 10;
@@ -15,11 +15,13 @@ if (input_buffer_time > 0)
 }
 
 // === 2. КРУТИМ АНИМАЦИЮ ИГРОКА ===
-image_index += 0.25; 
+image_index += 0.3; 
 
 // === 3. МОМЕНТ ВЫСТРЕЛА (Индекс 11 копа) ===
 if (floor(image_index) == 11 && !triggered_hurt)
 {
+	scrAlertEnemySound(x, y, 250);
+	
 	triggered_hurt = true;
 	hit_count++; // Засчитываем выстрел (1, 2 или 3)
 	ammo--;      // === ДОБАВЛЕНО: Отнимаем патрон ровно в момент выстрела ===
@@ -34,7 +36,10 @@ if (floor(image_index) == 11 && !triggered_hurt)
 	
 	var _played_sound_hit = audio_play_sound(sndBulletHit1, 1, false); 
 	if (_played_sound_hit != -1) audio_sound_pitch(_played_sound_hit, random_range(0.9, 1.1));
-	objEffector.shake = 5;
+	
+	// ТРЯСКА ЭКРАНА
+	var _weapon_str = scrCameraShakeWeaponToString(weapon);
+	scrCameraShakePlay("weapons", _weapon_str);
 	
 	var _dist = 20; 
 	var _head_offset_x = x + lengthdir_x(_dist, my_angle);
@@ -88,7 +93,7 @@ if (floor(image_index) == 11 && !triggered_hurt)
 	
 	// Отдача копа назад
 	// === ИСПРАВЛЕНО: Пойти на повторный взмах (кадр 8) можно только при наличии патронов (ammo > 0) ===
-	if ((keyboard_check(vk_space) || input_buffer) && hit_count < 3 && ammo > 0)
+	if ((scrBindCheck("execution") || input_buffer) && hit_count < 3 && ammo > 0)
 	{
 		image_index = 8;			// ЗАДЕРЖКА МЕЖДУ ВЫСТРЕЛАМИ
 		input_buffer = false; 
@@ -126,7 +131,7 @@ else
 if (floor(image_index) == 13)
 {
 	// === ИСПРАВЛЕНО: Пойти на новый цикл стрельбы (кадр 7) можно только при наличии патронов (ammo > 0) ===
-	if ((keyboard_check(vk_space) || input_buffer) && hit_count < 3 && ammo > 0)
+	if ((scrBindCheck("execution") || input_buffer) && hit_count < 3 && ammo > 0)
 	{
 		image_index = 7; 
 		input_buffer = false; 

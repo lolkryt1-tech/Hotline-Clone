@@ -92,7 +92,7 @@ function scrEnemyAttackHitscan()
     reload = my_sprites.cooldown;
     laser_alpha = 0;
 	ammo--;
-	objEffector.shake = 2.5;
+	scrCameraShakePlay(SHAKE_ACTIONS, SHAKE_ACT_DIE_SHOT);	// ПОХУЙ, ГЛАВНОЕ ПОКАЗАТЬ ЧТО ВЫСТРЕЛ СИЛЬНЫЙ
 	
     // Звук выстрела
     if (array_length(my_sprites.sounds) > 0) {

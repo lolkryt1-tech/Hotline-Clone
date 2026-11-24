@@ -1,5 +1,5 @@
 {
-  "$GMNotes":"v1",
+  "$GMNotes":"v2",
   "%Name":"Quill_README",
   "name":"Quill_README",
   "openedOnFirstLoad":true,

@@ -1,4 +1,4 @@
-function scrCameraShakeMenuDrawEffects()
+function scrCameraShakeMenuDrawEffects(_mx, _my)
 {
     draw_set_color(gui_secondary_color);
     draw_text(x + effect_button_x, y + effect_button_y - 14, "EFFECTS");
@@ -7,9 +7,6 @@ function scrCameraShakeMenuDrawEffects()
 
     var _effects = ["kick", "bounce", "perlin"];
     var _effect_names = ["KICK", "BOUNCE", "PERLIN"];
-
-    var _mx = device_mouse_x_to_gui(0);
-    var _my = device_mouse_y_to_gui(0);
 
     for (var i = 0; i < array_length(_effects); i++)
     {

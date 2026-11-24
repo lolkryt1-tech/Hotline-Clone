@@ -1,0 +1,1 @@
+global.cursor_sprite = sprEffector;

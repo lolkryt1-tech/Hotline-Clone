@@ -34,6 +34,12 @@ else
         // 2. Игрок не успел ударить -> враг выживает и падает в нокаут!
         // Спавним объект летящего нокаута, как вы и просили
         var _enemy_knocked = instance_create_layer(x, y, "Instances", objEnemyKnockedOut);
+		var _knocked_sprite = sprColombianGetUp;
+		switch (enemy_skin)
+	    {
+	        case SKIN.COLOMBIANREGULAR:     _knocked_sprite = sprColombianGetUp;     break;
+	        case SKIN.COLOMBIANVEST:		_knocked_sprite = sprColombianVestGetUp; break;
+	    }
         
         _enemy_knocked.skin        = enemy_skin;
         _enemy_knocked.class       = enemy_class;
@@ -41,5 +47,6 @@ else
         _enemy_knocked.direction   = my_angle; // Летит по направлению замаха
         _enemy_knocked.my_angle    = my_angle - 180;
         _enemy_knocked.image_index = 1;
+		_enemy_knocked.sprite_index = _knocked_sprite;
     }
 }

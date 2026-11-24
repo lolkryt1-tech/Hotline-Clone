@@ -1,9 +1,13 @@
-// === НАСТРОЙКА ОТРИСОВКИ ===
-
 draw_set_alpha(1);
 draw_set_font(gui_font);
 draw_set_halign(fa_left);
 draw_set_valign(fa_middle);
+
+
+// === ПОЛОЖЕНИЕ ИГРОВОГО КУРСОРА ===
+
+var _mx = global.cursor_screen_x / max(window_get_width(), 1) * display_get_gui_width();
+var _my = global.cursor_screen_y / max(window_get_height(), 1) * display_get_gui_height();
 
 // === ОКНО ===
 
@@ -12,6 +16,7 @@ draw_rectangle(x, y, x + window_w, y + window_h, false);
 
 draw_set_color(make_color_rgb(75, 75, 85));
 draw_rectangle(x, y, x + window_w, y + window_h, true);
+
 
 // === ЗАГОЛОВОК ===
 
@@ -31,8 +36,7 @@ var _close_x = x + window_w - title_h;
 var _close_y = y;
 
 var _close_hover = point_in_rectangle(
-    device_mouse_x_to_gui(0),
-    device_mouse_y_to_gui(0),
+    _mx, _my,
     _close_x, _close_y,
     _close_x + title_h, _close_y + title_h
 );
@@ -44,27 +48,17 @@ draw_set_color(_close_hover
 draw_rectangle(_close_x, _close_y, _close_x + title_h, _close_y + title_h, false);
 
 
-// === КНОПКА ЗАКРЫТИЯ ===
-var _close_x = x + window_w - title_h;
-var _close_y = y;
+// === ОБВОДКА КНОПКИ ЗАКРЫТИЯ ===
 
-var _mouse_x = device_mouse_x_to_gui(0);
-var _mouse_y = device_mouse_y_to_gui(0);
-
-var _close_hover = point_in_rectangle(
-    _mouse_x, _mouse_y,
-    _close_x, _close_y,
-    _close_x + title_h, _close_y + title_h
-);
-
-// Обводка кнопки
 draw_set_color(_close_hover
     ? make_color_rgb(150, 90, 90)
     : make_color_rgb(100, 100, 115));
 
 draw_rectangle(_close_x, _close_y, _close_x + title_h, _close_y + title_h, true);
 
+
 // Крестик
+
 draw_set_color(c_white);
 draw_set_alpha(0.8);
 
@@ -82,22 +76,24 @@ draw_set_alpha(1);
 
 scrCameraShakeMenuDrawPreset();
 scrCameraShakeMenuDrawCategory();
-scrCameraShakeMenuDrawEffects();
+scrCameraShakeMenuDrawEffects(_mx, _my);
 scrCameraShakeMenuDrawSections();
-scrCameraShakeMenuDrawSliders();
-scrCameraShakeMenuDrawActionButtons();
+scrCameraShakeMenuDrawSliders(_mx, _my);
+scrCameraShakeMenuDrawActionButtons(_mx, _my);
+
 
 // === ВЫПАДАЮЩИЙ СПИСОК ===
 
 if (preset_dropdown_open)
 {
-    scrCameraShakeMenuDrawDropdown();
+    scrCameraShakeMenuDrawDropdown(_mx, _my);
 }
 
 if (category_dropdown_open)
 {
-    scrCameraShakeMenuDrawCategoryDropdown();
+    scrCameraShakeMenuDrawCategoryDropdown(_mx, _my);
 }
+
 
 // === ВОССТАНОВЛЕНИЕ НАСТРОЕК ОТРИСОВКИ ===
 

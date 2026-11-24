@@ -270,6 +270,12 @@ function scrExecuteSingleAction(_trigger, _act)
 				
 				break;
 			}
+			
+			case TRIGGER_ACTION.SAVE:
+            {
+                scrSaveGame();
+                break;
+            }
             
             // ==========================================
             // === ЗАДЕЛЫ ===

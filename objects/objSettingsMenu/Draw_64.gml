@@ -17,10 +17,13 @@ draw_rectangle(0, 0, _gui_w, _gui_h, false);
 
 if (transition_active)
 {
-    // Во время перехода рисуем обе страницы
-    scrSettingsDrawHome(id, _gui_w);
-    scrSettingsDrawPage(id, _gui_w, _gui_h);
+    if (depth_current < 1)
+        scrSettingsDrawHome(id, _gui_w);
+
+    if (depth_current > 0 && current_page != SETTINGS_PAGE.HOME)
+        scrSettingsDrawPage(id, _gui_w, _gui_h);
 }
+
 else if (current_page == SETTINGS_PAGE.HOME)
 {
     scrSettingsDrawHome(id, _gui_w);
@@ -29,6 +32,10 @@ else
 {
     scrSettingsDrawPage(id, _gui_w, _gui_h);
 }
+
+// ОКНО КОНФЛИКТА
+
+scrSettingsDrawKeybindConflict(id, _gui_w, _gui_h);
 
 
 // === СБРОС ===

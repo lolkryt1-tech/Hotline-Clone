@@ -2,16 +2,16 @@
 // Если казнь еще не запущена (hurt_index равен 0), ждем нажатия кнопки мыши
 if (hurt_index == 0)
 {
-	// Нажали ЛКМ — запускаем обычную казнь (8 кадров)
-	if (mouse_check_button_pressed(mb_left))
+	// Нажали кнопку АТАКИ — запускаем обычную казнь (8 кадров)
+	if (scrBindCheckPressed("attack"))
 	{
 		sprite_index  = sprCopKillKnife;
 		is_fast_execution = false;
 		hurt_index = 6;
 		finish_index = 10;
 	}
-	// Нажали ПКМ — запускаем быструю казнь (4 кадра)
-	else if (keyboard_check_pressed(vk_space))
+	// Нажали кнопку ДОБИВАНИЯ — запускаем быструю казнь (4 кадра)
+	else if (scrBindCheckPressed("execution"))
 	{
 		sprite_index = sprCopKillKnifeQuick;
 		if (enemy_skin == SKIN.COLOMBIANREGULAR) { enemy_sprite = sprColombianDieKnifeQuick }
@@ -53,7 +53,7 @@ if (image_index >= hurt_index && !triggered_hurt)
 	}
 
 	// Интенсивность тряски экрана
-	objEffector.shake = 1; 
+	scrCameraShakePlay(SHAKE_EXECUTIONS, SHAKE_EXEC_KNIFE); 
 
 	// Точка шеи лежачего врага
 	var _dist = 24; 

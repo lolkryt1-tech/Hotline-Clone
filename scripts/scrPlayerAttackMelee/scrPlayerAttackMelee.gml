@@ -4,7 +4,7 @@ function scrPlayerAttackMelee()
     var _hit_type = _wp_data.melee_type; 
 
     // === 1. НАСТРОЙКИ ЗОН ПОРАЖЕНИЯ И НАПРАВЛЕНИЯ ===
-    var _mouse_dir = point_direction(x, y, mouse_x, mouse_y);
+    var _mouse_dir = point_direction(x, y, objEffector.x, objEffector.y);
     
     // === АРХИТЕКТУРНОЕ РАСШИРЕНИЕ: ТОЛЧОК ВПЕРЕД ДЛЯ КУВАЛДЫ ===
     if (current_weapon == WEAPONS.SLEDGEHAMMER && image_index >= 4 && image_index < 9)

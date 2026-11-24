@@ -3,10 +3,10 @@ if (weapon == WEAPONS.SHOTGUN) { sprite_index = sprCopKillShotgun }
 if (enemy_skin == SKIN.COLOMBIANREGULAR)	{ enemy_sprite = sprColombianDieCop; }
 if (enemy_skin == SKIN.COLOMBIANVEST)		{ enemy_sprite = sprColombianVestDieCop; }
 
-// 1. Увеличенная скорость прироста кадров игрока
+// 1. Анимация идёт
 image_index += 0.25;
 
-// 2. ИСПРАВЛЕНО: Синхронизированная анимация врага ПОСЛЕ наступления hurt_index
+// 2. Синхронизированная анимация врага ПОСЛЕ наступления hurt_index
 if (image_index >= hurt_index) 
 { 
     if (enemy_image_index < enemy_max_image_index) { 
@@ -17,19 +17,19 @@ if (image_index >= hurt_index)
     }
 }
 
-// 3. Надежная проверка момента удара (вызовется ровно 1 раз на кадре 7)
+// 3. Проверка  удара
 if (image_index >= hurt_index && !triggered_hurt)
 {
     triggered_hurt = true; 
     
-    // === ВОСПРОИЗВЕДЕНИЕ ЗВУКА СТРОГО 1 РАЗ В МОМЕНТ УДАРA ===
+    // === ВОСПРОИЗВЕДЕНИЕ ЗВУКА ===
     var _played_sound = audio_play_sound(sndHit3, 1, false);
     if (_played_sound != -1)
     {
         audio_sound_pitch(_played_sound, random_range(0.9, 1.1));
     }
     
-    objEffector.shake = 5;
+    scrCameraShakePlay(SHAKE_EXECUTIONS, SHAKE_EXEC_FIREARM_BLUNT);
     
     var _dist = 20; 
     var _head_offset_x = x + lengthdir_x(_dist, my_angle);
@@ -44,7 +44,7 @@ if (image_index >= hurt_index && !triggered_hurt)
         _squirt.direction = _random_direction;
     }
     
-    // === ИСПРАВЛЕНО: Струя 2 (Влево и чуть вверх, до 2 сквиртов) ===
+    // === Струя 2 (Влево и чуть вверх, до 2 сквиртов) ===
     var _spawn_left_count = irandom_range(1, 2); // Случайно выбираем 1 или 2 сквирта
     repeat(_spawn_left_count)
     {

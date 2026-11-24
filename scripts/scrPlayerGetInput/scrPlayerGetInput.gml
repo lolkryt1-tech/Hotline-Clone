@@ -1,9 +1,9 @@
 function scrPlayerGetInput()
 {
-    var _axis_x = keyboard_check(ord("D")) - keyboard_check(ord("A"));
-    var _axis_y = keyboard_check(ord("S")) - keyboard_check(ord("W"));
+	var _axis_x = scrBindCheck("move_right") - scrBindCheck("move_left");
+	var _axis_y = scrBindCheck("move_back") - scrBindCheck("move_forward");
 
-    // Если камера перевёрнута (180°), инвертируем обе оси,
+    // Если включён хардмод, то камера перевёрнута, инвертируем обе оси,
     // чтобы управление оставалось "нормальным" на экране
     if (global.hard) {
         _axis_x *= -1;

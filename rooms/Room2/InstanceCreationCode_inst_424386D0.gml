@@ -62,7 +62,7 @@ actions = [
 	
 	// Группа с лестницы
 	{
-		delay: 120,
+		delay: 60,
         type: TRIGGER_ACTION.SPAWN,
         enemy_preset: ENEMY_PRESET.COLOMBIANFAT,
 

@@ -8,17 +8,29 @@ function scrMusicUpdateEnvironment()
     var _zone_active = instance_exists(objMusicMuffleZone);
 
     var _menu_active = false;
+	
+	/*
 	if (instance_exists(objPauseMenu)) && objPauseMenu.is_paused 
     {
-        // Проверяем, находится ли игрок в настройках звука на пункте Music Volume (индекс 0)
-        var _is_adjusting_music = (objPauseMenu.menu_page == MENU_PAGE.OPTIONS && objPauseMenu.selected_index == 1);
-        
-        // Меню считается активным для приглушения ТОЛЬКО если мы НЕ настраиваем музыку прямо сейчас
-        if (!_is_adjusting_music) 
-        {
-            _menu_active = true; 
-        }
+        _menu_active = true; 
+		
+		if (instance_exists(objSettingsMenu)) 
+		{
+			_menu_active = false;
+			
+		    var _settings = instance_find(objSettingsMenu, 0); // Берем экземпляр меню
+
+		    var _is_volume_page = (_settings.current_page == SETTINGS_PAGE.VOLUME_EXTRA);
+		    var _is_music_selected = (_settings.selected_index == 1); // 0 = SOUNDS, 1 = MUSIC
+
+		    // Приглушаем музыку, ТОЛЬКО если мы НЕ на странице музыки с выделенным пунктом Music
+		    if (!(_is_volume_page && _is_music_selected))
+		    {
+		        _menu_active = true;
+		    }
+		}
     }
+	*/
 
     // === LOW-PASS FILTER ===
 

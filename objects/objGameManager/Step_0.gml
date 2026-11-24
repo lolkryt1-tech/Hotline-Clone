@@ -136,12 +136,18 @@ if (floor_had_enemies && _floor_is_safe)
 // 7. АНИМАЦИЯ НАДПИСИ GO TO CAR
 // =========================================================================
 
-if (global.current_level.trigger_go_to_car)
-{
-	if (!instance_exists(objPlayer)) { global.current_level.trigger_go_to_car = false; }
-    go_to_car_alpha = lerp(go_to_car_alpha, 1.0, 0.05);
+// Если игрока нет —  запрещаем надписи появляться
+if (!instance_exists(objPlayer)) 
+{ 
+    global.current_level.trigger_go_to_car = false; 
 }
-else
+
+// Плавно ведём альфу к цели
+var _target_alpha = (global.current_level.trigger_go_to_car) ? 1.0 : 0.0;
+go_to_car_alpha = lerp(go_to_car_alpha, _target_alpha, 0.05);
+
+// Округляем, чтобы не было вечных микро-значений (например, 0.00001)
+if (go_to_car_alpha < 0.01 && _target_alpha == 0.0) 
 {
     go_to_car_alpha = 0.0;
 }

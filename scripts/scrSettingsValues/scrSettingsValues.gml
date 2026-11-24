@@ -1,51 +1,87 @@
+
 /// @function scrSettingsValues(_menu, _direction, _activate)
-/// @description Изменяет значения настроек.
+/// @description Универсально изменяет значения настроек на основе описания выбранного пункта.
 
 function scrSettingsValues(_menu, _direction, _activate)
 {
-    // === ГЛАВНАЯ СТРАНИЦА ===
+    // ========================================
+    // ПОЛУЧАЕМ ОПИСАНИЕ ВЫБРАННОГО ПУНКТА
+    // ========================================
 
-    if (_menu.current_page == SETTINGS_PAGE.HOME)
+    var _items = scrSettingsGetPageSettings(_menu);
+
+    if (_menu.selected_index < 0
+    ||  _menu.selected_index >= array_length(_items))
     {
-        // Если нет направления изменения — ничего не делаем.
-        if (_direction == 0)
-            return;
-
-        var _change = _direction * 0.05;
-
-        switch (_menu.selected_index)
-        {
-            // Громкость звуков
-            case 0:
-                global.settings.sound_volume = clamp(global.settings.sound_volume + _change, 0, 1);
-
-                scrSettingsApply();
-                break;
-
-            // Громкость музыки
-            case 1:
-                global.settings.music_volume = clamp(global.settings.music_volume + _change, 0, 1);
-                break;
-
-            default:
-                return;
-        }
-
-        scrSettingsSave();
         return;
     }
 
+    var _item = _items[_menu.selected_index];
 
-    // === ДОПОЛНИТЕЛЬНАЯ ГРОМКОСТЬ ===
+    // ========================================
+    // ОБРАБОТКА В ЗАВИСИМОСТИ ОТ ТИПА
+    // ========================================
 
-    if (_menu.current_page == SETTINGS_PAGE.VOLUME_EXTRA)
+    switch (_item.type)
     {
-        if (_menu.selected_index == 0 && (_activate || _direction != 0))
-        {
-            global.settings.enable_music_filters =
-                !global.settings.enable_music_filters;
+        // ========================================
+        // ПОЛЗУНОК
+        // ========================================
+
+        case SETTING_TYPE.SLIDER:
+
+            if (_direction == 0)
+                return;
+
+            var _value = variable_struct_get(global.settings, _item.setting);
+
+            _value += _direction * _item.step;
+            _value = clamp(_value, _item.min, _item.max);
+
+            variable_struct_set(global.settings, _item.setting, _value);
+
+            // Звуки применяем сразу.
+            if (_item.setting == "sound_volume")
+            {
+                scrSettingsApply();
+            }
 
             scrSettingsSave();
-        }
+
+            break;
+
+        // ========================================
+        // ПЕРЕКЛЮЧАТЕЛЬ
+        // ========================================
+
+        case SETTING_TYPE.TOGGLE:
+
+            // Переключение через Enter или стрелки.
+            if (!_activate && _direction == 0)
+                return;
+
+            var _value = variable_struct_get(global.settings, _item.setting);
+
+            variable_struct_set(global.settings, _item.setting, !_value);
+
+            scrSettingsSave();
+
+            break;
+
+        // ========================================
+        // ДЕЙСТВИЕ
+        // ========================================
+
+        case SETTING_TYPE.ACTION:
+
+            // Пока действия не подключены.
+            break;
+
+        // ========================================
+        // ОБЫЧНЫЙ ПУНКТ
+        // ========================================
+
+        case SETTING_TYPE.NONE:
+            break;
     }
 }

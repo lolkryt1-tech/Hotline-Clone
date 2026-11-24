@@ -21,7 +21,7 @@ if (debug_melee_timer > 0)
     var _wp_data = scrPlayerGetWeaponSprite(character, current_weapon);
     var _hit_type = _wp_data.melee_type; 
     
-    var _mouse_dir = point_direction(x, y, mouse_x, mouse_y);
+    var _mouse_dir = point_direction(x, y, objEffector.x, objEffector.y);
     var _reach = (_hit_type == HIT_TYPE.BLUNT) ? 24 : 18; 
     var _close_radius = 8; // Наш внутренний круг
     var _attack_half_angle = 45; 
@@ -68,7 +68,7 @@ draw_rectangle(bbox_left,bbox_top,bbox_right,bbox_bottom,true)
 // Рисуем лучи только во время замаха кулаками
 if (sprite_index == sprCopAttackPunch)
 {
-    var _mouse_dir = point_direction(x, y, mouse_x, mouse_y);
+    var _mouse_dir = point_direction(x, y, objEffector.x, objEffector.y);
     var _reach = 28;
     var _close_radius = 8;
     

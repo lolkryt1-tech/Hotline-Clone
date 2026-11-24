@@ -1,7 +1,3 @@
-scrMusicUpdateTransition();		// Запуск музыки
-
-
-if (global.settings.enable_music_filters)
-{
-	scrMusicUpdateEnvironment();	// Её постобработка
-}
+scrMusicUpdateTransition();	// Запуск музыки
+scrMusicUpdateVolume();		// Её громкость
+scrMusicUpdateEffects();	// Её постобработка

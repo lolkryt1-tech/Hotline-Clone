@@ -22,7 +22,8 @@ enum TRIGGER_ACTION {
     TRANSITION,					// задел
     SCRIPT,						// задел
 	START_MUSIC,				// Музыка начинается
-	STOP_MUSIC					// Музыка закнчивается
+	STOP_MUSIC,					// Музыка закнчивается
+	SAVE						// Сохранения
 }
 
 /// === ОСНОВНЫЕ ПЕРЕМЕННЫЕ ===

@@ -1,13 +1,10 @@
-function scrCameraShakeMenuDrawCategoryDropdown()
+function scrCameraShakeMenuDrawCategoryDropdown(_mx, _my)
 {
     var _count = array_length(global.camera_shake.categories);
     var _visible = min(category_visible_count, _count);
 
     var _list_x = x + category_dropdown_x;
     var _list_y = y + category_dropdown_y;
-
-    var _mx = device_mouse_x_to_gui(0);
-    var _my = device_mouse_y_to_gui(0);
 
     draw_set_color(make_color_rgb(30, 30, 36));
     draw_rectangle(_list_x, _list_y + category_item_h, _list_x + category_dropdown_w, _list_y + category_item_h + _visible * category_item_h, false);

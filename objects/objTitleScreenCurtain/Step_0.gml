@@ -6,7 +6,7 @@ if (!curtain_active && !curtain_finished) {
     // Уменьшаем таймер с учетом дельта-тайм
     curtain_timer -= (delta_time / 1000000);
     
-    // Пропуск на ПКМ (mb_right) — сбрасываем таймер в ноль
+    // Пропуск
     if (mouse_check_button_pressed(mb_left)) || (mouse_check_button_pressed(mb_right)) {
         curtain_timer = 0;
 		curtain_speed = 2000;

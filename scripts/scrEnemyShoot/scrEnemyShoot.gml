@@ -58,7 +58,7 @@ function scrEnemyShoot()
 	}
 	
 	// === 4. ЭФФЕКТЫ И СБРОС ТАЙМЕРОВ ===
-	objEffector.shake = 0.4;          
+	scrCameraShakePlay(SHAKE_ACTIONS, SHAKE_ACT_ENEMY_SHOOT);
 	reload            = my_sprites.cooldown; 
 	ammo--; // Вычитаем патрон
 }

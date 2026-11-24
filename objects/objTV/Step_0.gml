@@ -17,7 +17,7 @@ if (instance_exists(objPlayer) && (sprite_index == sprTVBig || sprite_index == s
         var _reach = 18;
         
         // Направление удара от игрока на мышь
-        var _attack_dir = point_direction(_p.x, _p.y, mouse_x, mouse_y);
+        var _attack_dir = point_direction(_p.x, _p.y, objEffector.x, objEffector.y);
         
         // Считаем конечную точку луча удара
         var _strike_end_x = _p.x + lengthdir_x(_reach, _attack_dir);
@@ -52,7 +52,7 @@ if (instance_exists(objPlayer) && (sprite_index == sprTVBig || sprite_index == s
             if (life > 0) audio_play_sound(sndTaser, 0, false);
             audio_play_sound(sndExplode, 0, false);
             
-            objEffector.shake = 1;
+            scrCameraShakePlay(SHAKE_ACTIONS, SHAKE_ACT_TECH_EXPL);
             
             // Выбираем случайный вариант разрушения
             image_index = choose(0, 1);

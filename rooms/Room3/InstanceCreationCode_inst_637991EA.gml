@@ -1,0 +1,1 @@
+if (global.hard == true) { instance_destroy(); }

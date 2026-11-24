@@ -11,7 +11,7 @@ if (instance_exists(objPlayer))
         var _reach = 24;
         
         // Направление удара от игрока на мышь
-        var _attack_dir = point_direction(_p.x, _p.y, mouse_x, mouse_y);
+        var _attack_dir = point_direction(_p.x, _p.y, objEffector.x, objEffector.y);
         
         // Считаем конечную точку луча удара биты/ножа
         var _strike_end_x = _p.x + lengthdir_x(_reach, _attack_dir);

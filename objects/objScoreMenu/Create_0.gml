@@ -10,7 +10,7 @@ if (window_get_fullscreen()) {
 }
 
 surface_resize(application_surface, _win_w, _win_h);
-display_set_gui_size(_win_w, _win_h);
+display_set_gui_size(1600, 900);
 
 #endregion
 

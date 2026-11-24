@@ -1,6 +1,6 @@
 function scrPlayerStartExecution()
 {
-    if !(keyboard_check_pressed(vk_space)) return;
+    if (!scrBindCheckPressed("execution")) return;
     
     // 1. ПОИСК И ПРОВЕРКА ЖЕРТВЫ
     var _executable_objects = tag_get_asset_ids("Executable", asset_object);
@@ -73,13 +73,14 @@ function scrPlayerStartExecution()
             // --- ⚠️ ПРОВЕРКА НА ТОЛСТЯКА ---
             if ( _victim.class == CLASS.FAT || _victim.class == CLASS.FATVEST)
             {
-                // Если оружие не тяжелое — прерываем казнь, толстяка нельзя забить руками/ножом
+                // Если оружие не тяжелое — прерываем казнь
                 if (!scrWeaponIsHeavy(current_weapon)) return;
                 
                 // Если оружие тяжелое — назначаем объект казни толстяка
                 _target_object = objCopKillFatSledgeHammerFat;
                 _start_frame = 0;
             }
+			
             // --- ОПРЕДЕЛЕНИЕ ОБЪЕКТА ДЛЯ ОБЫЧНЫХ ВРАГОВ ---
             else
             {

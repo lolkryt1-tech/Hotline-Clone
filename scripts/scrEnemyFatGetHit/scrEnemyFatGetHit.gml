@@ -41,7 +41,7 @@ function scrEnemyFatGetHit(_enemy_id, _weapon_enum, _push_dir)
 		_fat_knocked.speed     = 2;
 
 		// Эффекты и начисление комбо/очков (передаем false, так как удар не у стены)
-		objEffector.shake = 2.0;
+		scrCameraShakePlay(SHAKE_ACTIONS, SHAKE_ACT_KNOCK_UNARM);
 
 		// Уничтожаем живого толстяка
 		instance_destroy();

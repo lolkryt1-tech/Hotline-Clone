@@ -1,9 +1,9 @@
 event_inherited();
 
 image_speed = 0;
-depth = -3000;
+depth = global.player_render_counter;
 
-hurt_index = 6;
+hurt_index = 5;
 finish_index = 8;
 triggered_hurt = false;
 

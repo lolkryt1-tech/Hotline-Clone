@@ -34,7 +34,7 @@ if (abs(swingspeed) > 3.5 && (swinger == 1 || swinger == 0))
 	// Сбиваем с ног восприимчивые классы
 	if (other.class == CLASS.REGULAR || other.class == CLASS.VEST)
 	{
-		objEffector.shake = 5;
+		scrCameraShakePlay(SHAKE_ACTIONS, SHAKE_ACT_KNOCK_DOOR);
 		
 		var _enemy = other.id;
 		var _hit_dir = image_angle + (swingspeed > 0 ? -90 : 90);

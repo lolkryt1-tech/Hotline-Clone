@@ -51,7 +51,7 @@ if (energie > 0)
 {
     if (sprite_index == sprTVBig)
     {
-        objEffector.shake = 1;
+        scrCameraShakePlay(SHAKE_ACTIONS, SHAKE_ACT_TECH_EXPL);
         sprite_index = sprTVBigBreak;
         audio_play_sound(sndGlass1, 0, false);
         audio_play_sound(sndTaser, 0, false);
@@ -73,7 +73,6 @@ else
     if (life > 0) audio_play_sound(sndTaser, 0, false);
     audio_play_sound(sndExplode, 0, false);
     
-    global.shake = 6;
     image_index = choose(0, 1);
     
     // Общие эффекты взрыва для обоих вариантов обломков

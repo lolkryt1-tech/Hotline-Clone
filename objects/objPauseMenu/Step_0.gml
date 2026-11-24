@@ -1,3 +1,5 @@
+if (!menu_active) exit;
+
 // === ESCAPE ===
 if (keyboard_check_pressed(vk_escape))
 {
@@ -122,9 +124,12 @@ if (_confirm)
                 break;
 
             case 2: // OPTIONS
-                menu_page = MENU_PAGE.OPTIONS;
-                selected_index = 0;
-                items_slide = 0;
+                var _settings = instance_create_layer(0, 0, "Instances", objSettingsMenu);
+                
+                _settings.menu_context = SETTINGS_CONTEXT.PAUSE_MENU;
+                _settings.return_instance = id; // Запоминаем, что вернуться нужно сюда
+                
+                menu_active = false; // Замораживаем паузу
                 break;
 
             case 3: // EXIT
@@ -134,11 +139,20 @@ if (_confirm)
                 break;
         }
     }
-    else
+	else
     {
         switch (selected_index)
         {
-            case 2: // BACK
+            case 2: // GAME SETTINGS
+                var _settings = instance_create_layer(0, 0, "Instances", objSettingsMenu);
+                
+                _settings.menu_context = SETTINGS_CONTEXT.PAUSE_MENU;
+                _settings.return_instance = id; // Запоминаем, что вернуться нужно в паузу
+                
+                menu_active = false;
+                break;
+
+            case 3: // BACK
                 menu_page = MENU_PAGE.MAIN;
                 selected_index = 2;
                 items_slide = 0;

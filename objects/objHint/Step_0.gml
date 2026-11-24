@@ -1,3 +1,6 @@
+// === НИКАКИХ ПОДСКАЗОК ===
+if (global.settings.enable_tips == false) { instance_destroy(); }
+
 hover_timer += 0.05; 
 
 // === 1. ПОДСКАЗКА МЕТАНИЯ НОЖА ===

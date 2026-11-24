@@ -1,6 +1,7 @@
+
 /// @description Обновляет состояние наведения курсора на меню и его элементы.
 /// Учитывает выпадающий список, перетаскивание окна и ползунков.
-/// Также управляет отображением системного курсора.
+/// Также управляет спрайтом игрового курсора.
 
 function scrCameraShakeMenuUpdateHover(_mx, _my)
 {
@@ -39,5 +40,41 @@ function scrCameraShakeMenuUpdateHover(_mx, _my)
     global.camera_shake_menu_hover = _hover || dragging || slider_dragging != -1;
     global.camera_shake_menu_dragging = dragging;
 
-    window_set_cursor(global.camera_shake_menu_hover ? cr_default : cr_none);
+
+    // === СУЩЕСТВУЮЩИЕ ОБЛАСТИ КРЕСТИКА И ЗАГОЛОВКА ===
+
+    var _close_x = x + window_w - title_h;
+    var _close_y = y;
+
+    close_hover = point_in_rectangle(
+        _mx, _my,
+        _close_x, _close_y,
+        _close_x + title_h, _close_y + title_h
+    );
+
+    title_hover = point_in_rectangle(
+        _mx, _my,
+        x, y,
+        x + window_w, y + title_h
+    );
+
+
+    // === ВЫБОР СПРАЙТА КУРСОРА ===
+
+    global.cursor_sprite = sprEffector;
+
+    if (global.camera_shake_menu_hover)
+    {
+        global.cursor_sprite = sprCursorNormal;
+    }
+
+    if (title_hover || dragging)
+    {
+        global.cursor_sprite = sprCursorMove;
+    }
+
+    if (close_hover)
+    {
+        global.cursor_sprite = sprCursorSelect;
+    }
 }

@@ -2,7 +2,7 @@ event_inherited();
 
 image_speed = 0;
 image_index = 0;
-depth = -3000;
+depth = global.player_render_counter;
 
 ammo = 0;
 weapon = 0;

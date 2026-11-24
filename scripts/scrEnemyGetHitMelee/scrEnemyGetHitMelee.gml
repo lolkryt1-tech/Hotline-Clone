@@ -87,7 +87,7 @@ function scrEnemyGetHitMelee(_enemy_id, _weapon_enum, _push_dir, _source_id)
 				_knocked.sprDeadLeanMachinegun = sprDeadLeanMachinegun;
 	            
 				audio_play_sound(sndWeaponHit, 1, false);
-				objEffector.shake = 1.5;
+				scrCameraShakePlay(SHAKE_ACTIONS, SHAKE_ACT_KNOCK_UNARM);
 				break;
 	           
 			case HIT_TYPE.BLUNT: // Смертельное дробящее (Труба/Бита)
@@ -118,7 +118,7 @@ function scrEnemyGetHitMelee(_enemy_id, _weapon_enum, _push_dir, _source_id)
 					_corpse.my_angle     = _push_dir + _random_direction;
 				}
 	            
-				objEffector.shake = 2.0;
+				scrCameraShakePlay(SHAKE_ACTIONS, SHAKE_ACT_KILL_BLUNT);
 				break;
 				
 			case HIT_TYPE.CUT: 
@@ -149,7 +149,7 @@ function scrEnemyGetHitMelee(_enemy_id, _weapon_enum, _push_dir, _source_id)
 					_corpse.my_angle     = _push_dir + _random_direction;
 				}
 				
-				objEffector.shake = 1.5;
+				scrCameraShakePlay(SHAKE_ACTIONS, SHAKE_ACT_KILL_CUT);
 				break;
 		}
 		

@@ -17,7 +17,7 @@ if (image_index == hurt_index)
 	}
 
 	// === ТРЯСКА ЭКРАНА ПРИ УДАРЕ ===
-	objEffector.shake = 3.5; 
+	scrCameraShakePlay(SHAKE_EXECUTIONS, SHAKE_EXEC_LEAN);
 
 	// Расстояние от центра (Origin) персонажа до его головы
 	var _dist = -6; 

@@ -17,7 +17,7 @@ var _all_levels = [
                 { file_prefix: "story_lvl1_f5", room_name: "Room6", is_cleared: false }
             ],
             
-			level_music: New_Case_Intro,
+			level_music: MUSIC_INTRO,
 			total_triggers: (global.hard) ? 11 : 7,
 			
             // === КОЛИЧЕСТВО ДЛЯ МАКСИМАЛЬНОГО РАНГА ===

@@ -3,6 +3,10 @@
 
 function scrSettingsNavigate(_menu, _count)
 {
+    // Блокируем навигацию во время переназначения клавиш.
+    if (_menu.keybind_mode != KEYBIND_MODE.NONE)
+        return;
+
     // Если список пустой, перемещаться некуда.
     if (_count <= 0)
         return;
@@ -27,12 +31,9 @@ function scrSettingsNavigate(_menu, _count)
     if (_menu.selected_index >= _count)
         _menu.selected_index = 0;
 
-    // Запоминаем позицию на главной странице.
-    if (_menu.menu_state == SETTINGS_STATE.HOME
-	||  _menu.menu_state == SETTINGS_STATE.CLOSING)
-	{
-	    _menu.home_selected_index = _menu.selected_index;
-	}
+    // Запоминаем позицию на текущей странице стека.
+    var _top = array_length(_menu.parent_selected_index_stack) - 1;
+    _menu.parent_selected_index_stack[_top] = _menu.selected_index;
 
     // Звук перемещения.
     var _snd = audio_play_sound(sndPauseMenuScroll, 0, false);

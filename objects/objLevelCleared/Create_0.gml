@@ -1,6 +1,6 @@
 // Звуки и музыка
 audio_play_sound(sndLevelComplete, 1, 0);
-scrMusicPlay(Level_Cleared, 1, 0);
+scrMusicPlay(MUSIC_LEVEL_CLEARED, 1, 0);
 
 // Настройка текста и шрифта
 text_string = "LEVEL CLEARED";

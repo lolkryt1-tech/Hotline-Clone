@@ -2,7 +2,7 @@ function scrPlayerInteractWeapon()
 {
 
 	// === 2.  ЛОГИКА ПОДБОРА ИЛИ ВЫБРОСА (СТРОГО НА НАЖАТИЕ ПКМ) ===
-	if (!mouse_check_button_pressed(mb_right)) return;
+	if (!scrBindCheckPressed("pickup_weapon")) return;
 	
 	// Поиск оружия на полу
 	var _tagged_weapons = tag_get_asset_ids("Weapon", asset_object);
@@ -21,7 +21,7 @@ function scrPlayerInteractWeapon()
 	{
 		audio_play_sound(sndThrow, 1, false);
 		
-		var _throw_dir = point_direction(x, y, mouse_x, mouse_y);
+		var _throw_dir = point_direction(x, y, objEffector.x, objEffector.y);
 		var _check_x = x + lengthdir_x(16, _throw_dir);
 		var _check_y = y + lengthdir_y(16, _throw_dir);
 		var _wall_in_front = collision_line(x, y, _check_x, _check_y, objSolidTall, false, true);
@@ -47,8 +47,8 @@ function scrPlayerInteractWeapon()
 	if (_num > 0) 
 	{
 		var _best_weapon_instance = noone;
-		var _hold_mouse4 = mouse_check_button(mb_side2); 
-		var _hold_mouse5 = mouse_check_button(mb_side1); 
+		var _hold_mouse4 = scrBindCheck("prefer_firearm");
+		var _hold_mouse5 = scrBindCheck("prefer_melee");
 
 		for (var i = 0; i < _num; i++) 
 		{

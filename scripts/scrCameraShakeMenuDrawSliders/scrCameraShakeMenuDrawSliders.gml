@@ -1,4 +1,4 @@
-function scrCameraShakeMenuDrawSliders()
+function scrCameraShakeMenuDrawSliders(_mx, _my)
 {
     var _preset = scrCameraShakeGetSelectedPreset();
 
@@ -16,28 +16,26 @@ function scrCameraShakeMenuDrawSliders()
 
         // Цвета элементов.
         // Проверяем наведение мыши на ползунок.
-		var _mx = device_mouse_x_to_gui(0);
-		var _my = device_mouse_y_to_gui(0);
 
-		var _hover = !(preset_dropdown_open || category_dropdown_open)  && point_in_rectangle(
-		    _mx, _my, _track_x, _track_y - slider_handle_size,
-		    _track_x + slider_w, _track_y + slider_handle_size
-			);
+        var _hover = !(preset_dropdown_open || category_dropdown_open) && point_in_rectangle(
+            _mx, _my, _track_x, _track_y - slider_handle_size,
+            _track_x + slider_w, _track_y + slider_handle_size
+        );
 
-		var _text_color = _enabled ? gui_secondary_color : make_color_rgb(75, 75, 80);
-		var _value_color = _enabled ? gui_text_color : make_color_rgb(75, 75, 80);
+        var _text_color = _enabled ? gui_secondary_color : make_color_rgb(75, 75, 80);
+        var _value_color = _enabled ? gui_text_color : make_color_rgb(75, 75, 80);
 
-		var _track_color = _enabled
-		    ? (_hover ? make_color_rgb(75, 85, 95) : make_color_rgb(55, 55, 65))
-		    : make_color_rgb(35, 35, 40);
+        var _track_color = _enabled
+            ? (_hover ? make_color_rgb(75, 85, 95) : make_color_rgb(55, 55, 65))
+            : make_color_rgb(35, 35, 40);
 
-		var _fill_color = _enabled
-		    ? (_hover ? make_color_rgb(95, 175, 145) : make_color_rgb(75, 145, 125))
-		    : make_color_rgb(55, 65, 60);
+        var _fill_color = _enabled
+            ? (_hover ? make_color_rgb(95, 175, 145) : make_color_rgb(75, 145, 125))
+            : make_color_rgb(55, 65, 60);
 
-		var _handle_color = _enabled
-		    ? (_hover ? make_color_rgb(255, 255, 255) : gui_text_color)
-		    : make_color_rgb(65, 65, 70);
+        var _handle_color = _enabled
+            ? (_hover ? make_color_rgb(255, 255, 255) : gui_text_color)
+            : make_color_rgb(65, 65, 70);
 
         // Название параметра.
 

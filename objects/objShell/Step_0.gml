@@ -17,8 +17,8 @@ if (z > 0 || z_speed != 0)
     friction = 0; 
 }
 
-// === КЛЮЧЕВОЙ ФИКС: СТОЛКНОВЕНИЕ С objSolid ПО ГОРИЗОНТАЛИ ===
-if (place_meeting(x + hspeed, y + vspeed, objSolidTall))
+// ===  СТОЛКНОВЕНИЕ С objSolidTall ===
+if (place_meeting(x + hspeed, y + vspeed, objSolidTall)) || (place_meeting(x + hspeed, y + vspeed, objDoor))
 {
     speed = 0;
     rot_speed = random_range(1, 3) * sign(rot_speed); 

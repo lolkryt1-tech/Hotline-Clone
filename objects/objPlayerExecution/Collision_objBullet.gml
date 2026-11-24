@@ -58,7 +58,7 @@ energy -= _pellets_hit;
 // Дополнительный сок: тряска экрана от попадания по игроку (умножаем на количество дроби для эффекта)
 if (instance_exists(objEffector)) 
 { 
-    objEffector.shake = 3.5 * min(_pellets_hit, 3); // Ограничим тряску, чтобы экран не улетел
+    scrCameraShakePlay(SHAKE_ACTIONS, SHAKE_ACT_DIE_SHOT);
 }
 
 // Если здоровье еще осталось — игрок выжил, просто выходим

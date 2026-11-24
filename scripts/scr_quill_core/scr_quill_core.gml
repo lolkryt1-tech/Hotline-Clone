@@ -179,6 +179,35 @@ function QuillGetTheme() {
 /// @func __QuillCore()
 /// @desc Internal Quill manager (registry, input, overlays, helpers).
 function __QuillCore() constructor {
+	
+	/// @ignore
+	/// Получает координаты курсора в GUI-пространстве.
+	/// Использует виртуальный курсор, если в комнате есть objEffector или objEditorCursor.
+	/// В противном случае использует стандартный системный курсор.
+	static __GetMouseGuiPosition = function() {
+
+	    // Проверяем наличие объектов виртуального курсора
+	    if (instance_exists(objEffector))// || instance_exists(objEditorCursor))
+	    {
+	        var _win_w = max(window_get_width(), 1);
+	        var _win_h = max(window_get_height(), 1);
+
+	        var _gui_w = display_get_gui_width();
+	        var _gui_h = display_get_gui_height();
+
+	        return {
+	            x: global.cursor_screen_x * (_gui_w / _win_w),
+	            y: global.cursor_screen_y * (_gui_h / _win_h)
+	        };
+	    }
+
+	    // Если виртуального курсора нет — используем системный
+	    return {
+	        x: device_mouse_x_to_gui(0),
+	        y: device_mouse_y_to_gui(0)
+	    };
+	};
+	
 	_boxes = [];
 	_by_id = {};
 	_next_id = 1;
@@ -978,8 +1007,9 @@ function __QuillCore() constructor {
 	
 	/// @ignore
 	static __HoverConsiderRect = function(_id, _x1, _y1, _x2, _y2) {
-		var _mx = device_mouse_x_to_gui(0);
-		var _my = device_mouse_y_to_gui(0);
+		var _mouse_pos = __GetMouseGuiPosition();
+		var _mx = _mouse_pos.x;
+		var _my = _mouse_pos.y;
 		
 		if (_mx < _x1 || _mx > _x2 || _my < _y1 || _my > _y2) {
 			return false;
@@ -1202,8 +1232,9 @@ function __QuillCore() constructor {
 
 	/// @ignore
 	static __PostDraw = function() {
-		var _mx = device_mouse_x_to_gui(0);
-		var _my = device_mouse_y_to_gui(0);
+		var _mouse_pos = __GetMouseGuiPosition();
+		var _mx = _mouse_pos.x;
+		var _my = _mouse_pos.y;
 		var _mouse_l_down = mouse_check_button(mb_left);
 		var _mouse_l_pressed = mouse_check_button_pressed(mb_left);
 		var _mouse_r_pressed = mouse_check_button_pressed(mb_right);

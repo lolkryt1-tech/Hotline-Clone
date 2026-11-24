@@ -22,6 +22,48 @@ if (image_index == 6)
     {
         audio_sound_pitch(_played_sound, random_range(0.9, 1.1));
     }
+	
+	hit_count++;
+
+	// === Если бьем ТРУБОЙ, то удар сразу засчитывается за три ===
+	if (weapon == WEAPONS.PIPE)
+	{
+	    hit_count = 3;
+	
+		scrCameraShakePlay(SHAKE_EXECUTIONS, SHAKE_EXEC_BLUNT_PIPE);
+	}
+	else
+	{
+		scrCameraShakePlay(SHAKE_EXECUTIONS, SHAKE_EXEC_BLUNT);
+	}
+
+
+
+	var _dist = 20; 
+	
+	// Правильный расчет точки головы по направлению взгляда
+	var _head_offset_x = x + lengthdir_x(_dist, my_angle);
+	var _head_offset_y = y + lengthdir_y(_dist, my_angle); 
+
+	// Спавним 3 сквирта
+	repeat(3)
+	{
+	    var _random_direction = my_angle + irandom_range(-90, 90);
+	    var _squirt = instance_create_layer(_head_offset_x, _head_offset_y, "Instances", objBloodSquirt);
+	    _squirt.direction   = _random_direction;
+	    _squirt.image_angle = _random_direction;
+	}
+
+	// Спавним 4 облака дыма крови
+	repeat (4)
+	{
+	    my_id = instance_create_layer(_head_offset_x, _head_offset_y, "Instances", objBloodSmoke);
+	    var _smoke_direction = my_angle + irandom_range(-90, 90);
+	    my_id.direction = _smoke_direction;
+	    my_id.image_angle = my_id.direction;
+	    my_id.speed = random(2);
+	}
+
 }
 
 // 2. Уменьшаем время жизни буфера каждого кадра
@@ -30,8 +72,8 @@ if (input_buffer_time > 0) {
     if (input_buffer_time == 0) input_buffer = false; 
 }
 
-// 3. Ловим нажатие мыши
-if (mouse_check_button_pressed(mb_left))
+// 3. Ловим нажатие кнопки
+if (scrBindCheckPressed("attack"))
 {
     if (isSwinging == false) {
         isSwinging = true;

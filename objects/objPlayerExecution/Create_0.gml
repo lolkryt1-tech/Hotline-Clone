@@ -7,7 +7,7 @@ enum EXECUTION_TYPE
     CUT,
 }
 
-depth = -3000;
+depth = global.player_render_counter;
 
 faction = FACTION.PLAYER;
 character = CHARACTER.COP;

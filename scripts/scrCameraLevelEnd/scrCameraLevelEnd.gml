@@ -1,6 +1,6 @@
 function scrCameraLevelEnd()
 {
-	scrMusicPlay(Score_Music, 1, 90);
+	scrMusicPlay(MUSIC_SCORE, 1, 90);
 	image_alpha -= 0.25;
 	
     // 1. Считаем целевую позицию X для левого верхнего угла камеры, чтобы центрироваться по машине
