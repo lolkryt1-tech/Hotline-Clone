@@ -20,7 +20,7 @@ function scrEnemyShoot()
 			_pellet.image_angle = _pellet.direction;
 			_pellet.speed       = my_sprites.bullet_speed + random_range(-1, 1);
 			_pellet.faction     = faction;
-			_pellet.calibre     = my_sprites.bullet_calibre;
+			_pellet.caliber     = my_sprites.bullet_caliber;
 			_pellet.invisible_timer = my_sprites.bullet_inv;
 		}
 	}
@@ -31,7 +31,7 @@ function scrEnemyShoot()
 		_bullet.direction   = my_angle;
 		_bullet.speed       = my_sprites.bullet_speed; 
 		_bullet.faction     = faction;
-		_bullet.calibre     = my_sprites.bullet_calibre; 
+		_bullet.caliber     = my_sprites.bullet_caliber; 
 		_bullet.invisible_timer = my_sprites.bullet_inv;
 	}
 	

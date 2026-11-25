@@ -46,9 +46,9 @@ var _push_direction = (_angle_diff > 0) ? 1 : -1;
 swinger = 1; 
 
 // === 4. ЛОГИКА КАЛИБРОВ ===
-switch (other.calibre)
+switch (other.caliber)
 {
-    case CALIBRE.SMALL:
+    case CALIBER.SMALL:
         // --- МАЛЕНЬКИЙ КАЛИБР ---
         if (_is_at_start_position) 
         {
@@ -61,26 +61,26 @@ switch (other.calibre)
         }
         break;
         
-    case CALIBRE.MID:
+    case CALIBER.MID:
         // --- СРЕДНИЙ КАЛИБР ---
         swingspeed = 4 * _push_direction;
         instance_destroy(other);
         break;
         
-    case CALIBRE.BIG:
+    case CALIBER.BIG:
         // --- БОЛЬШОЙ КАЛИБР ---
         // Мощно толкает дверь и прошибает её насквозь (пуля летит дальше)
         swingspeed = 16 * _push_direction;
         audio_play_sound(sndBulletWallImpact, 10, false);
         break;
         
-    case CALIBRE.SHOTGUN:
+    case CALIBER.SHOTGUN:
         // --- ДРОБОВИК ---
         swingspeed = 24 * _push_direction;
         instance_destroy(other);
         break;
 		
-	case CALIBRE.SNIPER:
+	case CALIBER.SNIPER:
     swingspeed = 20 * _push_direction;
     audio_play_sound(sndBulletWallImpact, 10, false);
     instance_destroy(other);

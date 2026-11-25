@@ -15,7 +15,10 @@
     "name":"Enemy",
     "path":"folders/Objects/Enemy.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"objEnemyKnockedOut",
+    "path":"objects/objEnemyKnockedOut/objEnemyKnockedOut.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,

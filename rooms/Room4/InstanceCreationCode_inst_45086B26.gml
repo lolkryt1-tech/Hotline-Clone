@@ -13,6 +13,8 @@ actions = [
         spawn_weapon: WEAPONS.PISTOL,
         spawn_ammo:   15,
         spawn_state:  STATES.INVESTIGATE,
-        target_x: 600, target_y: 460
+        spawn_infinite_search: true,
+        target_x: -1,
+        target_y: -1
     }
 ];

@@ -1,1 +1,10 @@
 if (global.blood_render_counter < 6000) global.blood_render_counter = 8000;
+if (global.decals_render_counter < 4000) global.decals_render_counter = 6000;
+if (global.body_render_counter < 0) global.body_render_counter = 4000;
+if (global.solide_render_counter < -1000) global.solide_render_counter = 0;
+if (global.knocked_render_counter < -3000) global.knocked_render_counter = -1000;
+if (global.weapon_render_counter < -6000) global.weapon_render_counter = -3000;
+if (global.player_render_counter < -8000) global.player_render_counter = -6000;
+if (global.walls_render_counter < -2000) global.walls_render_counter = 0;
+if (global.corners_render_counter < -2000) global.corners_render_counter = 0;
+if (global.high_object_render_counter < -2000) global.high_object_render_counter = 0;

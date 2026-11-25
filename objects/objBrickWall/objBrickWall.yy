@@ -38,5 +38,9 @@
     "path":"sprites/sprBrickWall/sprBrickWall.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "Block_LOS",
+    "Block_Bullet",
+  ],
   "visible":true,
 }

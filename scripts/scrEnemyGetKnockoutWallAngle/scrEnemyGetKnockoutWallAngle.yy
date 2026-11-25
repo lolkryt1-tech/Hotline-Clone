@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrEnemyGetKnockoutWallAngle",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrEnemyGetKnockoutWallAngle",
+  "parent":{
+    "name":"Enemy",
+    "path":"folders/Scripts/Enemy.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

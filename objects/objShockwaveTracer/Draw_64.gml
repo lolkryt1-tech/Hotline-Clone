@@ -7,11 +7,16 @@ var _h = surface_get_height(application_surface);
 if (_w <= 0 || _h <= 0) exit;
 
 // Пересоздаем поверхности, если они отсутствуют или изменился размер холста
-if (!surface_exists(mask_surf) || surface_get_width(mask_surf) != _w) {
+if (!surface_exists(mask_surf)
+|| surface_get_width(mask_surf) != _w
+|| surface_get_height(mask_surf) != _h) {
     if (surface_exists(mask_surf)) surface_free(mask_surf);
     mask_surf = surface_create(_w, _h);
 }
-if (!surface_exists(scene_surf) || surface_get_width(scene_surf) != _w) {
+
+if (!surface_exists(scene_surf)
+|| surface_get_width(scene_surf) != _w
+|| surface_get_height(scene_surf) != _h) {
     if (surface_exists(scene_surf)) surface_free(scene_surf);
     scene_surf = surface_create(_w, _h);
 }
@@ -42,14 +47,28 @@ if (global.hard) {
     _ty = _h - _ty;
 }
 
-var _true_dir = point_direction(_sx, _sy, _tx, _ty);
-var _nx = lengthdir_x(wave_width, _true_dir + 90);
-var _ny = lengthdir_y(wave_width, _true_dir + 90);
+// ==========================================
+// === КОМПЕНСАЦИЯ ТОЛЩИНЫ ОТ ЗУМА ===
+// ==========================================
+var _zoom = max(objEffector.zoom_level, 0.001);
+var _adjusted_width = wave_width / _zoom;
 
-var _x1 = _sx + _nx; var _y1 = _sy + _ny;
-var _x2 = _sx - _nx; var _y2 = _sy - _ny;
-var _x3 = _tx + _nx; var _y3 = _ty + _ny;
-var _x4 = _tx - _nx; var _y4 = _ty - _ny;
+// ==========================================
+// === ГЕОМЕТРИЯ ВОЛНЫ ===
+// ==========================================
+
+var _true_dir = point_direction(_sx, _sy, _tx, _ty);
+var _nx = lengthdir_x(_adjusted_width, _true_dir + 90);
+var _ny = lengthdir_y(_adjusted_width, _true_dir + 90);
+
+var _x1 = _sx + _nx;
+var _y1 = _sy + _ny;
+var _x2 = _sx - _nx;
+var _y2 = _sy - _ny;
+var _x3 = _tx + _nx;
+var _y3 = _ty + _ny;
+var _x4 = _tx - _nx;
+var _y4 = _ty - _ny;
 
 var _color_left  = make_color_rgb(64, 128, 0);
 var _color_right = make_color_rgb(192, 128, 0);
@@ -83,8 +102,7 @@ texture_set_stage(u_scene_tex, surface_get_texture(_src_surf));
 texture_set_stage(u_distort_tex, surface_get_texture(mask_surf));
 shader_set_uniform_f(u_force, distortion_force);
 
-// Принудительно растягиваем текстуру источника под размеры холста игры,
-// чтобы устранить сужение экрана из-за разницы разрешений оконного режима
+// Растягиваем источник под размеры игрового холста
 draw_surface_stretched(_src_surf, 0, 0, _w, _h);
 
 shader_reset();
@@ -93,7 +111,14 @@ surface_reset_target();
 // ==========================================
 // --- ШАГ 3: ВЫВОД НА ЭКРАН ---
 // ==========================================
-// Записываем финальный результат обратно без смещения пропорций
 gpu_set_blendenable(false);
-draw_surface(scene_surf, 0, 0);
+
+draw_surface_stretched(
+    scene_surf,
+    0,
+    0,
+    display_get_gui_width(),
+    display_get_gui_height()
+);
+
 gpu_set_blendenable(true);

@@ -44,7 +44,7 @@ function scrPlayerGetWeaponSprite(_character, _weapon)
     // Параметры для вылета пули и гильз у игрока
     var _bullet_obj     = noone;
     var _bullet_speed   = 15;
-    var _bullet_calibre = CALIBRE.SMALL; 
+    var _bullet_caliber = CALIBER.SMALL; 
 	var _bullet_inv		= 15;
     var _shell_obj      = noone;
     var _shell_img      = 0; 
@@ -57,10 +57,10 @@ function scrPlayerGetWeaponSprite(_character, _weapon)
     if (_weapon == WEAPONS.BAT)				{ _cooldown = 32; _anim_speed = 0.35; _is_ranged = false; _frame_start = 1; _melee_type = HIT_TYPE.BLUNT;   _sounds = [sndSwing1, sndSwing2]; }
     if (_weapon == WEAPONS.PIPE)			{ _cooldown = 18; _anim_speed = 0.35; _is_ranged = false; _frame_start = 1; _melee_type = HIT_TYPE.BLUNT;   _sounds = [sndSwing1, sndSwing2]; }
 	if (_weapon == WEAPONS.SLEDGEHAMMER)    { _cooldown = 46; _anim_speed = 0.4; _is_ranged = false;  _frame_start = 1; _melee_type = HIT_TYPE.BLUNT;   _sounds = [sndSwing1, sndSwing2]; _hit_end = 13; }
-    if (_weapon == WEAPONS.PISTOL)			{ _cooldown = 14; _anim_speed = 1.0;  _is_ranged = true;  _frame_start = 0;	_shake = global.camera_shake.presets.weapons.pistol;  _bullet_obj = objBullet;	_bullet_calibre = CALIBRE.SMALL; _bullet_speed = 13; _shell_obj = objShell; _shell_img = 0; _sounds = [snd9mmShot]; _shell_x = 24; _shell_y = 4; _bullet_inv = 1.5; }
-	if (_weapon == WEAPONS.SHOTGUN)         { _cooldown = 30; _anim_speed = 0.5;  _is_ranged = true;  _frame_start = 0; _shake = global.camera_shake.presets.weapons.shotgun; _bullet_obj = objBullet;	_bullet_calibre = CALIBRE.SHOTGUN; _bullet_speed = 13; _shell_obj = objShell; _shell_img = 2; _sounds = [sndShotgunShot]; _shell_x = 8;  _shell_y = 8; _bullet_inv = 0; }
-	if (_weapon == WEAPONS.M16)             { _cooldown = 6;  _anim_speed = 1.0;  _is_ranged = true;  _frame_start = 0; _shake = global.camera_shake.presets.weapons.m16;     _bullet_obj = objBullet;	_bullet_calibre = CALIBRE.MID;  _bullet_speed = 13; _shell_obj = objShell; _shell_img = 1; _sounds = [sndM16Shot]; _shell_x = 12; _shell_y = 4; _bullet_inv = 2; }
-	if (_weapon == WEAPONS.SNIPER)          { _cooldown = 50; _anim_speed = 0.25; _is_ranged = true;  _frame_start = 0; _shake = global.camera_shake.presets.weapons.sniper;  _bullet_obj = noone;		_bullet_calibre = CALIBRE.MID;  _bullet_speed = 0; _shell_obj = objShell; _shell_img = 1; _sounds = [sndSniperShot]; _shell_x = 12; _shell_y = 4; }
+    if (_weapon == WEAPONS.PISTOL)			{ _cooldown = 14; _anim_speed = 1.0;  _is_ranged = true;  _frame_start = 0;	_shake = global.camera_shake.presets.weapons.pistol;  _bullet_obj = objBullet;	_bullet_caliber = CALIBER.SMALL; _bullet_speed = 13; _shell_obj = objShell; _shell_img = 0; _sounds = [snd9mmShot]; _shell_x = 24; _shell_y = 4; _bullet_inv = 1.5; }
+	if (_weapon == WEAPONS.SHOTGUN)         { _cooldown = 30; _anim_speed = 0.5;  _is_ranged = true;  _frame_start = 0; _shake = global.camera_shake.presets.weapons.shotgun; _bullet_obj = objBullet;	_bullet_caliber = CALIBER.SHOTGUN; _bullet_speed = 13; _shell_obj = objShell; _shell_img = 2; _sounds = [sndShotgunShot]; _shell_x = 8;  _shell_y = 8; _bullet_inv = 0; }
+	if (_weapon == WEAPONS.M16)             { _cooldown = 6;  _anim_speed = 1.0;  _is_ranged = true;  _frame_start = 0; _shake = global.camera_shake.presets.weapons.m16;     _bullet_obj = objBullet;	_bullet_caliber = CALIBER.MID;  _bullet_speed = 13; _shell_obj = objShell; _shell_img = 1; _sounds = [sndM16Shot]; _shell_x = 12; _shell_y = 4; _bullet_inv = 2; }
+	if (_weapon == WEAPONS.SNIPER)          { _cooldown = 50; _anim_speed = 0.25; _is_ranged = true;  _frame_start = 0; _shake = global.camera_shake.presets.weapons.sniper;  _bullet_obj = noone;		_bullet_caliber = CALIBER.MID;  _bullet_speed = 0; _shell_obj = objShell; _shell_img = 1; _sounds = [sndSniperShot]; _shell_x = 12; _shell_y = 4; }
 
     // === 2. СТРУКТУРА СПРАЙТОВ ===
     var _sprites = { 
@@ -108,7 +108,7 @@ function scrPlayerGetWeaponSprite(_character, _weapon)
 		shake:			_shake,
         bullet_obj:     _bullet_obj,
         bullet_speed:   _bullet_speed,
-        bullet_calibre: _bullet_calibre, 
+        bullet_caliber: _bullet_caliber, 
 		bullet_inv:		_bullet_inv,
         shell_obj:      _shell_obj,
         shell_img:      _shell_img,

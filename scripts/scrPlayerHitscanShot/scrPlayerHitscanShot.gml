@@ -84,6 +84,7 @@ function scrPlayerHitscanShot()
 
     // === 5. СПАВН ФЕЙКОВЫХ ПУЛЬ (урон) ===
     var _keys = ds_map_keys_to_array(_unique_targets);
+	show_debug_message("HITSCAN TARGETS: " + string(array_length(_keys)));
     
     for (var i = 0; i < array_length(_keys); i++) {
         var _target_id = _keys[i];
@@ -93,9 +94,10 @@ function scrPlayerHitscanShot()
         _fake_bullet.direction   = _dir;
         _fake_bullet.image_angle = _dir;
         _fake_bullet.faction     = faction; 
-        _fake_bullet.calibre     = CALIBRE.SNIPER; 
+        _fake_bullet.caliber     = CALIBER.SNIPER; 
         
         _fake_bullet.is_fake        = true;
+		_fake_bullet.target_uid		= _target_id;
         _fake_bullet.image_alpha    = 0;
         _fake_bullet.alarm[0]       = 1; 
     }

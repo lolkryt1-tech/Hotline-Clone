@@ -175,7 +175,7 @@ function scrEnemyAttackHitscan()
         _fake_bullet.direction   = _dir;
         _fake_bullet.image_angle = _dir;
         _fake_bullet.faction     = faction; 
-        _fake_bullet.calibre     = CALIBRE.SNIPER; 
+        _fake_bullet.caliber     = CALIBER.SNIPER; 
         
         _fake_bullet.is_fake        = true;
         _fake_bullet.image_alpha    = 0;

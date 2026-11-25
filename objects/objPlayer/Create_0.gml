@@ -4,12 +4,20 @@ image_speed = 0;
 depth = -3000;
 speed = 0;
 
-enum CHARACTER{
+enum CHARACTER {
 	COP
 }
 
+enum PLAYER_STATES {
+	GAMEPLAY,
+	TRANSITION,
+	CUTSCENE,
+	UI_FOCUS,
+	UNACTIVE
+}
+
 // === ПАРАМЕТРЫ ПЕРСОНАЖА И ОРУЖИЯ ===
-active				 = true;
+state				 = PLAYER_STATES.GAMEPLAY;
 
 character            = CHARACTER.COP;
 current_weapon       = WEAPONS.UNARMED;
@@ -19,12 +27,10 @@ sprite_index         = my_sprites.walk
 pickup_radius        = 24;
 standart_y_scale	 = image_yscale;
 ammo				 = 0;
-isPlayerPickedUp	 = false;		// ЛОГИКА ДЛЯ ХАРДМОДА. РЕЖИМ ПАТРОНЫ ОДИН РАЗ
 depth				 = -6000;
 faction				 = FACTION.PLAYER;
 MMB_hold_timer		 = 0;
 prep_thrown			 = false;
-knife_just_picked_up = false;
 
 // Здоровье (1 = умрет от первой пули, 2 = перенесет одну пулю и умрет от второй)
 max_energy           = choose(1, 2); 
@@ -72,6 +78,7 @@ turn_hold_timer   = 0;        // Таймер зависания на после
 // Накопитель резкого разворота
 flick_timer       = 0;        // Таймер окна времени для совершения рывка
 flick_accum_angle = 0;        // Накопленный угол поворота за это окно
+
 // Спрайты трупа
 sprDeadCut				= sprCopDeadCut; 
 sprDeadBlunt			= sprCopDeadBlunt; 

@@ -16,6 +16,14 @@ sprDeadLeanMelee = noone;
 sprDeadLeanShotgun = noone;
 sprDeadLeanMachinegun = noone;
 
+// ЗАГЛУШКИ
+sprKnockedLean = noone;
+last_safe_x = x;
+last_safe_y = y;
+fat_blood_current = 100;
+fat_is_bleeding   = false;
+sprFatDead		  = sprColombianFatDead;
+
 // Таймер до подъема врага от стены (120 кадров = 2 секунды)
 call_later(120, time_source_units_frames, function() 
 {

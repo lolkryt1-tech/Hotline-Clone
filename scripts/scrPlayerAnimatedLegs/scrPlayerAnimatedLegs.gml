@@ -12,7 +12,12 @@ function scrPlayerAnimatedLegs(_input_vector)
     {
         legs_image_index += legs_animation_speed;
 		
-		if (!is_attacking && !is_turning && !prep_thrown) { image_index += 0.15; } 
+		var _empty_shot = isRange_weapon && ammo == 0;
+
+		if ((!is_attacking || _empty_shot) && !is_turning && !prep_thrown)
+		{
+		    image_index += 0.15;
+		}
 		
     }
     else

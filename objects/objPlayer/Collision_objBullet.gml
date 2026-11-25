@@ -8,7 +8,7 @@ if (other.faction == faction)
 
 // Запоминаем параметры первой прилетевшей пули
 var _bullet_dir     = other.direction; 
-var _bullet_calibre = other.calibre;
+var _bullet_caliber = other.caliber;
 var _bullet_faction = other.faction;
 
 var _pellets_hit = 1; // Засчитываем текущую пулю
@@ -16,7 +16,7 @@ var _pellets_hit = 1; // Засчитываем текущую пулю
 // =========================================================================
 // 2. ЕДИНАЯ СИСТЕМА СБОРА И УНИЧТОЖЕНИЯ ПУЛЬ ДЛЯ ИГРОКА
 // =========================================================================
-if (_bullet_calibre == CALIBRE.SHOTGUN)
+if (_bullet_caliber == CALIBER.SHOTGUN)
 {
     instance_destroy(other); // Стираем первую дробинку
     
@@ -27,7 +27,7 @@ if (_bullet_calibre == CALIBRE.SHOTGUN)
     for (var i = 0; i < _num_bullets; i++)
     {
         var _found_bullet = _bullet_list[| i];
-        if (_found_bullet.faction != faction && _found_bullet.faction == _bullet_faction && _found_bullet.calibre == CALIBRE.SHOTGUN)
+        if (_found_bullet.faction != faction && _found_bullet.faction == _bullet_faction && _found_bullet.caliber == CALIBER.SHOTGUN)
         {
             _pellets_hit += 1; 
             instance_destroy(_found_bullet); // Уничтожаем, чтобы не сработали на следующем кадре
@@ -39,7 +39,7 @@ if (_bullet_calibre == CALIBRE.SHOTGUN)
 }
 else 
 
-if (_bullet_calibre == CALIBRE.SNIPER)
+if (_bullet_caliber == CALIBER.SNIPER)
 {
     instance_destroy(other); // Стираем первую дробинку
     
@@ -90,17 +90,17 @@ if (_played_sound != -1) audio_sound_pitch(_played_sound, random_range(0.9, 1.1)
 var _dead_body = instance_create_layer(x, y, "Instances", objPlayerDead);
 
 // НАСТРОЙКА СПРАЙТА И СКОРОСТИ ОТЛЁТА В ЗАВИСИМОСТИ ОТ КОЛИЧЕСТВА ДРОБИН
-if (_bullet_calibre == CALIBRE.SHOTGUN && _pellets_hit >= 2)
+if (_bullet_caliber == CALIBER.SHOTGUN && _pellets_hit >= 2)
 {
     // Если игрока разнесло плотным залпом дроби (2 и более дробинок)
-    _dead_body.sprite_index = sprCopDeadShotgun; 
-    _dead_body.speed        = 4.0; // Сочный отлёт назад
+    _dead_body.sprite_index = sprDeadShotgun; 
+    _dead_body.speed        = 4.0;
 }
 else
 {
     // Если убит обычным калибром ИЛИ прилетела всего 1 случайная дробинка по касательной
-    _dead_body.sprite_index = sprCopDeadMachinegun; 
-    _dead_body.speed        = 0.5; // Обычное падение
+    _dead_body.sprite_index = sprDeadMachineGun; 
+    _dead_body.speed        = 0.5;
 }
 
 _dead_body.direction    = _bullet_dir;

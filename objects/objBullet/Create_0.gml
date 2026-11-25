@@ -1,4 +1,4 @@
-enum CALIBRE 
+enum CALIBER 
 {
     SMALL,      // Маленький (Пистолеты, ПП — открывает только приоткрытую дверь)
     MID,        // Средний (Автоматы, Винтовки — толкает закрытую дверь)
@@ -20,3 +20,4 @@ faction = noone;
 caliber = noone;
 
 is_fake = false; 
+target_uid = noone;

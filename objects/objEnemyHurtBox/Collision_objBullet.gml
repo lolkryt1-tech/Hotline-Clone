@@ -1,4 +1,12 @@
 // =========================================================================
+// 0. ПРОВЕРКА ЦЕЛИ ФЕЙКОВОЙ ПУЛИ
+// =========================================================================
+
+// Фейковая пуля предназначена только для конкретного хартбокса
+if (other.is_fake && other.target_uid != id) exit;
+
+
+// =========================================================================
 // 1. БАЗОВЫЕ ПРОВЕРКИ И ИСКЛЮЧЕНИЯ (Пуля гарантированно летит МИМО)
 // =========================================================================
 if (!instance_exists(owner)) 
@@ -26,17 +34,18 @@ if (owner.class == CLASS.DODGER)
     exit; 
 }
 
+
 // =========================================================================
 // 2. ФАЗА ТОЧНОГО ПОПАДАНИЯ (Сбор параметров и поглощение пачки дроби)
 // =========================================================================
 var _bullet_dir     = other.direction;
-var _bullet_calibre = other.calibre; 
+var _bullet_caliber = other.caliber; 
 var _bullet_faction = other.faction; 
 
 owner.last_hit_dir = _bullet_dir;
 owner.pellets_hit += 1; // Засчитываем текущую пулю
 
-if (_bullet_calibre == CALIBRE.SHOTGUN)
+if (_bullet_caliber == CALIBER.SHOTGUN)
 {
     instance_destroy(other); // Удаляем первую пойманную дробинку
     
@@ -47,7 +56,7 @@ if (_bullet_calibre == CALIBRE.SHOTGUN)
     for (var i = 0; i < _num_bullets; i++)
     {
         var _found_bullet = _bullet_list[| i];
-        if (_found_bullet.faction != owner.faction && _found_bullet.faction == _bullet_faction && _found_bullet.calibre == CALIBRE.SHOTGUN)
+        if (_found_bullet.faction != owner.faction && _found_bullet.faction == _bullet_faction && _found_bullet.caliber == CALIBER.SHOTGUN)
         {
             owner.pellets_hit += 1; 
             instance_destroy(_found_bullet); 
@@ -60,9 +69,10 @@ if (_bullet_calibre == CALIBRE.SHOTGUN)
 else 
 {
     // Обычная пуля уничтожается. Если калибр КРУПНЫЙ — ставим флаг ваншота
-    if (_bullet_calibre == CALIBRE.BIG) owner.kill_instantly = true; 
+    if (_bullet_caliber == CALIBER.BIG) owner.kill_instantly = true; 
     instance_destroy(other); 
 }
+
 
 // =========================================================================
 // 3. РАСПРЕДЕЛЕНИЯ УРОНА И ЭФФЕКТОВ ПО КЛАССАМ (SWITCH)
@@ -91,19 +101,19 @@ switch (owner.class)
 
         if (owner.state == STATES.FATDIE)
         {
-            if (_bullet_calibre == CALIBRE.SNIPER) {
+            if (_bullet_caliber == CALIBER.SNIPER) {
                 owner.fat_balance -= 100;
             } else {
-                owner.fat_balance -= (_bullet_calibre == CALIBRE.SHOTGUN) ? (33 * owner.pellets_hit) : ((_bullet_calibre == CALIBRE.BIG) ? 50 : 33);
+                owner.fat_balance -= (_bullet_caliber == CALIBER.SHOTGUN) ? (33 * owner.pellets_hit) : ((_bullet_caliber == CALIBER.BIG) ? 50 : 33);
             }
             owner.knocked_by_bullet = true;
         }
         else
         {
-            if (_bullet_calibre == CALIBRE.SNIPER) {
+            if (_bullet_caliber == CALIBER.SNIPER) {
                 owner.fat_blood_current -= 150;
             } else {
-                owner.fat_blood_current -= (_bullet_calibre == CALIBRE.SHOTGUN) ? (33 * owner.pellets_hit) : ((_bullet_calibre == CALIBRE.BIG) ? 50 : 25);
+                owner.fat_blood_current -= (_bullet_caliber == CALIBER.SHOTGUN) ? (33 * owner.pellets_hit) : ((_bullet_caliber == CALIBER.BIG) ? 50 : 25);
             }
             owner.knocked_by_bullet = false;
         }
@@ -115,45 +125,43 @@ switch (owner.class)
     // -----------------------------------------------------------------
     // БРОНЕЖИЛЕТ (CLASS.VEST) — Получает искры и уходит в стан
     // -----------------------------------------------------------------
-	case CLASS.VEST:
-	var _played_sound = audio_play_sound(choose(sndBulletHitVest, sndBulletHitVest2), 1, false);
-	audio_sound_pitch(_played_sound, random_range(0.9, 1.1));
-	
-	scrFxSparksHit(x, y, _bullet_dir);
-	owner.spark_flash = 3;
-	
-	owner.state = STATES.STUN;
-	owner.sprite_index = sprColombianVestStun;
-	owner.image_index  = 0;
-    
-	if (_bullet_calibre == CALIBRE.SNIPER) {
-		owner.stun_current += 100;
-	} else {
-		owner.stun_current += (25 * owner.pellets_hit);
-	}
-	break;
+    case CLASS.VEST:
+        var _played_sound = audio_play_sound(choose(sndBulletHitVest, sndBulletHitVest2), 1, false);
+        audio_sound_pitch(_played_sound, random_range(0.9, 1.1));
+        
+        scrFxSparksHit(x, y, _bullet_dir);
+        owner.spark_flash = 3;
+        
+        owner.state = STATES.STUN;
+        owner.sprite_index = sprColombianVestStun;
+        owner.image_index  = 0;
+        
+        if (_bullet_caliber == CALIBER.SNIPER) {
+            owner.stun_current += 100;
+        } else {
+            owner.stun_current += (25 * owner.pellets_hit);
+        }
+        break;
 
     // -----------------------------------------------------------------
     // ТОЛСТЯК В БРОНЕЖИЛЕТЕ (CLASS.FATVEST) — Только эффекты попадания
-    // в броник (звук + искры), пуля уничтожается. Урона/стана/смены
-    // состояния нет.
     // -----------------------------------------------------------------
     case CLASS.FATVEST:
         var _played_sound = audio_play_sound(choose(sndBulletHitVest, sndBulletHitVest2), 1, false);
         audio_sound_pitch(_played_sound, random_range(0.9, 1.1));
-		scrFxSparksHit(x, y, _bullet_dir, owner.current_speed + 2);
-		
-		part_particles_create(global.sys_sparks, x, y, global.type_sparks, 10);
-		
-		owner.should_spark = true;
+        scrFxSparksHit(x, y, _bullet_dir, owner.current_speed + 2);
+        
+        part_particles_create(global.sys_sparks, x, y, global.type_sparks, 10);
+        
+        owner.should_spark = true;
         break;
 
     // -----------------------------------------------------------------
     // ОБЫЧНЫЙ (CLASS.REGULAR) — Мгновенная смерть, дроп оружия и спавн трупа
     // -----------------------------------------------------------------
     case CLASS.REGULAR:
-		scrAddKillStats(250, false);
-		
+        scrAddKillStats(250, false);
+        
         var _hit_sound = choose(sndBulletHit1, sndBulletHit2, sndBulletHit3);
         var _played_sound = audio_play_sound(_hit_sound, 1, false);
         audio_sound_pitch(_played_sound, random_range(0.9, 1.1));
@@ -174,11 +182,11 @@ switch (owner.class)
         {
             var _dropped = instance_create_layer(owner.x, owner.y, "Instances", objWeapon);
             _dropped.direction = irandom(360); 
-			_dropped.speed     = 5; 
-			_dropped.my_angle  = irandom(360); 
-			_dropped.weapon    = owner.weapon;
+            _dropped.speed     = 5; 
+            _dropped.my_angle  = irandom(360); 
+            _dropped.weapon    = owner.weapon;
             _dropped.ammo      = owner.ammo;
-			_dropped.isPlayerPickedUp = owner.isPlayerPickedUp;
+            _dropped.isPlayerPickedUp = owner.isPlayerPickedUp;
         }
 
         instance_destroy(owner);
