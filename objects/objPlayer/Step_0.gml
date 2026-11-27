@@ -33,3 +33,20 @@ if (state == PLAYER_STATES.GAMEPLAY)
 	ammo_color_factor = lerp(ammo_color_factor, 0, 0.25);
 	ammo_scale_pulse = lerp(ammo_scale_pulse, 0, 0.25);
 }
+
+
+if (state == PLAYER_STATES.TRANSITION)
+{
+	scrCopFlipShotgun(); 
+	scrPlayerThrowableHandler();
+	scrPlayerAttack();
+	scrPlayerInteractWeapon();
+	scrPlayerStartExecution();
+	scrProcessShellSpawn();
+	scrPlayerAnimatedLegs(get_input);
+	my_angle = point_direction(x, y, objEffector.x, objEffector.y);
+
+	icon_shake_angle = lerp(icon_shake_angle, 0, 0.25);
+	ammo_color_factor = lerp(ammo_color_factor, 0, 0.25);
+	ammo_scale_pulse = lerp(ammo_scale_pulse, 0, 0.25);
+}

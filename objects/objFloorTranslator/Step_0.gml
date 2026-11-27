@@ -1,176 +1,146 @@
-// 0. Анимация
-hover_timer += 0.07; // Скорость покачивания
+// =========================================================================
+// 0. ПОСТОЯННАЯ ЛОГИКА
+// =========================================================================
+
+// Анимация
+hover_timer += 0.07;
+
+// Уменьшаем технические таймеры
+if (trigger_delay > 0) trigger_delay--;
+if (wait_timer > 0) wait_timer--;
 
 
-// 1. Уменьшаем технические таймеры (они отработают только в самый первый кадр комнаты)
-if (trigger_delay > 0) trigger_delay--; 
-if (wait_timer > 0)    wait_timer--;
+// =========================================================================
+// 1. ПРОВЕРКА ПОЛОЖЕНИЯ ИГРОКА
+// =========================================================================
 
-// 2. Проверяем, стоит ли игрок прямо на переходе (защита от случайного падения назад)
 var _player_inside = false;
+
 if (instance_exists(objPlayer))
 {
-    if (place_meeting(x, y, objPlayer)) _player_inside = true;
+    if (place_meeting(x, y, objPlayer))
+    {
+        _player_inside = true;
+    }
 }
 
-// 3. Мгновенная проверка зачистки этажа и отсутствия активных угроз
+
+// =========================================================================
+// 2. ПРОВЕРКА ЗАЧИСТКИ ЭТАЖА
+// =========================================================================
+
 var _room_is_totally_safe = false;
-var _current_idx          = global.current_level.current_floor;
-var _level_data           = global.current_level.floors[_current_idx];
+
+var _current_idx = global.current_level.current_floor;
+var _level_data = global.current_level.floors[_current_idx];
 
 if (_level_data.is_cleared == true && trigger_unlock == true)
 {
-    // Если на уровне всё ещё есть живые или оглушённые враги — комната опасна
-    if (instance_exists(objEnemy) || instance_exists(objEnemyKnockedOut)) 
+    if (instance_exists(objEnemy) || instance_exists(objEnemyKnockedOut))
     {
         _room_is_totally_safe = false;
     }
-    else 
+    else
     {
-        // Если врагов нет, проверяем, остались ли вражеские пули (игнорируя пули игрока)
         var _enemy_bullet_found = false;
-        
+
         with (objBullet)
         {
-            if (faction != FACTION.PLAYER) 
+            if (faction != FACTION.PLAYER)
             {
                 _enemy_bullet_found = true;
-                break; 
+                break;
             }
         }
-        
-        // Если опасных пуль не обнаружено — уровень полностью чист
+
         _room_is_totally_safe = !_enemy_bullet_found;
     }
 }
 
-// 4. Логика мгновенной активации перехода + СПАВН НАДПИСИ
+
+// =========================================================================
+// 3. ОБНОВЛЕНИЕ ДОСТУПНОСТИ ПЕРЕХОДА
+// =========================================================================
+
 if (_room_is_totally_safe)
 {
-    if (clear_delay_timer > 0) clear_delay_timer--; 
-    
+    if (clear_delay_timer > 0)
+    {
+        clear_delay_timer--;
+    }
+
     if (wait_timer <= 0 && !_player_inside)
     {
-        is_unlocked = true; 
-        image_alpha = 1; 
+        is_unlocked = true;
+        image_alpha = 1;
     }
     else
     {
         is_unlocked = false;
-        image_alpha = 0.5; 
+        image_alpha = 0.5;
     }
 }
 else
 {
     is_unlocked = false;
-    image_alpha = 0; 
-    clear_delay_timer = 1; 
+    image_alpha = 0;
+    clear_delay_timer = 1;
 }
 
 
-
-
 // =========================================================================
-// ЛОГИКА ПЕРЕХОДА ПРИ ПОЛНОЙ ТЕМНОТЕ (ИСПРАВЛЕННАЯ)
+// 4. ЗАТЕМНЕНИЕ И ПОСТОЯННЫЙ ПУШ ИГРОКА
 // =========================================================================
-if (player_is_standing_on_me)
+
+if (transition_started)
 {
-    if (instance_exists(objEffector))
+    // Затемнение экрана
+    if (objEffector.fade_darkness < 1.0)
     {
-        // 1. Принудительно заставляем эффектор темнеть
-        if (objEffector.fade_darkness < 1.0)
+        objEffector.fade_darkness = min(objEffector.fade_darkness + 0.15, 1.0);
+    }
+
+    // Постоянное перемещение игрока на протяжении всего фейда
+    var _push_force = 2.0;
+
+    var _p_hor = lengthdir_x(_push_force, image_angle);
+    var _p_ver = lengthdir_y(_push_force, image_angle);
+
+    with (objPlayer)
+    {
+        move_and_collide(_p_hor, _p_ver, objSolid);
+
+        hor_velocity = _p_hor;
+        ver_velocity = _p_ver;
+    }
+}
+
+
+// =========================================================================
+// 5. ОДНОРАЗОВОЕ СОБЫТИЕ ПЕРЕХОДА
+// =========================================================================
+
+if (transition_started)
+{
+    if (objEffector.fade_darkness >= 1.0)
+    {
+        if (target_room != noone && room_exists(target_room))
         {
-            objEffector.fade_darkness = min(objEffector.fade_darkness + 0.35, 1.0);
-        }
-        
-        // 2. УСЛОВИЕ НАСТУПЛЕНИЯ ПОЛНОЙ ТЬМЫ
-        if (objEffector.fade_darkness >= 1.0)
-        {
-            if (target_room != noone && room_exists(target_room))
-            {
-                // Сбрасываем флаг двери, чтобы код не зациклился
-                player_is_standing_on_me = false;
-                
-                // Твое зануление счетчиков рендеринга
-                global.blood_render_counter = 8000;
-                global.decals_render_counter = 6000;
-                global.body_render_counter = 4000;
-                global.solide_render_counter = 0;
-                global.knocked_render_counter = -1000;
-                global.weapon_render_counter = -2000;
-                global.player_render_counter = -6000;
-                global.walls_render_counter = 0;
-                global.corners_render_counter = 0;
-                global.high_object_render_counter = 0;
-                
-                // Сохраняем игру перед прыжком
-                scrSaveGame(); 
-                
-                // Перелистываем этаж
-                global.current_level.current_floor = target_floor_index; 
-                
-                // ИСПРАВЛЕНО: Возвращаем оригинальные переменные, которые были в твоей рабочей коллизии!
-                global.next_player_x   = target_x;
-                global.next_player_y   = target_y;
-                global.next_effector_x = target_x;
-                global.next_effector_y = target_y;
-                
-                // Мгновенно перемещаем персистентный эффектор в целевую точку новой комнаты
-                objEffector.x = target_x;
-                objEffector.y = target_y;
-                
-                // Совершаем переход
-                room_goto(target_room);
-            }
+            // Сохраняем игру
+            scrSaveGame();
+
+            // Перелистываем этаж
+            global.current_level.current_floor = target_floor_index;
+
+            // Координаты следующей комнаты
+            global.next_player_x = target_x;
+            global.next_player_y = target_y;
+
+            global.next_effector_x = target_x;
+            global.next_effector_y = target_y;
+				
+            // Совершаем переход
+            room_goto(target_room);
         }
     }
 }
-else
-{
-    player_is_standing_on_me = false;
-}
-
-
-
-
-
-
-
-
-/* НА ПОТОМ
-// =========================================================================
-// 5. ТОЧНЫЙ РАСЧЕТ ИНДИКАТОРА СТРЕЛКИ НА КРАЮ ЭКРАНА
-// =========================================================================
-if (is_unlocked) 
-{
-    var _cam = view_camera;
-    var _cam_x = camera_get_view_x(_cam);
-    var _cam_y = camera_get_view_y(_cam);
-    var _cam_w = camera_get_view_width(_cam);
-    var _cam_h = camera_get_view_height(_cam);
-
-    var _gui_w = display_get_gui_width();
-    var _gui_h = display_get_gui_height();
-
-    var _screen_x = ((x - _cam_x) / _cam_w) * _gui_w;
-    var _screen_y = ((y - _cam_y) / _cam_h) * _gui_h;
-
-    var _pad = 5; 
-    if (_screen_x >= _pad && _screen_x <= _gui_w - _pad && _screen_y >= _pad && _screen_y <= _gui_h - _pad)
-    {
-        is_on_screen = true; 
-    }
-    else
-    {
-        is_on_screen = false; 
-
-        var _edge_margin = 48;
-        gui_icon_x = clamp(_screen_x, _edge_margin, _gui_w - _edge_margin);
-        gui_icon_y = clamp(_screen_y, _edge_margin, _gui_h - _edge_margin);
-    }
-}
-else
-{
-    is_on_screen = true; 
-}
-*/

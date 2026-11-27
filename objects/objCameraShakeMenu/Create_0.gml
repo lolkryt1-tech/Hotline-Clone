@@ -111,6 +111,8 @@ for (var i = 0; i < array_length(sliders); i++)
 
     // Ввод в реальном времени (без клампа)
     _slider.textbox.OnChange(method(self, function(_tb, _value) {
+		if (!instance_exists(objCameraShakeMenu)) return;
+		
         if (is_syncing_textboxes) return;
         if (_value == "" || _value == "." || _value == "-") return;
         var _num = real(_value);
@@ -132,6 +134,8 @@ for (var i = 0; i < array_length(sliders); i++)
 
     // Enter → поднятие max_current, кламп, переформат
     _slider.textbox.OnSubmit(method(self, function(_tb, _value) {
+		if (!instance_exists(objCameraShakeMenu)) return;
+		
         if (_value == "" || _value == "." || _value == "-") return;
         var _num = real(_value);
 
@@ -162,6 +166,8 @@ for (var i = 0; i < array_length(sliders); i++)
     
     // Клик мимо поля применяем как Enter (но без Enter)
     _slider.textbox.OnBlur(method(self, function(_tb) {
+		if (!instance_exists(objCameraShakeMenu)) return;
+		
         if (is_syncing_textboxes) return;
         var _value = _tb.GetValue();
 

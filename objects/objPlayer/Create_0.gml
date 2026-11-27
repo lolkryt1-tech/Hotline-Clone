@@ -18,6 +18,7 @@ enum PLAYER_STATES {
 
 // === ПАРАМЕТРЫ ПЕРСОНАЖА И ОРУЖИЯ ===
 state				 = PLAYER_STATES.GAMEPLAY;
+state_previous		 = state;
 
 character            = CHARACTER.COP;
 current_weapon       = WEAPONS.UNARMED;

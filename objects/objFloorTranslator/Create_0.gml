@@ -30,4 +30,5 @@ gui_icon_x     = 0;
 gui_icon_y     = 0;     
 gui_icon_angle = 0;     
 
-player_is_standing_on_me = false;
+// ЗАТЕМНЕНИЕ ЭКРАНА
+transition_started = false;

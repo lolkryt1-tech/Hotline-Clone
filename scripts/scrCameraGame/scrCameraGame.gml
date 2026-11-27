@@ -49,7 +49,7 @@ function scrCameraGame()
     // === МЕНЮ НАСТРОЙКИ ТРЯСКИ ПРИ СТРЕЛЬБЕ ===
     // ==========================================
 
-    if (keyboard_check_pressed(vk_f7))
+    if (scrBindCheckPressed("screen_shake"))
     {
         if (instance_exists(objCameraShakeMenu))
         {

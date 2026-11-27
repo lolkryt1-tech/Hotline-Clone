@@ -19,4 +19,10 @@ var _cursor_sprite = global.cursor_sprite;
 
 // Отрисовываем курсор.
 var _cursor_size = global.settings.crosshair_size * 2;
+
+if (global.camera_shake_menu_hover)
+{
+    _cursor_size = 1;
+}
+
 draw_sprite_ext(_cursor_sprite, 0, _cursor_x, _cursor_y, _cursor_size, _cursor_size, 0, image_blend, image_alpha);

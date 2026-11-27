@@ -1,3 +1,4 @@
+
 if (!global.current_level.level_fully_cleared) exit;
 
 mask_index = sprCopCarMask;
@@ -7,7 +8,7 @@ if (push_timer > 0) {
     push_timer--;
     
     if (instance_exists(objPlayer)) {
-        var _push_force = 3.0; // НАСТРОЙКА: Скорость затягивания в дверь
+        var _push_force = 3.0;
         var _p_hor = lengthdir_x(_push_force, push_angle);
         var _p_ver = lengthdir_y(_push_force, push_angle);
         
@@ -24,7 +25,7 @@ if (push_timer > 0) {
 if (car_start_timer > 0) {
     car_start_timer--;
     
-	// Единоразовое событие: таймер обнулился (ДВИЖОК ЗАВЕДЁН)
+    // Единоразовое событие: таймер обнулился (ДВИЖОК ЗАВЕДЁН)
     if (car_start_timer <= 0) {
         audio_play_sound(sndCarStart, 10, false);
         image_speed = 1;
@@ -39,8 +40,8 @@ if (car_start_timer > 0) {
                 cutscene_cam_x = camera_get_view_x(_cam);
                 cutscene_cam_y = camera_get_view_y(_cam);
                 
-                cutscene_timer = 120;               
-                curtain_y = -360; 
+                cutscene_timer = 120;
+                curtain_y = -360;
             }
         }
         
@@ -57,39 +58,44 @@ if (instance_exists(objPlayer)) {
     var _dx = objPlayer.x - x;
     var _dy = objPlayer.y - y;
     
-    // Поворот на -image_angle для локальных координат Oriented Bounding Box (OBB)
+    // Поворот на -image_angle для локальных координат OBB
     var _cos = dcos(-image_angle);
     var _sin = dsin(-image_angle);
     var _local_x = _dx * _cos - _dy * _sin;
     var _local_y = _dx * _sin + _dy * _cos;
     
-    // Проверка попадания игрока в прямоугольник хитбокса зоны
+    // Проверка попадания в прямоугольник хитбокса зоны
     if (abs(_local_x) <= car_zone_width / 2 && abs(_local_y) <= car_zone_height / 2) {
         
-        // Если он только что вошел И мы его еще не толкали в этот раз
-        if (!has_been_pushed && objPlayer.active) {
-            push_timer = 8;                // НАСТРОЙКА: Длительность затягивания в кадрах
-            push_angle = image_angle + 270; // Направление сквозь дверь боком в салон
-            has_been_pushed = true;         // Включаем блокирующий флаг от цикличного пуша
+        // Если игрок только что вошёл и мы его ещё не толкали
+        if (!has_been_pushed && objPlayer.state == PLAYER_STATES.GAMEPLAY) {
+            push_timer = 8;
+            push_angle = image_angle + 270;
+            has_been_pushed = true;
             
             // Запускаем таймер до старта мотора
-            car_start_timer = 35; 
+            car_start_timer = 35;
             
-            objPlayer.active = false;       // Выключаем управление игрока на время пуша
+            // Отключаем управление игрока на время посадки
+            objPlayer.state = PLAYER_STATES.UNACTIVE;
         }
         
         car_zone_active = true;
-    } 
+    }
     else {
-        // ЕСЛИ ИГРОК ВЫШЕЛ ИЗ ЗОНЫ:
-        // Сбрасываем блокирующий флаг, только если пуш таймер полностью отработал
+        // ЕСЛИ ИГРОК ВЫШЕЛ ИЗ ЗОНЫ
         if (push_timer <= 0) {
             has_been_pushed = false;
             car_start_timer = 0;
             
-            // Сбрасываем анимацию машины обратно в статику, если игрок передумал
+            // Сбрасываем анимацию машины обратно в статику
             image_speed = 0;
             image_index = 0;
+            
+            // Возвращаем управление, если игрок передумал
+            if (objPlayer.state == PLAYER_STATES.UNACTIVE) {
+                objPlayer.state = PLAYER_STATES.GAMEPLAY;
+            }
         }
     }
 }

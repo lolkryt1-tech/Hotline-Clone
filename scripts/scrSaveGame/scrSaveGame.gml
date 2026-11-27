@@ -36,8 +36,8 @@ function scrSaveGame(_is_quick_save = false)
 	// === 1.5. СОХРАНЕНИЕ ДАННЫХ ИГРОКА ===
 	with (objPlayer)
 	{
-		buffer_write(_buf, buffer_f16,  x);
-		buffer_write(_buf, buffer_f16,  y);
+		buffer_write(_buf, buffer_f32,  x);
+		buffer_write(_buf, buffer_f32,  y);
 		buffer_write(_buf, buffer_f16,  my_angle);
 		buffer_write(_buf, buffer_f16,  walking_direction);
 		buffer_write(_buf, buffer_u8,   character);
@@ -517,8 +517,8 @@ function scrLoadGame(_is_room_transition, _is_quick_load = false)
 	}
 	
 	// === 1.5. ЧТЕНИЕ ДАННЫХ ИГРОКА ===
-	var _p_x			= buffer_read(_buf, buffer_f16);
-	var _p_y			= buffer_read(_buf, buffer_f16);
+	var _p_x			= buffer_read(_buf, buffer_f32);
+	var _p_y			= buffer_read(_buf, buffer_f32);
 	var _p_angle		= buffer_read(_buf, buffer_f16);
 	var _p_walk_dir		= buffer_read(_buf, buffer_f16);
 	var _p_char			= buffer_read(_buf, buffer_u8);
@@ -546,12 +546,12 @@ function scrLoadGame(_is_room_transition, _is_quick_load = false)
 			ammo              = _p_ammo;
 			hor_velocity      = _p_hor_vel;
 			ver_velocity      = _p_ver_vel;
+			state			  = _p_state;
 		}
 		
 		my_angle          = _p_angle;
 		walking_direction = _p_walk_dir;
 		character         = _p_char;
-		state			  = _p_state;
 		prep_thrown       = _p_prep_throw;
 		
 		max_energy = choose(1, 2);

@@ -5,3 +5,4 @@ repeat (2 + random(2))
     my_id.image_angle = (my_angle - 180) + random(20);
 	my_id.direction = my_angle;
 }
+*/

@@ -118,3 +118,6 @@ if (instance_exists(id))
 {
     scrCameraShakeMenuUpdateHover(_mx, _my);
 }
+
+
+if (keyboard_check_pressed(vk_escape)) { instance_destroy(); }
